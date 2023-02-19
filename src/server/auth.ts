@@ -8,6 +8,7 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env.mjs";
 import { prisma } from "./db";
+import Credentials from "next-auth/providers/credentials";
 
 /**
  * Module augmentation for `next-auth` types.
@@ -49,20 +50,37 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
+    Credentials({
+      id: "credentials_provider",
+      name: "Credentials",
+      type: "credentials",
+      credentials: {
+        email: { label: "email", type: "email", placeholder: "email@gmail.com" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize(credentials) {
+        console.log(credentials);
+        const user = {
+          "id": "1",
+          "name": "John Smith",
+        }
+        if (!user) {
+          return null;
+        }
+        return user;
+      },
+
+    }),
     Google({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    /**
-     * ...add more providers here
-     *
-     * Most other providers require a bit more work than the Discord provider.
-     * For example, the GitHub provider requires you to add the
-     * `refresh_token_expires_in` field to the Account model. Refer to the
-     * NextAuth.js docs for the provider you want to use. Example:
-     * @see https://next-auth.js.org/providers/github
-     **/
   ],
+  theme: {
+    brandColor: "#FF0000",
+    logo: "/logo-transparent-png-no-text.png",
+  },
+  secret: env.NEXTAUTH_SECRET,
 };
 
 /**

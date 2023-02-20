@@ -1,14 +1,15 @@
 "use client"
 
-import Image from "next/image"
 import { signOut } from "next-auth/react"
 import Link from "next/link"
+import UserIcon from "../user/icon"
+import type { User } from "./types"
 
-type User = {
-  image?: string
+type LoggedProps = {
+    user: User
 }
 
-export default function Logged({ image }: User) {
+export default function Logged({ user }: LoggedProps) {
 
     const handleSignout = () => {
         console.log("Signing out...");
@@ -27,17 +28,10 @@ export default function Logged({ image }: User) {
         >
             Sign Out
         </button>
-        {image && (
-            <Link href={"/dashboard"}>
-            <Image
-            width={64}
-            height={64}
-            className="w-14 rounded-full"
-            src={image}
-            alt=""
-            priority
-            />
-        </Link>
+        {user && user.image && (
+            <Link href={"/users/me"}>
+                <UserIcon image={user.image}/>
+            </Link>
         )}
         </li>
     )

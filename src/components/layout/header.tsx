@@ -20,7 +20,7 @@ export default function Header() {
             {status}
         </span>
         {session 
-            ? (<Logged/>)
+            ? (<Logged user={session.user}/>)
             : (<Login />)
         }
       </nav>

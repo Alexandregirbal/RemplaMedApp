@@ -1,9 +1,9 @@
-import Image from "next/image"
+import Image from "next/image";
 type UserIconProps = {
     image: string;
-}
+};
 
-const UserIcon = ({image}: UserIconProps) => {
+const UserIcon = ({ image }: UserIconProps) => {
     return (
         <Image
             width={64}
@@ -12,8 +12,8 @@ const UserIcon = ({image}: UserIconProps) => {
             src={image}
             alt="profile-picture"
             priority
-            />
-    )
-}
+        />
+    );
+};
 
-export default UserIcon
+export default UserIcon;

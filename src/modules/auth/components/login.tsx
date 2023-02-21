@@ -16,10 +16,10 @@ const LoginButton = () => {
 
     return (
         <button
-            className="w-40 rounded-lg bg-slate-100 px-4"
+            className="h-10 rounded-lg bg-button px-8 text-white"
             onClick={() => handleLogin()}
         >
-            Log In
+            Connexion
         </button>
     );
 };

@@ -6,18 +6,16 @@ import Login from "../modules/auth/components/login";
 export default function Header() {
     const { data: session, status } = useSession();
     console.log("Session: ", session);
+    console.log("Status: ", status);
 
     return (
-        <nav className="flex justify-between bg-orange-400 p-4">
+        <nav className="flex items-center justify-between p-4 px-6">
             <Image
                 src="/logo-transparent-png-no-text.png"
                 alt="remplamed-logo"
                 width={64}
                 height={64}
             />
-            <span className="font-medium text-gray-700 first-letter:uppercase">
-                {status}
-            </span>
             {session ? <Logged user={session.user} /> : <Login />}
         </nav>
     );

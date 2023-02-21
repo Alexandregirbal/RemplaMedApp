@@ -3,10 +3,10 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import UserIcon from "../../user/components/userIcon";
-import type { User } from "../types/user";
+import type { UserSession } from "../types/user";
 
 type LoggedProps = {
-    user: User;
+    user: UserSession;
 };
 
 export default function Logged({ user }: LoggedProps) {

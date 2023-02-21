@@ -10,6 +10,7 @@ module.exports = {
                 tertiary: "#EF4565",
                 button: "#3DA9FC",
                 paragraph: "#5F6C7B",
+                background: "#FFFFFE",
             },
         },
     },

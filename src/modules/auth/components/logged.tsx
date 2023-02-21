@@ -2,8 +2,8 @@
 
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import UserIcon from "../user/icon";
-import type { User } from "./types";
+import UserIcon from "../../user/components/userIcon";
+import type { User } from "../types/user";
 
 type LoggedProps = {
     user: User;

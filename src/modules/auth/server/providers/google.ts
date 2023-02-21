@@ -1,5 +1,5 @@
 import Google from "next-auth/providers/google";
-import { env } from "../../../env.mjs";
+import { env } from "../../../../env.mjs";
 
 const googleProvider = Google({
     clientId: env.GOOGLE_CLIENT_ID,

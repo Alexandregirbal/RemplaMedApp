@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession, type DefaultSession } from "next-auth";
-import authOptions from "./options.js";
+import authOptions from "./options";
 
 /**
  * Module augmentation for `next-auth` types.

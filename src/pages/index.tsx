@@ -1,8 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import PrivatePost from "../components/post/privatePost";
-import Header from "../components/layout/header";
+import PrivatePost from "../modules/post/components/privatePost";
+import Header from "../layout/header";
 
 const mockPost = {
     id: "1A",

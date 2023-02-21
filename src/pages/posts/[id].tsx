@@ -1,5 +1,5 @@
 import Head from "next/head";
-import type { Post } from "../../components/post/types";
+import type { Post } from "../../modules/post/types/post";
 
 type PostParams = {
     id: string;

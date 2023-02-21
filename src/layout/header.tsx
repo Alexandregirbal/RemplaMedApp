@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Logged from "../auth/logged";
-import Login from "../auth/login";
+import Logged from "../modules/auth/components/logged";
+import Login from "../modules/auth/components/login";
 
 export default function Header() {
     const { data: session, status } = useSession();

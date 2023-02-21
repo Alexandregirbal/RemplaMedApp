@@ -10,6 +10,11 @@ type LoggedProps = {
 };
 
 export default function Logged({ user }: LoggedProps) {
+    const initials = user.name
+        ? user.name?.charAt(0).toUpperCase() +
+          user.name?.charAt(1).toUpperCase()
+        : user.name;
+
     const handleSignout = () => {
         console.log("Signing out...");
         signOut()
@@ -29,9 +34,24 @@ export default function Logged({ user }: LoggedProps) {
             >
                 Sign Out
             </button>
-            {user && user.image && (
+            {user && (
                 <Link href={"/users/me"}>
-                    <UserIcon image={user.image} />
+                    {user.image ? (
+                        <UserIcon image={user.image} size={50} />
+                    ) : (
+                        <div
+                            style={{
+                                width: "50px",
+                                height: "50px",
+                                lineHeight: "50px",
+                                fontSize: "20px",
+                            }}
+                            // tailwind css for center test in a div
+                            className="rounded-full bg-primary text-center text-white shadow-lg"
+                        >
+                            {initials}
+                        </div>
+                    )}
                 </Link>
             )}
         </li>

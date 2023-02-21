@@ -15,7 +15,7 @@ const UserIcon = ({ image, size }: UserIconProps) => {
         <Image
             width={size}
             height={size}
-            className="w-14 rounded-full"
+            className="w-14 rounded-full border-2 border-primary shadow-xl"
             src={image}
             alt="profile-picture"
             priority

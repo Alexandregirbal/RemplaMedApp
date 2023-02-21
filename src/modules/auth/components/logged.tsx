@@ -47,7 +47,7 @@ export default function Logged({ user }: LoggedProps) {
                                 fontSize: "20px",
                             }}
                             // tailwind css for center test in a div
-                            className="rounded-full bg-primary text-center text-white shadow-lg"
+                            className="rounded-full bg-primary text-center text-white shadow-xl"
                         >
                             {initials}
                         </div>

@@ -5,18 +5,15 @@ const credentialsProvider = Credentials({
     name: "Credentials",
     type: "credentials",
     credentials: {
-        email: {
-            label: "email",
-            type: "email",
-            placeholder: "email@gmail.com",
-        },
+        email: { label: "email", type: "email" },
         password: { label: "Password", type: "password" },
     },
-    authorize(credentials) {
+    authorize: (credentials) => {
         console.log(credentials);
         const user = {
-            id: "1",
+            id: "12345",
             name: "John Smith",
+            email: "john.smith@gmail.com",
         };
         if (!user) {
             return null;

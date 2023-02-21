@@ -12,25 +12,37 @@ import googleProvider from "./providers/google";
  * @see https://next-auth.js.org/configuration/options
  **/
 const authOptions: NextAuthOptions = {
+    providers: [credentialsProvider, googleProvider],
+    adapter: PrismaAdapter(prisma),
     callbacks: {
         session({ session, user }) {
-            if (session.user) {
+            if (user) {
                 session.user.id = user.id;
-                // session.user.role = user.role; <-- put other properties on the session here
+                session.user.email = user.email;
+                session.user.name = user.name;
             }
             return session;
         },
+        jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.name = user.name;
+            }
+            return token;
+        },
     },
-    adapter: PrismaAdapter(prisma),
     jwt: {
         secret: env.NEXTAUTH_SECRET,
     },
-    providers: [credentialsProvider, googleProvider],
+    session: {
+        strategy: "jwt",
+    },
+    secret: env.NEXTAUTH_SECRET,
     theme: {
         brandColor: "#FF0000",
         logo: "/logo-transparent-png-no-text.png",
     },
-    secret: env.NEXTAUTH_SECRET,
 };
 
 export default authOptions;

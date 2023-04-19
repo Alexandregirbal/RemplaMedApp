@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Link from "next/link";
-import PrivatePost from "../modules/post/components/privatePost";
+import Post from "../modules/post/components/Post";
 import Layout from "../layout";
 
 const mockPost = {
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <Layout>
             <main className="p-4">
                 <Link href={`/posts/${mockPost.id}`}>
-                    <PrivatePost key={1} post={mockPost} />
+                    <Post key={1} post={mockPost} />
                 </Link>
             </main>
         </Layout>

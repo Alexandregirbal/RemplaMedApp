@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
-import type { Post } from "../types/post";
+import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
+import type { Post } from "../types/post";
 
 type PostProps = {
     post: Post;
@@ -8,14 +9,28 @@ type PostProps = {
 
 const PrivatePost = ({ post }: PostProps) => {
     const { status } = useSession();
-    console.log(`LOG by Girbal --- | PrivatePost | status---`, status);
-    if (status != "authenticated")
-        post.content = hidePrivateInformations(post.content);
+
+    const [isPrivate, setIsPrivate] = useState(false);
+    const [privatePostContent, setPrivatePostContent] = useState(post.content);
+
+    useEffect(() => {
+        if (status != "authenticated") {
+            setPrivatePostContent(hidePrivateInformations(post.content));
+            setIsPrivate(true);
+        } else {
+            setIsPrivate(false);
+        }
+    }, [status, post.content]);
 
     return (
-        <div className="opacity-60 hover:opacity-100">
+        <div className="my-4 opacity-60 hover:opacity-100">
             <div className="text-lg font-bold uppercase">{post.author}</div>
-            <div>{post.content}</div>
+            <pre>{isPrivate ? privatePostContent : post.content}</pre>
+            {isPrivate && (
+                <div className="text-sm text-red-700">
+                    This post is private, register to see the full content.
+                </div>
+            )}
         </div>
     );
 };

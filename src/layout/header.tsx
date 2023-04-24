@@ -4,9 +4,7 @@ import Logged from "../modules/auth/components/logged";
 import Login from "../modules/auth/components/login";
 
 export default function Header() {
-    const { data: session, status } = useSession();
-    console.log("Session: ", session);
-    console.log("Status: ", status);
+    const { data: session } = useSession();
 
     return (
         <nav className="flex items-center justify-between p-4 px-6">

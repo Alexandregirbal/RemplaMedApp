@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Link from "next/link";
-import Post from "../modules/post/components/Post";
+import Post from "../modules/post/components/PrivatePost";
 import Layout from "../layout";
 
 const mockPosts = [

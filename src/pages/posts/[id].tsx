@@ -1,6 +1,6 @@
 import Head from "next/head";
-import type { Post } from "../../modules/post/types/post";
 import PrivatePost from "../../modules/post/components/PrivatePost";
+import type { Post } from "@prisma/client";
 
 type PostParams = {
     id: string;
@@ -11,10 +11,10 @@ export default function PostPage({ post }: { post: Post }) {
         <>
             <Head>
                 <title>RemplaMed | {post.id}</title>
-                <meta name="description" content={post.author} />
+                <meta name="description" content={post.authorId} />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="text-lg font-bold uppercase">{post.author}</div>
+            <div className="text-lg font-bold uppercase">{post.authorId}</div>
             <PrivatePost post={post} />
         </>
     );
@@ -35,13 +35,21 @@ export function getStaticPaths() {
 export function getStaticProps({ params }: { params: PostParams }) {
     const post: Post = {
         id: params.id,
-        author: "John Doe",
+        authorId: "John Doe",
         content:
             "I am the content of the post.\n Here is my phone number: 0612345678. This is from the dynamic route.",
+        createdAt: new Date(),
+        updatedAt: null,
+        published: false,
+        title: "",
     };
     return {
         props: {
-            post,
+            post: {
+                ...post,
+                createdAt: post.createdAt.toISOString(),
+                updatedAt: post.updatedAt?.toISOString() ?? post.updatedAt,
+            },
         },
     };
 }

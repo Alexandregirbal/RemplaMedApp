@@ -58,6 +58,10 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
     ```bash
     prisma db push
     ```
+-   Generate the Prisma Client (for types)
+    ```bash
+    prisma generate
+    ```
 
 ## How do I deploy this?
 

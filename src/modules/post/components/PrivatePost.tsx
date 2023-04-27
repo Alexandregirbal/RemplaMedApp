@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
-import type { Post } from "../types/post";
+import type { Post } from "@prisma/client";
 
 type PostProps = {
     post: Post;
@@ -23,8 +23,8 @@ const PrivatePost = ({ post }: PostProps) => {
     }, [status, post.content]);
 
     return (
-        <div className="my-4 opacity-60 hover:opacity-100">
-            <div className="text-lg font-bold uppercase">{post.author}</div>
+        <div className="my-4">
+            <div className="text-lg font-bold uppercase">{post.authorId}</div>
             <pre>{isPrivate ? privatePostContent : post.content}</pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">

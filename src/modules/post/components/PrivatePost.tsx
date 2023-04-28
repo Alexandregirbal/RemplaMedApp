@@ -11,21 +11,21 @@ const PrivatePost = ({ post }: PostProps) => {
     const { status } = useSession();
 
     const [isPrivate, setIsPrivate] = useState(false);
-    const [privatePostContent, setPrivatePostContent] = useState(post.content);
+    const [privatePostContent, setPrivatePostContent] = useState(post.message);
 
     useEffect(() => {
         if (status != "authenticated") {
-            setPrivatePostContent(hidePrivateInformations(post.content));
+            setPrivatePostContent(hidePrivateInformations(post.message));
             setIsPrivate(true);
         } else {
             setIsPrivate(false);
         }
-    }, [status, post.content]);
+    }, [status, post.message]);
 
     return (
         <div className="my-4">
             <div className="text-lg font-bold uppercase">{post.authorId}</div>
-            <pre>{isPrivate ? privatePostContent : post.content}</pre>
+            <pre>{isPrivate ? privatePostContent : post.message}</pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
                     This post is private, register to see the full content.

@@ -5,7 +5,7 @@ const HIDE_ELEMENT = "*";
  * @param content The message content that must be protectedd
  * @returns The message content with private informations hidden
  */
-export const hidePrivateInformations = (content: string | null) => {
+export const hidePrivateInformations = (content: string) => {
     if (!content) {
         return content;
     }

@@ -7,7 +7,7 @@ const mockPosts: Post[] = [
     {
         id: "1A",
         authorId: "John Doe",
-        content: `I am the content of the post.
+        message: `I am the message of the post.
 Here is my phone number: 0612345678.
 My email is jean@gmail.com or jean@gmail.com.
 `,
@@ -15,33 +15,49 @@ My email is jean@gmail.com or jean@gmail.com.
         createdAt: new Date(),
         updatedAt: null,
         published: true,
+        availablityFrom: null,
+        availablityTo: null,
+        postalCode: "34000",
+        views: 0,
     },
     {
         id: "1B",
         authorId: "Jane Jack",
-        content: `Just my email: jane.jack@gmail.com`,
+        message: `Just my email: jane.jack@gmail.com`,
         title: "My first post",
         createdAt: new Date(),
         updatedAt: null,
         published: true,
+        availablityFrom: null,
+        availablityTo: null,
+        postalCode: "34000",
+        views: 0,
     },
     {
         id: "1C",
         authorId: "Numerous",
-        content: `Just my phone: +33617181920`,
+        message: `Just my phone: +33617181920`,
         title: "My first post",
         createdAt: new Date(),
         updatedAt: null,
         published: true,
+        availablityFrom: null,
+        availablityTo: null,
+        postalCode: "34000",
+        views: 0,
     },
     {
         id: "1D",
         authorId: "Janette",
-        content: `Nothing to hide here.`,
+        message: `Nothing to hide here.`,
         title: "My first post",
         createdAt: new Date(),
         updatedAt: null,
         published: true,
+        availablityFrom: null,
+        availablityTo: null,
+        postalCode: "34000",
+        views: 0,
     },
 ];
 

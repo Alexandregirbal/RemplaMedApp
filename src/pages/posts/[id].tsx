@@ -36,12 +36,16 @@ export function getStaticProps({ params }: { params: PostParams }) {
     const post: Post = {
         id: params.id,
         authorId: "John Doe",
-        content:
+        message:
             "I am the content of the post.\n Here is my phone number: 0612345678. This is from the dynamic route.",
         createdAt: new Date(),
         updatedAt: null,
         published: false,
         title: "",
+        availablityFrom: new Date("2023-09-01"),
+        availablityTo: new Date("2023-12-31"),
+        postalCode: "34000",
+        views: 0,
     };
     return {
         props: {

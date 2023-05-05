@@ -9,9 +9,14 @@ const handleCreationForm = (req: NextApiRequest, res: NextApiResponse) => {
     const parsedBody = PostCreateInputObjectSchema.safeParse(req.body);
 
     if (!parsedBody.success) {
+        console.error(parsedBody.error.format());
         return res
             .status(400)
-            .json({ code: "000-000", data: "Form data is unvalid" });
+            .json({
+                code: "000-000",
+                data: "Form data is unvalid",
+                errors: parsedBody.error,
+            });
     }
     const { data } = parsedBody;
     console.log(data);

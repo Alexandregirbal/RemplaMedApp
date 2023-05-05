@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const CreatePost = () => {
     const [postForm, setPostForm] = useState({
@@ -10,12 +11,12 @@ const CreatePost = () => {
         to: "",
     });
 
-    const handleSubmitCreatePostForm = (
+    const handleSubmitCreatePostForm = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
-        console.log("handleSubmitCreatePostForm");
-        console.log(postForm);
+        const result = await axios.post("/api/posts/create", postForm);
+        console.log(result);
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +51,7 @@ const CreatePost = () => {
     };
 
     return (
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         <form onSubmit={handleSubmitCreatePostForm}>
             <div className="mb-6">
                 <label

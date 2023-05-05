@@ -1,14 +1,15 @@
-import { useState } from "react";
+import type Prisma from "@prisma/client";
 import axios from "axios";
+import { useState } from "react";
 
 const CreatePost = () => {
-    const [postForm, setPostForm] = useState({
-        isPublished: true,
+    const [postForm, setPostForm] = useState<Partial<Prisma.Post>>({
+        published: true,
         title: "",
         message: "",
         postalCode: "",
-        from: "",
-        to: "",
+        availablityFrom: null,
+        availablityTo: null,
     });
 
     const handleSubmitCreatePostForm = async (
@@ -36,18 +37,24 @@ const CreatePost = () => {
     };
 
     const handleFromChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPostForm({ ...postForm, from: event.target.value });
+        setPostForm({
+            ...postForm,
+            availablityFrom: new Date(event.target.value),
+        });
     };
 
     const handleToChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPostForm({ ...postForm, to: event.target.value });
+        setPostForm({
+            ...postForm,
+            availablityTo: new Date(event.target.value),
+        });
     };
 
-    const handleIsPublishedChange = (
+    const handlePublishedChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const isPublished = event.target.value === "true";
-        setPostForm({ ...postForm, isPublished });
+        const published = event.target.value === "true";
+        setPostForm({ ...postForm, published });
     };
 
     return (
@@ -113,7 +120,9 @@ const CreatePost = () => {
                     <input
                         type="date"
                         id="from"
-                        value={postForm.from}
+                        value={postForm.availablityFrom
+                            ?.toISOString()
+                            .slice(0, 10)}
                         onChange={handleFromChange}
                         className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     />
@@ -128,7 +137,9 @@ const CreatePost = () => {
                     <input
                         type="date"
                         id="to"
-                        value={postForm.to}
+                        value={postForm.availablityTo
+                            ?.toISOString()
+                            .slice(0, 10)}
                         onChange={handleToChange}
                         className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     />
@@ -139,8 +150,8 @@ const CreatePost = () => {
                     <input
                         id="publishNow"
                         type="checkbox"
-                        defaultChecked={postForm.isPublished}
-                        onChange={handleIsPublishedChange}
+                        defaultChecked={postForm.published}
+                        onChange={handlePublishedChange}
                         className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                     />
                 </div>

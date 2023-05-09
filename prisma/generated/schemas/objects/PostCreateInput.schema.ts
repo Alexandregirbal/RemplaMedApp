@@ -12,8 +12,8 @@ const Schema: z.ZodType<Prisma.PostCreateInput> = z
         message: z.string(),
         createdAt: z.date().optional(),
         updatedAt: z.date().optional().nullable(),
-        availablityFrom: z.coerce.date().optional().nullable(),
-        availablityTo: z.coerce.date().optional().nullable(),
+        availablityFrom: z.date().optional().nullable(),
+        availablityTo: z.date().optional().nullable(),
         views: z.number().optional(),
         author: z.lazy(() => UserCreateNestedOneWithoutPostInputObjectSchema),
     })

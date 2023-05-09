@@ -8,7 +8,7 @@ const CreatePost = () => {
         title: "",
         message: "",
         postalCode: "",
-        availablityFrom: null,
+        availablityFrom: new Date(),
         availablityTo: null,
     });
 

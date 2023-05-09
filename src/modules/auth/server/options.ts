@@ -15,20 +15,13 @@ const authOptions: NextAuthOptions = {
     providers: [credentialsProvider, googleProvider],
     adapter: PrismaAdapter(prisma),
     callbacks: {
-        session({ session, user }) {
-            if (user) {
-                session.user.id = user.id;
-                session.user.email = user.email;
-                session.user.name = user.name;
+        session({ session, token }) {
+            if (token?.sub) {
+                session.user.id = token.sub;
             }
             return session;
         },
-        jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-                token.email = user.email;
-                token.name = user.name;
-            }
+        jwt({ token }) {
             return token;
         },
     },

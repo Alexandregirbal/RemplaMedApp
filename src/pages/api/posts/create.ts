@@ -1,22 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PostCreateInputObjectSchema } from "../../../../prisma/generated/schemas";
+import { getServerSession } from "next-auth";
+import authOptions from "../../../modules/auth/server/options";
 
-const handleCreationForm = (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(
-        `LOG by Girbal --- | req.body---`,
-        JSON.stringify(req.body, null, 2)
-    );
-    const parsedBody = PostCreateInputObjectSchema.safeParse(req.body);
+const handleCreationForm = async (
+    req: NextApiRequest,
+    res: NextApiResponse
+) => {
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const parsedBody = PostCreateInputObjectSchema.safeParse({
+        ...req.body,
+        author: session.user.id,
+    });
 
     if (!parsedBody.success) {
         console.error(parsedBody.error.format());
-        return res
-            .status(400)
-            .json({
-                code: "000-000",
-                data: "Form data is unvalid",
-                errors: parsedBody.error,
-            });
+        return res.status(400).json({
+            code: "000-000",
+            data: "Form data is unvalid",
+            errors: parsedBody.error,
+        });
     }
     const { data } = parsedBody;
     console.log(data);
@@ -24,12 +31,15 @@ const handleCreationForm = (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json({ message: "success" });
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
     console.log(`${req.method ?? ""} /api/posts/create`);
 
     if (req.method === "POST") {
-        handleCreationForm(req, res);
+        return await handleCreationForm(req, res);
     } else {
-        res.status(405).json({ message: "Method not allowed" });
+        return res.status(405).json({ message: "Method not allowed" });
     }
 }

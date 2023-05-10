@@ -1,5 +1,7 @@
+"use client";
 import type Prisma from "@prisma/client";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const CreatePost = () => {
@@ -12,12 +14,19 @@ const CreatePost = () => {
         availablityTo: null,
     });
 
+    const { push } = useRouter();
+
     const handleSubmitCreatePostForm = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
         const result = await axios.post("/api/posts/create", postForm);
-        console.log(result);
+        if (result.status !== 200) {
+            return alert("Une erreur est survenue");
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const newPostId = result.data.postId as string;
+        await push(`/posts/${newPostId}`);
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +34,7 @@ const CreatePost = () => {
     };
 
     const handleMessageChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLTextAreaElement>
     ) => {
         setPostForm({ ...postForm, message: event.target.value });
     };
@@ -84,9 +93,9 @@ const CreatePost = () => {
                 >
                     Message
                 </label>
-                <input
-                    type="text"
+                <textarea
                     id="message"
+                    rows={5}
                     value={postForm.message}
                     onChange={handleMessageChange}
                     className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"

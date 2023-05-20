@@ -1,9 +1,9 @@
 import type { Post } from "@prisma/client";
+import Filters from "modules/filters";
+import PostComponent from "modules/post/components/PrivatePost";
+import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import Link from "next/link";
-import PostComponent from "../modules/post/components/PrivatePost";
-import { findManyPosts } from "../modules/post/dao/find";
-import Filters from "../modules/filters";
 
 type HomeProps = {
     posts: Post[];

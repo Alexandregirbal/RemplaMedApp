@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerAuthSession } from "../../modules/auth/server";
+import { getServerAuthSession } from "modules/auth/server";
 
 const restricted = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getServerAuthSession({ req, res });

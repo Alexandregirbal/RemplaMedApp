@@ -1,5 +1,5 @@
-import { prisma } from "../../../server/db";
-import type { Credentials } from "../../auth/types/credentials";
+import { prisma } from "server/db";
+import type { Credentials } from "modules/auth/types/credentials";
 import { hashPassword } from "../services/password";
 
 export const createOneUser = async (credentials: Credentials) => {

@@ -1,8 +1,8 @@
+import authOptions from "modules/auth/server/options";
+import { createOnePost } from "modules/post/dao/create";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PostUncheckedCreateInputObjectSchema } from "../../../../prisma/generated/schemas";
 import { getServerSession } from "next-auth";
-import authOptions from "../../../modules/auth/server/options";
-import { createOnePost } from "../../../modules/post/dao/create";
+import { PostUncheckedCreateInputObjectSchema } from "../../../../prisma/generated/schemas";
 
 const handleCreationForm = async (
     req: NextApiRequest,

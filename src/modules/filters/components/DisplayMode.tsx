@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-    selectFiltersState,
-    setDisplayMode,
-} from "../../../redux/slices/filters/slice";
+import { selectFiltersState, setDisplayMode } from "store/slices/filters/slice";
 
 const DatesFilter = () => {
     const filters = useSelector(selectFiltersState);

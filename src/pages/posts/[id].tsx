@@ -1,7 +1,7 @@
-import Head from "next/head";
-import PrivatePost from "../../modules/post/components/PrivatePost";
 import type { Post } from "@prisma/client";
-import { findManyPosts, findOnePost } from "../../modules/post/dao/find";
+import PrivatePost from "modules/post/components/PrivatePost";
+import { findManyPosts, findOnePost } from "modules/post/dao/find";
+import Head from "next/head";
 
 type PostParams = {
     id: string;

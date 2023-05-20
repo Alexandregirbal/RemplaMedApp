@@ -1,5 +1,5 @@
+import CreatePost from "modules/post/components/CreatePost";
 import { useState } from "react";
-import CreatePost from "../../modules/post/components/CreatePost";
 
 enum Steps {
     CREATE_POST = "CREATE_POST",

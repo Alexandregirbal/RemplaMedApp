@@ -1,7 +1,7 @@
+import { createOneUser } from "modules/user/dao/create";
+import { findOneUser } from "modules/user/dao/find";
+import { validateUserPassword } from "modules/user/services/password";
 import Credentials from "next-auth/providers/credentials";
-import { createOneUser } from "../../../user/dao/create";
-import { findOneUser } from "../../../user/dao/find";
-import { validateUserPassword } from "../../../user/services/password";
 
 const credentialsProvider = Credentials({
     id: "credentials_provider",

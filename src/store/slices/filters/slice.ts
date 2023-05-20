@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { type AppState } from "../../store";
+import { type AppState } from "store";
 import { HYDRATE } from "next-redux-wrapper";
 
 export type FiltersState = {

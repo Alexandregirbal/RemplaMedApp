@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type NextAuthOptions } from "next-auth";
+import { prisma } from "server/db";
 import { env } from "../../../env.mjs";
-import { prisma } from "../../../server/db";
 import credentialsProvider from "./providers/credentials";
 import googleProvider from "./providers/google";
 

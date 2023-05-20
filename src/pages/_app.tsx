@@ -2,8 +2,8 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
 import Layout from "../layout";
-import "../styles/globals.css";
-import { wrapper } from "../redux/store";
+import "styles/globals.css";
+import { wrapper } from "store";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,

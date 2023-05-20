@@ -1,5 +1,5 @@
 import type { Post, Prisma } from "@prisma/client";
-import { prisma } from "../../../server/db";
+import { prisma } from "server/db";
 
 export const findOnePost = async (
     id: string | undefined

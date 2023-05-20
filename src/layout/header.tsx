@@ -1,7 +1,7 @@
+import Logged from "modules/auth/components/logged";
+import Login from "modules/auth/components/login";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Logged from "../modules/auth/components/logged";
-import Login from "../modules/auth/components/login";
 import Link from "next/link";
 
 export default function Header() {

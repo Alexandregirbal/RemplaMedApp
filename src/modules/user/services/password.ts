@@ -1,6 +1,6 @@
+import bcrypt from "bcrypt";
 import type { Credentials } from "../../auth/types/credentials";
 import { findOneUser } from "../dao/find";
-import bcrypt from "bcrypt";
 
 export const hashPassword = async (password: string): Promise<string> => {
     const hashedPassword = await bcrypt.hash(password, 10);

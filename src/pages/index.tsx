@@ -1,6 +1,6 @@
 import type { Post } from "@prisma/client";
 import Filters from "modules/filters";
-import Map from "modules/map";
+import MapComponent from "modules/map";
 import PostComponent from "modules/post/components/PrivatePost";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
@@ -30,7 +30,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                     ))}
                 </div>
                 <div id="posts-map" className="w-8/12">
-                    <Map />
+                    <MapComponent />
                 </div>
             </div>
         </>

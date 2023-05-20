@@ -23,5 +23,19 @@ const config = {
     images: {
         domains: ["lh3.googleusercontent.com"],
     },
+    // enable cors for mapbox
+    async headers() {
+        return [
+            {
+                source: "/(.*)",
+                headers: [
+                    {
+                        key: "Access-Control-Allow-Origin",
+                        value: " https://api.mapbox.com/*",
+                    },
+                ],
+            },
+        ];
+    },
 };
 export default config;

@@ -16,7 +16,7 @@ const DatesFilter = () => {
 
     return (
         <div
-            className="flex gap-1 text-button hover:cursor-pointer"
+            className="flex items-center gap-1 text-cta hover:cursor-pointer"
             onClick={handleClick}
         >
             <span className={displayMode === "list" ? "font-bold" : ""}>

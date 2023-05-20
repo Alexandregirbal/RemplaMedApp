@@ -58,7 +58,10 @@ const DatesFilter = () => {
                     value={from?.toISOString().slice(0, 10)}
                     onChange={handleDateFromChange}
                     type="date"
-                    className="w-9/12 cursor-pointer border-0 p-0 text-cta"
+                    className={
+                        "w-9/12 cursor-pointer border-0 p-0 text-cta" +
+                        (from ? " font-bold" : "")
+                    }
                 />
             </span>
             <span
@@ -72,7 +75,10 @@ const DatesFilter = () => {
                     value={to?.toISOString().slice(0, 10)}
                     onChange={handleDateToChange}
                     type="date"
-                    className="w-9/12 cursor-pointer border-0 p-0 text-cta"
+                    className={
+                        "w-9/12 cursor-pointer border-0 p-0 text-cta" +
+                        (to ? " font-bold" : "")
+                    }
                 />
             </span>
         </div>

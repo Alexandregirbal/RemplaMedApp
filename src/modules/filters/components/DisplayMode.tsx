@@ -2,9 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setDisplayMode } from "store/slices/filters/slice";
 
 const DatesFilter = () => {
-    const filters = useSelector(selectFiltersState);
+    const { displayMode } = useSelector(selectFiltersState);
     const dispatch = useDispatch();
-    const { displayMode } = filters;
 
     const handleClick = () => {
         if (displayMode === "list") {

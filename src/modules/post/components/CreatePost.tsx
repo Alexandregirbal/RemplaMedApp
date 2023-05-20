@@ -72,7 +72,7 @@ const CreatePost = () => {
             <div className="mb-6">
                 <label
                     htmlFor="title"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium "
                 >
                     Titre
                 </label>
@@ -81,7 +81,7 @@ const CreatePost = () => {
                     id="title"
                     value={postForm.title}
                     onChange={handleTitleChange}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     placeholder="Cherche remplacement du 12 au 15 juin"
                     required
                 />
@@ -89,7 +89,7 @@ const CreatePost = () => {
             <div className="mb-6">
                 <label
                     htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium "
                 >
                     Message
                 </label>
@@ -98,14 +98,14 @@ const CreatePost = () => {
                     rows={5}
                     value={postForm.message}
                     onChange={handleMessageChange}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     required
                 />
             </div>
             <div className="mb-6">
                 <label
                     htmlFor="postalCode"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium "
                 >
                     Code postal
                 </label>
@@ -114,7 +114,7 @@ const CreatePost = () => {
                     id="postalCode"
                     value={postForm.postalCode}
                     onChange={handlePostalCodeChange}
-                    className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     required
                 />
             </div>
@@ -122,7 +122,7 @@ const CreatePost = () => {
                 <div className="mb-6">
                     <label
                         htmlFor="from"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        className="mb-2 block text-sm font-medium "
                     >
                         A partir du
                     </label>
@@ -133,13 +133,13 @@ const CreatePost = () => {
                             ?.toISOString()
                             .slice(0, 10)}
                         onChange={handleFromChange}
-                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     />
                 </div>
                 <div className="mb-6">
                     <label
                         htmlFor="to"
-                        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        className="mb-2 block text-sm font-medium "
                     >
                         {"Jusqu'au"}
                     </label>
@@ -150,7 +150,7 @@ const CreatePost = () => {
                             ?.toISOString()
                             .slice(0, 10)}
                         onChange={handleToChange}
-                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     />
                 </div>
             </div>
@@ -166,7 +166,7 @@ const CreatePost = () => {
                 </div>
                 <label
                     htmlFor="publishNow"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium dark:text-gray-300"
                 >
                     Publier immédiatement
                 </label>

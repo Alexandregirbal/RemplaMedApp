@@ -1,16 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { type AppState } from "store";
 import { HYDRATE } from "next-redux-wrapper";
-
-export type FiltersState = {
-    displayMode: "list" | "map";
-    distance: number;
-    dates: {
-        from: Date | null;
-        to: Date | null;
-    };
-    sortBy: "distance" | "createdAt" | "dateFrom" | "dateTo";
-};
+import { type AppState } from "store";
+import type { FiltersState } from "./types";
 
 const initialState: FiltersState = {
     displayMode: "map",

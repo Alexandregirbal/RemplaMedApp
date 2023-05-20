@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
 import Layout from "../layout";
 import "../styles/globals.css";
+import { wrapper } from "../redux/store";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
@@ -17,4 +18,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
     );
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

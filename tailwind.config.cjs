@@ -14,5 +14,9 @@ module.exports = {
             },
         },
     },
-    plugins: [require("flowbite/plugin")],
+    plugins: [
+        require("flowbite/plugin"),
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require("tailwind-scrollbar")({ nocompatible: true }),
+    ],
 };

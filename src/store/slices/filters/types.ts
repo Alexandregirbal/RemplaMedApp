@@ -7,3 +7,13 @@ export type FiltersState = {
     };
     sortBy: "distance" | "createdAt" | "dateFrom" | "dateTo";
 };
+
+export const isDisplayMode = (
+    displayMode: string
+): displayMode is FiltersState["displayMode"] => {
+    return ["list", "map"].includes(displayMode);
+};
+
+export const isSortBy = (sortBy: string): sortBy is FiltersState["sortBy"] => {
+    return ["distance", "createdAt", "dateFrom", "dateTo"].includes(sortBy);
+};

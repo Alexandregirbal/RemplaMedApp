@@ -27,7 +27,9 @@ const PrivatePost = ({ post }: PostProps) => {
         <div className="my-4">
             <div className="text-lg font-bold uppercase">{post.title}</div>
             <p>{post.authorId}</p>
-            <pre>{isPrivate ? privatePostContent : post.message}</pre>
+            <pre className="whitespace-pre-wrap">
+                {isPrivate ? privatePostContent : post.message}
+            </pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
                     This post is private, register to see the full content.

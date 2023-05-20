@@ -8,7 +8,7 @@ export default function Header() {
     const { data: session } = useSession();
 
     return (
-        <nav className="flex items-center justify-between p-4 px-6">
+        <nav className="flex h-24 items-center justify-between p-4 px-6">
             <Link href={"/"}>
                 <Image
                     src="/logo-transparent-png-no-text.png"

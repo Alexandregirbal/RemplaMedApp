@@ -15,7 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <main className="h-full p-4">{children}</main>
+            <main className="h-[calc(100%-6rem)] p-4">{children}</main>
             <Footer />
         </>
     );

@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import PostComponent from "../modules/post/components/PrivatePost";
 import { findManyPosts } from "../modules/post/dao/find";
+import Filters from "../modules/filters";
 
 type HomeProps = {
     posts: Post[];
@@ -11,6 +12,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ posts }) => {
     return (
         <main className="p-4">
+            <Filters />
             {posts.map((post) => (
                 <Link
                     className="opacity-60 hover:opacity-100"

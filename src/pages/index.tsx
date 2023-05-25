@@ -1,15 +1,15 @@
-import type { Post } from "@prisma/client";
 import Filters from "modules/filters";
 import MapComponent from "modules/map";
 import PostComponent from "modules/post/components/PrivatePost";
 import { findManyPosts } from "modules/post/dao/find";
+import type { PostWithAuthorName } from "modules/post/types/post";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { wrapper } from "store";
 import { setPosts } from "store/slices/posts/slice";
 
 type HomeProps = {
-    posts: Post[];
+    posts: PostWithAuthorName[];
 };
 
 const Home: NextPage<HomeProps> = ({ posts }) => {
@@ -42,7 +42,10 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 export default Home;
 
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-    const posts = await findManyPosts({ orderBy: { createdAt: "desc" } });
+    const posts = await findManyPosts({
+        orderBy: { createdAt: "desc" },
+    });
+
     store.dispatch(setPosts(posts));
     return {
         props: {

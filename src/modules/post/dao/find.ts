@@ -1,10 +1,13 @@
 import type { Post, Prisma } from "@prisma/client";
 import { prisma } from "server/db";
-import { MetaData } from "../types/metadata";
+import { type MetaData } from "../types/metadata";
+import { type PostWithAuthorName } from "../types/post";
+
 const JOUR = 1000 * 60 * 60 * 24;
+
 export const findOnePost = async (
     id: string | undefined
-): Promise<Post | null> => {
+): Promise<PostWithAuthorName | null> => {
     if (!id) {
         return null;
     }
@@ -12,6 +15,13 @@ export const findOnePost = async (
     try {
         const post = await prisma.post.findUniqueOrThrow({
             where: { id },
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
         });
 
         return post;
@@ -22,9 +32,23 @@ export const findOnePost = async (
 
 export const findManyPosts = async (
     params: Prisma.PostFindManyArgs
-): Promise<Post[]> => {
-    const posts = await prisma.post.findMany(params);
+): Promise<Array<PostWithAuthorName>> => {
+    const posts = await prisma.post.findMany({
+        ...params,
+        include: {
+            author: {
+                select: {
+                    name: true,
+                },
+            },
+        },
+    });
     return posts;
+};
+
+export const findPostsIds = async (): Promise<Array<Pick<Post, "id">>> => {
+    const postsIds = await prisma.post.findMany({ select: { id: true } });
+    return postsIds;
 };
 
 export const getMetaData = async (): Promise<MetaData> => {

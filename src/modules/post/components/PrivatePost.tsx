@@ -1,11 +1,11 @@
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
-import type { Post } from "@prisma/client";
-import dayjs from "dayjs";
+import { type PostWithAuthorName } from "../types/post";
 
 type PostProps = {
-    post: Post;
+    post: PostWithAuthorName;
 };
 
 const PrivatePost = ({ post }: PostProps) => {
@@ -26,7 +26,7 @@ const PrivatePost = ({ post }: PostProps) => {
     return (
         <div className="my-4">
             <div className="text-lg font-bold uppercase">{post.title}</div>
-            <p>{post.authorId}</p>
+            <p>{post.author.name}</p>
             <pre className="whitespace-pre-wrap">
                 {isPrivate ? privatePostContent : post.message}
             </pre>

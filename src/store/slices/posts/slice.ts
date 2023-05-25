@@ -19,7 +19,6 @@ export const postsSlice = createSlice({
     reducers: {
         setPosts(state, action: { payload: PostsState["data"] }) {
             state.data = action.payload;
-            console.log(`LOG by Girbal --- | setPosts | state---`, state);
         },
         addPosts(state, action: { payload: PostsState["data"] }) {
             state.data = [...state.data, ...action.payload];
@@ -35,7 +34,7 @@ export const postsSlice = createSlice({
             const serverState = { ...action.payload };
             const nextState = {
                 ...clientState,
-                posts: serverState.posts,
+                data: serverState.posts.data,
             };
             if (clientState.metadata) nextState.metadata = clientState.metadata;
             return nextState;

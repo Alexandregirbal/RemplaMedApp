@@ -1,13 +1,13 @@
-import type { Post } from "@prisma/client";
 import PrivatePost from "modules/post/components/PrivatePost";
-import { findManyPosts, findOnePost } from "modules/post/dao/find";
+import { findOnePost, findPostsIds } from "modules/post/dao/find";
+import type { PostWithAuthorName } from "modules/post/types/post";
 import Head from "next/head";
 
 type PostParams = {
     id: string;
 };
 
-export default function PostPage({ post }: { post: Post }) {
+export default function PostPage({ post }: { post: PostWithAuthorName }) {
     const headTitle = `RemplaMed | ${post.title}`;
     return (
         <>
@@ -23,9 +23,9 @@ export default function PostPage({ post }: { post: Post }) {
 }
 
 export async function getStaticPaths() {
-    const posts = await findManyPosts({ select: { id: true } });
+    const postsIds = await findPostsIds();
     return {
-        paths: posts.map((post) => ({ params: post })),
+        paths: postsIds.map((postId) => ({ params: postId })),
         fallback: false,
     };
 }

@@ -6,10 +6,10 @@ html,
 body,
 #__next {
     @apply text-primary;
-    font-family: "IBM Plex Serif";
+    font-family: "IBM Plex Serif, arial";
     height: 100%;
 }
 
 pre {
-    font-family: "arial";
+    font-family: "IBM Plex Serif, arial";
 }

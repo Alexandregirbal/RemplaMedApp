@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { type AppState } from "store";
@@ -17,6 +19,7 @@ export const postsSlice = createSlice({
     reducers: {
         setPosts(state, action: { payload: PostsState["data"] }) {
             state.data = action.payload;
+            console.log(`LOG by Girbal --- | setPosts | state---`, state);
         },
         addPosts(state, action: { payload: PostsState["data"] }) {
             state.data = [...state.data, ...action.payload];
@@ -28,12 +31,15 @@ export const postsSlice = createSlice({
 
     extraReducers: {
         [HYDRATE]: (state, action) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return {
+            const nextState = {
                 ...state,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                ...action.payload.posts,
+                posts: action.payload.posts,
             };
+            // WATCH OUT! This will overwrite client state!
+            // TODO: use state reconciliation to merge states https://github.com/kirill-konshin/next-redux-wrapper#state-reconciliation-during-hydration
+            if (state.metadata) nextState.metadata = state.metadata;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return nextState;
         },
     },
 });

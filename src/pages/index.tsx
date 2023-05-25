@@ -5,6 +5,8 @@ import PostComponent from "modules/post/components/PrivatePost";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { wrapper } from "store";
+import { setPosts } from "store/slices/posts/slice";
 
 type HomeProps = {
     posts: Post[];
@@ -39,11 +41,12 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 
 export default Home;
 
-export async function getStaticProps() {
+export const getStaticProps = wrapper.getStaticProps((store) => async () => {
     const posts = await findManyPosts({ orderBy: { createdAt: "desc" } });
+    store.dispatch(setPosts(posts));
     return {
         props: {
             posts: posts,
         },
     };
-}
+});

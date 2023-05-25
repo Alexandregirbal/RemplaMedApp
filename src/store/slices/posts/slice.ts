@@ -31,14 +31,13 @@ export const postsSlice = createSlice({
 
     extraReducers: {
         [HYDRATE]: (state, action) => {
+            const clientState = { ...state };
+            const serverState = { ...action.payload };
             const nextState = {
-                ...state,
-                posts: action.payload.posts,
+                ...clientState,
+                posts: serverState.posts,
             };
-            // WATCH OUT! This will overwrite client state!
-            // TODO: use state reconciliation to merge states https://github.com/kirill-konshin/next-redux-wrapper#state-reconciliation-during-hydration
-            if (state.metadata) nextState.metadata = state.metadata;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            if (clientState.metadata) nextState.metadata = clientState.metadata;
             return nextState;
         },
     },

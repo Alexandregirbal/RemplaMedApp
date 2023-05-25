@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
 import { type AppState } from "store";
 import type { FiltersState } from "./types";
 
@@ -33,17 +32,7 @@ export const filtersSlice = createSlice({
             state.sortBy = action.payload;
         },
     },
-
-    extraReducers: {
-        [HYDRATE]: (state, action) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return {
-                ...state,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                ...action.payload.filters,
-            };
-        },
-    },
+    // add extraReducers for server init only
 });
 
 export const { setDates, setDisplayMode, setDistance, setSortBy } =

@@ -26,6 +26,7 @@ const MapComponent = () => {
                 zoom: 10,
             });
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

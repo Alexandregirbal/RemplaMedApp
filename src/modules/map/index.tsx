@@ -1,11 +1,16 @@
-import Map, { Marker, type ViewState } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useState } from "react";
+import Map, {
+    GeolocateControl,
+    NavigationControl,
+    type ViewStateChangeEvent,
+    type ViewState,
+} from "react-map-gl";
 
 const MapComponent = () => {
     const [viewport, setViewport] = useState<ViewState>({
-        latitude: 43, // Somewhere in France
-        longitude: 3, // Somewhere in France
+        latitude: 46.77177190772532, // Bruère-Allichamps
+        longitude: 2.4338675388986273, // Bruère-Allichamps
         zoom: 5,
         bearing: 0,
         pitch: 0,
@@ -29,17 +34,27 @@ const MapComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleMapMove = (e: ViewStateChangeEvent): void => {
+        setViewport(e.viewState);
+    };
+
     return (
         <Map
             mapboxAccessToken="pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw"
             initialViewState={viewport}
             mapStyle="mapbox://styles/mapbox/streets-v11"
-            viewState={{ ...viewport, width: 100, height: 100 }}
+            latitude={viewport.latitude}
+            longitude={viewport.longitude}
+            zoom={viewport.zoom}
+            onMove={handleMapMove}
+            // viewState={{ ...viewport, width: 100, height: 100 }}
         >
-            <Marker
-                longitude={viewport.longitude}
-                latitude={viewport.latitude}
+            <GeolocateControl
+                position="top-left"
+                trackUserLocation
+                showUserLocation
             />
+            <NavigationControl position="top-left" />
         </Map>
     );
 };

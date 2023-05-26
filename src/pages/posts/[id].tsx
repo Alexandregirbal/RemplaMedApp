@@ -1,4 +1,4 @@
-import PrivatePost from "modules/post/components/PrivatePost";
+import PostComponent from "modules/post/components/PostComponent";
 import { findOnePost, findPostsIds } from "modules/post/dao/find";
 import type { PostWithAuthorName } from "modules/post/types/post";
 import Head from "next/head";
@@ -17,7 +17,7 @@ export default function PostPage({ post }: { post: PostWithAuthorName }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="text-lg font-bold uppercase">{post.authorId}</div>
-            <PrivatePost post={post} />
+            <PostComponent post={post} />
         </>
     );
 }

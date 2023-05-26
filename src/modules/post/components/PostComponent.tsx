@@ -8,7 +8,7 @@ type PostProps = {
     post: PostWithAuthorName;
 };
 
-const PrivatePost = ({ post }: PostProps) => {
+const PostComponent = ({ post }: PostProps) => {
     const { status } = useSession();
 
     const [isPrivate, setIsPrivate] = useState(false);
@@ -45,4 +45,4 @@ const PrivatePost = ({ post }: PostProps) => {
     );
 };
 
-export default PrivatePost;
+export default PostComponent;

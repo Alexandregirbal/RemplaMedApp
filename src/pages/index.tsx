@@ -1,6 +1,6 @@
 import Filters from "modules/filters";
 import MapComponent from "modules/map";
-import PostComponent from "modules/post/components/PrivatePost";
+import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
 import type { PostWithAuthorName } from "modules/post/types/post";
 import type { NextPage } from "next";

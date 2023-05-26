@@ -27,7 +27,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                             key={post.id}
                             href={`/posts/${post.id}`}
                         >
-                            <PostComponent post={post} />
+                            <PostComponent post={post} isMini />
                         </Link>
                     ))}
                 </div>

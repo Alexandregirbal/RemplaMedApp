@@ -34,13 +34,11 @@ const PostComponent = ({
         } else {
             setPostMessage(post.message);
         }
-    }, [post.message, isPrivate]);
 
-    useEffect(() => {
         if (isMini && post.message.length > maxMessageLength) {
             setPostMessage(`${post.message.slice(0, maxMessageLength)} ...`);
         }
-    }, [post.message, isMini, maxMessageLength]);
+    }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     return (
         <div className="my-4">

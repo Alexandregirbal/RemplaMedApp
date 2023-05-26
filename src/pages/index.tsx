@@ -19,11 +19,11 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
             <div id="posts" className="flex-column flex h-[calc(100%-5rem)] ">
                 <div
                     id="posts-list"
-                    className=" h-full w-1/3 overflow-y-scroll scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg"
+                    className=" h-full w-1/3 overflow-y-scroll p-2 pr-4 scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg"
                 >
                     {posts.map((post) => (
                         <Link
-                            className="opacity-60 hover:opacity-100"
+                            className="hover:opacity-80"
                             key={post.id}
                             href={`/posts/${post.id}`}
                         >

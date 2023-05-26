@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
 import { type PostWithAuthorName } from "../types/post";
+require("dayjs/locale/fr");
+dayjs.locale("fr");
 
 type PostProps = {
     post: PostWithAuthorName;
@@ -19,6 +21,9 @@ const PostComponent = ({
 
     const [isPrivate, setIsPrivate] = useState(false);
     const [postMessage, setPostMessage] = useState(post.message);
+    const timeDiffMonths = post.availablityTo
+        ? dayjs(post.availablityTo).diff(post.availablityFrom, "month")
+        : 0;
 
     useEffect(() => {
         if (status != "authenticated") {
@@ -41,21 +46,37 @@ const PostComponent = ({
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     return (
-        <div className="my-4">
-            <div className="text-lg font-bold uppercase">{post.title}</div>
-            <p>{post.author.name}</p>
-            <pre className="whitespace-pre-wrap">{postMessage}</pre>
+        <div className="my-4 rounded-lg p-2 shadow-xl">
+            <div className="truncate border-b border-b-primary p-1 text-center text-xl font-bold">
+                {post.title}
+            </div>
+            {post.availablityFrom && (
+                <span className="">
+                    A partir du{" "}
+                    {dayjs(post.availablityFrom).format("DD MMM YYYY")}
+                </span>
+            )}
+            {post.availablityTo && (
+                <span className="">
+                    {", "}
+                    {"jusqu'au"}{" "}
+                    {dayjs(post.availablityTo).format("DD MMM YYYY")}
+                    {timeDiffMonths ? ` (${timeDiffMonths} mois)` : ""}
+                </span>
+            )}
+            <pre className="whitespace-pre-wrap text-paragraph">
+                {postMessage}
+            </pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
                     This post is private, register to see the full content.
                 </div>
             )}
-            {post.availablityFrom && (
-                <p>
-                    A partir du{" "}
-                    {dayjs(post.availablityFrom).format("DD MMM YYYY")}
-                </p>
-            )}
+            <div className="flex flex-row-reverse gap-1 text-sm">
+                le {dayjs(post.createdAt).format("D MMMM YYYY")}
+                <p className="italic">{post.author.name ?? "un inconnu"}</p>
+                Posté par
+            </div>
         </div>
     );
 };

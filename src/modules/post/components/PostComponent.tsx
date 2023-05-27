@@ -46,9 +46,10 @@ const PostComponent = ({
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     return (
-        <div className="my-4 rounded-lg p-2 shadow-xl">
-            <div className="truncate border-b border-b-primary p-1 text-center text-xl font-bold">
-                {post.title}
+        <div className="my-4 rounded-lg border border-paragraph bg-background p-2 shadow-xl">
+            <div className=" border-b border-b-primary p-1 text-center ">
+                <div className="truncate text-xl font-bold">{post.title}</div>
+                <div className="">{post.postalCode}</div>
             </div>
             {post.availablityFrom && (
                 <span className="">

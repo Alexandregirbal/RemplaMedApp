@@ -5,7 +5,9 @@ import { findManyPosts } from "modules/post/dao/find";
 import type { PostWithAuthorName } from "modules/post/types/post";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { wrapper } from "store";
+import { selectFiltersState } from "store/slices/filters/slice";
 import { setPosts } from "store/slices/posts/slice";
 
 type HomeProps = {
@@ -13,13 +15,21 @@ type HomeProps = {
 };
 
 const Home: NextPage<HomeProps> = ({ posts }) => {
+    const { displayMode } = useSelector(selectFiltersState);
+    const isMapDisplayed = displayMode === "map";
+
     return (
         <>
             <Filters />
-            <div id="posts" className="flex-column flex h-[calc(100%-5rem)] ">
+            <div
+                id="posts"
+                className="flex-column flex h-[calc(100%-5rem)] w-full "
+            >
                 <div
                     id="posts-list"
-                    className=" h-full w-1/3 overflow-y-scroll p-2 pr-4 scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg"
+                    className={`${
+                        isMapDisplayed ? "w-1/2" : "w-full"
+                    } h-full overflow-y-scroll p-2 pr-4 scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg`}
                 >
                     {posts.map((post) => (
                         <Link
@@ -31,9 +41,11 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                         </Link>
                     ))}
                 </div>
-                <div id="posts-map" className="w-8/12">
-                    <MapComponent />
-                </div>
+                {isMapDisplayed && (
+                    <div id="posts-map" className="w-full">
+                        <MapComponent />
+                    </div>
+                )}
             </div>
         </>
     );

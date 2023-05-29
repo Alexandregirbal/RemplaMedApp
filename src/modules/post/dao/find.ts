@@ -2,6 +2,7 @@ import type { Post, Prisma } from "@prisma/client";
 import { prisma } from "server/db";
 import { type MetaData } from "../types/metadata";
 import { type PostWithAuthorName } from "../types/post";
+import { getLocationFromPostalCode } from "modules/geocode";
 
 const JOUR = 1000 * 60 * 60 * 24;
 

@@ -16,7 +16,6 @@ export default function PostPage({ post }: { post: PostWithAuthorName }) {
                 <meta name="description" content={post.authorId} />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="text-lg font-bold uppercase">{post.authorId}</div>
             <PostComponent post={post} />
         </>
     );

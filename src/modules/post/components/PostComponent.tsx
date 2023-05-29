@@ -53,8 +53,8 @@ const PostComponent = ({
     return (
         <div
             className={`my-4 rounded-lg border ${
-                isSelected ? "border-4" : ""
-            } border-primary bg-background p-2 shadow-xl`}
+                isSelected ? " outline outline-2" : ""
+            } border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div className="truncate text-xl font-bold">{post.title}</div>

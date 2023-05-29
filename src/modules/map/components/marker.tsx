@@ -13,10 +13,10 @@ const CustomMarkerComponent = ({ post }: MarkerComponentProps) => {
     const dispatch = useDispatch();
     const { push } = useRouter();
 
-    const handleMarkerClick = async (event: MapboxEvent<MouseEvent>) => {
+    const handleMarkerClick = (event: MapboxEvent<MouseEvent>) => {
         event.originalEvent.stopPropagation(); // avoid `closeOnClick: true` on the Popup
         dispatch(setSelectedPost(post));
-        await push(`/posts/${post.id}`);
+        void push(`/posts/${post.id}`);
     };
 
     const handleMouseEnter = () => {

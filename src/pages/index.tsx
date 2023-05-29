@@ -43,7 +43,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                 </div>
                 {isMapDisplayed && (
                     <div id="posts-map" className="w-full">
-                        <MapComponent />
+                        <MapComponent posts={posts} />
                     </div>
                 )}
             </div>

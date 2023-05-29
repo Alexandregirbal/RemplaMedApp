@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
 import { type PostWithAuthorName } from "../types/post";
+import { useSelector } from "react-redux";
+import { selectPostsState } from "store/slices/posts/slice";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 
@@ -25,6 +27,9 @@ const PostComponent = ({
         ? dayjs(post.availablityTo).diff(post.availablityFrom, "month")
         : 0;
 
+    const { selectedPost } = useSelector(selectPostsState);
+    const isSelected = selectedPost && selectedPost.id === post.id;
+
     useEffect(() => {
         if (status != "authenticated") {
             setIsPrivate(true);
@@ -46,7 +51,11 @@ const PostComponent = ({
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     return (
-        <div className="my-4 rounded-lg border border-paragraph bg-background p-2 shadow-xl">
+        <div
+            className={`my-4 rounded-lg border ${
+                isSelected ? "border-4" : ""
+            } border-primary bg-background p-2 shadow-xl`}
+        >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div className="truncate text-xl font-bold">{post.title}</div>
                 <div className="">{post.postalCode}</div>

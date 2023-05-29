@@ -1,13 +1,23 @@
 import "mapbox-gl/dist/mapbox-gl.css";
+import type { PostWithAuthorName } from "modules/post/types/post";
 import { useEffect, useState } from "react";
 import Map, {
     GeolocateControl,
     NavigationControl,
-    type ViewStateChangeEvent,
     type ViewState,
+    type ViewStateChangeEvent,
 } from "react-map-gl";
+import CustomMarkerComponent from "./components/marker";
+import { useDispatch } from "react-redux";
+import { setSelectedPost } from "store/slices/posts/slice";
 
-const MapComponent = () => {
+type MapComponentProps = {
+    posts: PostWithAuthorName[];
+};
+
+const MapComponent = ({ posts }: MapComponentProps) => {
+    const dispatch = useDispatch();
+
     const [viewport, setViewport] = useState<ViewState>({
         latitude: 46.77177190772532, // Bruère-Allichamps
         longitude: 2.4338675388986273, // Bruère-Allichamps
@@ -38,15 +48,20 @@ const MapComponent = () => {
         setViewport(e.viewState);
     };
 
+    const handleMapClick = () => {
+        dispatch(setSelectedPost(null));
+    };
+
     return (
         <Map
             mapboxAccessToken="pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw"
             initialViewState={viewport}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
+            mapStyle="mapbox://styles/mapbox/streets-v12"
             latitude={viewport.latitude}
             longitude={viewport.longitude}
             zoom={viewport.zoom}
             onMove={handleMapMove}
+            onClick={handleMapClick}
             // viewState={{ ...viewport, width: 100, height: 100 }}
         >
             <GeolocateControl
@@ -55,6 +70,9 @@ const MapComponent = () => {
                 showUserLocation
             />
             <NavigationControl position="top-left" />
+            {posts.map((post) => (
+                <CustomMarkerComponent key={`marker-${post.id}`} post={post} />
+            ))}
         </Map>
     );
 };

@@ -4,6 +4,8 @@ import type { Prisma } from "@prisma/client";
 
 const Schema: z.ZodType<Prisma.PostAvgAggregateInputType> = z
     .object({
+        latitude: z.literal(true).optional(),
+        longitude: z.literal(true).optional(),
         views: z.literal(true).optional(),
     })
     .strict();

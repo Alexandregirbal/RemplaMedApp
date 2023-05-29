@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringWithAggregatesFilterObjectSchema } from "./StringWithAggregatesFilter.schema";
 import { BoolWithAggregatesFilterObjectSchema } from "./BoolWithAggregatesFilter.schema";
+import { StringNullableWithAggregatesFilterObjectSchema } from "./StringNullableWithAggregatesFilter.schema";
+import { FloatNullableWithAggregatesFilterObjectSchema } from "./FloatNullableWithAggregatesFilter.schema";
 import { DateTimeWithAggregatesFilterObjectSchema } from "./DateTimeWithAggregatesFilter.schema";
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from "./DateTimeNullableWithAggregatesFilter.schema";
 import { IntWithAggregatesFilterObjectSchema } from "./IntWithAggregatesFilter.schema";
@@ -59,6 +61,27 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
                 z.string(),
             ])
             .optional(),
+        city: z
+            .union([
+                z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
+                z.string(),
+            ])
+            .optional()
+            .nullable(),
+        latitude: z
+            .union([
+                z.lazy(() => FloatNullableWithAggregatesFilterObjectSchema),
+                z.number(),
+            ])
+            .optional()
+            .nullable(),
+        longitude: z
+            .union([
+                z.lazy(() => FloatNullableWithAggregatesFilterObjectSchema),
+                z.number(),
+            ])
+            .optional()
+            .nullable(),
         message: z
             .union([
                 z.lazy(() => StringWithAggregatesFilterObjectSchema),

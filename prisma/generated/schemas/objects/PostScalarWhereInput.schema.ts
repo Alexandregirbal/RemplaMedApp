@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringFilterObjectSchema } from "./StringFilter.schema";
 import { BoolFilterObjectSchema } from "./BoolFilter.schema";
+import { StringNullableFilterObjectSchema } from "./StringNullableFilter.schema";
+import { FloatNullableFilterObjectSchema } from "./FloatNullableFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
 import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.schema";
 import { IntFilterObjectSchema } from "./IntFilter.schema";
@@ -40,6 +42,18 @@ const Schema: z.ZodType<Prisma.PostScalarWhereInput> = z
         postalCode: z
             .union([z.lazy(() => StringFilterObjectSchema), z.string()])
             .optional(),
+        city: z
+            .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
+            .optional()
+            .nullable(),
+        latitude: z
+            .union([z.lazy(() => FloatNullableFilterObjectSchema), z.number()])
+            .optional()
+            .nullable(),
+        longitude: z
+            .union([z.lazy(() => FloatNullableFilterObjectSchema), z.number()])
+            .optional()
+            .nullable(),
         message: z
             .union([z.lazy(() => StringFilterObjectSchema), z.string()])
             .optional(),

@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringFieldUpdateOperationsInputObjectSchema } from "./StringFieldUpdateOperationsInput.schema";
 import { BoolFieldUpdateOperationsInputObjectSchema } from "./BoolFieldUpdateOperationsInput.schema";
+import { NullableStringFieldUpdateOperationsInputObjectSchema } from "./NullableStringFieldUpdateOperationsInput.schema";
+import { NullableFloatFieldUpdateOperationsInputObjectSchema } from "./NullableFloatFieldUpdateOperationsInput.schema";
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./NullableDateTimeFieldUpdateOperationsInput.schema";
 import { IntFieldUpdateOperationsInputObjectSchema } from "./IntFieldUpdateOperationsInput.schema";
@@ -33,6 +35,33 @@ const Schema: z.ZodType<Prisma.PostUncheckedUpdateManyWithoutPostInput> = z
                 z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
             ])
             .optional(),
+        city: z
+            .union([
+                z.string(),
+                z.lazy(
+                    () => NullableStringFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
+        latitude: z
+            .union([
+                z.number(),
+                z.lazy(
+                    () => NullableFloatFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
+        longitude: z
+            .union([
+                z.number(),
+                z.lazy(
+                    () => NullableFloatFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
         message: z
             .union([
                 z.string(),

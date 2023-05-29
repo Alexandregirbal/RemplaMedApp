@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
-import { setPosts } from "store/slices/posts/slice";
+import { selectPostsState, setPosts } from "store/slices/posts/slice";
 
 type HomeProps = {
     posts: PostWithAuthorName[];
@@ -16,6 +16,8 @@ type HomeProps = {
 
 const Home: NextPage<HomeProps> = ({ posts }) => {
     const { displayMode } = useSelector(selectFiltersState);
+    const { selectedPost } = useSelector(selectPostsState);
+
     const isMapDisplayed = displayMode === "map";
 
     return (
@@ -32,11 +34,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
                     } h-full overflow-y-scroll p-2 pr-4 scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg`}
                 >
                     {posts.map((post) => (
-                        <Link
-                            className="hover:opacity-80"
-                            key={post.id}
-                            href={`/posts/${post.id}`}
-                        >
+                        <Link key={post.id} href={`/posts/${post.id}`}>
                             <PostComponent post={post} isMini />
                         </Link>
                     ))}

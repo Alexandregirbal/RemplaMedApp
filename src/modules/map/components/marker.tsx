@@ -1,8 +1,8 @@
 import { type PostWithAuthorName } from "modules/post/types/post";
 import { type MapboxEvent, Marker } from "react-map-gl";
 import Pin from "./pin";
-import { useDispatch } from "react-redux";
-import { setSelectedPost } from "store/slices/posts/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPostsState, setSelectedPost } from "store/slices/posts/slice";
 import { useRouter } from "next/router";
 
 type MarkerComponentProps = {
@@ -12,6 +12,8 @@ type MarkerComponentProps = {
 const CustomMarkerComponent = ({ post }: MarkerComponentProps) => {
     const dispatch = useDispatch();
     const { push } = useRouter();
+    const { selectedPost } = useSelector(selectPostsState);
+    const isSelected = selectedPost && selectedPost.id === post.id;
 
     const handleMarkerClick = (event: MapboxEvent<MouseEvent>) => {
         event.originalEvent.stopPropagation(); // avoid `closeOnClick: true` on the Popup
@@ -38,7 +40,7 @@ const CustomMarkerComponent = ({ post }: MarkerComponentProps) => {
                 anchor="bottom"
                 onClick={handleMarkerClick}
             >
-                <Pin />
+                <Pin isSelected={!!isSelected} />
             </Marker>
         </div>
     );

@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPostsState, setSelectedPost } from "store/slices/posts/slice";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
 import { type PostWithAuthorName } from "../types/post";
-import { useSelector } from "react-redux";
-import { selectPostsState } from "store/slices/posts/slice";
+
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 
@@ -20,6 +21,7 @@ const PostComponent = ({
     maxMessageLength = 150,
 }: PostProps) => {
     const { status } = useSession();
+    const dispatch = useDispatch();
 
     const [isPrivate, setIsPrivate] = useState(false);
     const [postMessage, setPostMessage] = useState(post.message);
@@ -50,8 +52,13 @@ const PostComponent = ({
         }
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
+    const handleMouseEnter = () => {
+        dispatch(setSelectedPost(post));
+    };
+
     return (
         <div
+            onMouseEnter={handleMouseEnter}
             className={`my-4 rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
             } border-primary bg-background p-2 shadow-xl transition`}

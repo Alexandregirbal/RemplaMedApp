@@ -5,7 +5,7 @@ export type FiltersState = {
         from: Date | null;
         to: Date | null;
     };
-    sortBy: "distance" | "createdAt" | "dateFrom" | "dateTo";
+    sortBy: "distance" | "createdAt"; //| "dateFrom" | "dateTo";
 };
 
 export const isDisplayMode = (

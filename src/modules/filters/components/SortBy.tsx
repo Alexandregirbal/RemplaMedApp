@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setSortBy } from "store/slices/filters/slice";
 import { isSortBy } from "store/slices/filters/types";
+import { sortPostsByDistance } from "store/slices/posts/slice";
 
 const options = [
     { display: "Proximité", value: "distance" },
@@ -16,8 +17,17 @@ const DatesFilter = () => {
     ) => {
         if (isSortBy(event.target.value)) {
             dispatch(setSortBy(event.target.value));
+            if (event.target.value === "distance") {
+                dispatch(
+                    sortPostsByDistance({
+                        currentPosition: {
+                            latitude: 0, // TODO get current position
+                            longitude: 0,
+                        },
+                    })
+                );
+            }
         }
-        // TODO: throw toast error here
     };
     return (
         <div className="flex items-center gap-1 hover:cursor-pointer">

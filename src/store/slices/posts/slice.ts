@@ -4,6 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { type AppState } from "store";
 import type { PostsState } from "./types";
+import type { FiltersState } from "../filters/types";
+import {
+    sortByCreatedAt,
+    sortByDistance,
+} from "modules/filters/services/sortBy";
+import { Coordinates } from "modules/filters/types/distance";
+import { PostWithAuthorName } from "modules/post/types/post";
 
 const initialState: PostsState = {
     data: [],
@@ -23,6 +30,45 @@ export const postsSlice = createSlice({
         },
         addPosts(state, action: { payload: PostsState["data"] }) {
             state.data = [...state.data, ...action.payload];
+        },
+        sortPostsByDistance(
+            state,
+            action: {
+                payload: {
+                    currentPosition: Coordinates;
+                };
+            }
+        ) {
+            const sortByDistanceFromCurrentLocation = (
+                a: PostWithAuthorName,
+                b: PostWithAuthorName
+            ) => {
+                if (
+                    !action.payload.currentPosition.latitude ||
+                    !action.payload.currentPosition.longitude ||
+                    !a.latitude ||
+                    !b.latitude ||
+                    !a.longitude ||
+                    !b.longitude
+                ) {
+                    return 0;
+                }
+                return sortByDistance({
+                    current: action.payload.currentPosition,
+                    pointA: {
+                        latitude: a.latitude,
+                        longitude: a.longitude,
+                    },
+                    pointB: {
+                        latitude: b.latitude,
+                        longitude: b.longitude,
+                    },
+                });
+            };
+            const sortedPosts = [...state.data].sort(
+                sortByDistanceFromCurrentLocation
+            );
+            state.data = sortedPosts;
         },
         setPostsMetadata(state, action: { payload: PostsState["metadata"] }) {
             state.metadata = action.payload;
@@ -51,8 +97,13 @@ export const postsSlice = createSlice({
     },
 });
 
-export const { addPosts, setPosts, setPostsMetadata, setSelectedPost } =
-    postsSlice.actions;
+export const {
+    addPosts,
+    setPosts,
+    setPostsMetadata,
+    setSelectedPost,
+    sortPostsByDistance,
+} = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;
 

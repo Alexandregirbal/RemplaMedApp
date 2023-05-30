@@ -9,7 +9,7 @@ const initialState: FiltersState = {
         from: null,
         to: null,
     },
-    sortBy: "distance",
+    sortBy: "createdAt",
 };
 
 export const filtersSlice = createSlice({

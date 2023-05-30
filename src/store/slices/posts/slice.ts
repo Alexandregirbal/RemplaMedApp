@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createSlice } from "@reduxjs/toolkit";
+import { sortByDistance } from "modules/filters/services/sortBy";
+import type { Coordinates } from "modules/filters/types/distance";
+import type { PostWithAuthorName } from "modules/post/types/post";
 import { HYDRATE } from "next-redux-wrapper";
 import { type AppState } from "store";
 import type { PostsState } from "./types";
-import type { FiltersState } from "../filters/types";
-import {
-    sortByCreatedAt,
-    sortByDistance,
-} from "modules/filters/services/sortBy";
-import { Coordinates } from "modules/filters/types/distance";
-import { PostWithAuthorName } from "modules/post/types/post";
 
 const initialState: PostsState = {
     data: [],

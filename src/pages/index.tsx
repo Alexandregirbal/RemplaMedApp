@@ -2,7 +2,6 @@ import Filters from "modules/filters";
 import MapComponent from "modules/map";
 import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
-import type { PostWithAuthorName } from "modules/post/types/post";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -10,13 +9,9 @@ import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
 import { selectPostsState, setPosts } from "store/slices/posts/slice";
 
-type HomeProps = {
-    posts: PostWithAuthorName[];
-};
-
-const Home: NextPage<HomeProps> = ({ posts }) => {
+const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
-    const { selectedPost } = useSelector(selectPostsState);
+    const { data: posts } = useSelector(selectPostsState);
 
     const isMapDisplayed = displayMode === "map";
 
@@ -58,8 +53,6 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
 
     store.dispatch(setPosts(posts));
     return {
-        props: {
-            posts: posts,
-        },
+        props: {},
     };
 });

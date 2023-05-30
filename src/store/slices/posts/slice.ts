@@ -44,12 +44,11 @@ export const postsSlice = createSlice({
                 b: PostWithAuthorName
             ) => {
                 if (
-                    !action.payload.currentPosition.latitude ||
-                    !action.payload.currentPosition.longitude ||
-                    !a.latitude ||
-                    !b.latitude ||
-                    !a.longitude ||
-                    !b.longitude
+                    !action.payload.currentPosition ||
+                    (!a.latitude && a.latitude !== 0) ||
+                    (!b.latitude && b.latitude !== 0) ||
+                    (!a.longitude && a.longitude !== 0) ||
+                    (!b.longitude && b.longitude !== 0)
                 ) {
                     return 0;
                 }

@@ -18,14 +18,16 @@ const DatesFilter = () => {
         if (isSortBy(event.target.value)) {
             dispatch(setSortBy(event.target.value));
             if (event.target.value === "distance") {
-                dispatch(
-                    sortPostsByDistance({
-                        currentPosition: {
-                            latitude: 0, // TODO get current position
-                            longitude: 0,
-                        },
-                    })
-                );
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    dispatch(
+                        sortPostsByDistance({
+                            currentPosition: {
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude,
+                            },
+                        })
+                    );
+                });
             }
         }
     };

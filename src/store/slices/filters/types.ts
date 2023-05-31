@@ -5,7 +5,7 @@ export type FiltersState = {
         from: Date | null;
         to: Date | null;
     };
-    sortBy: "distance" | "createdAt"; //| "dateFrom" | "dateTo";
+    sortBy: "distance" | "date"; //| "dateFrom" | "dateTo";
 };
 
 export const isDisplayMode = (
@@ -15,5 +15,5 @@ export const isDisplayMode = (
 };
 
 export const isSortBy = (sortBy: string): sortBy is FiltersState["sortBy"] => {
-    return ["distance", "createdAt", "dateFrom", "dateTo"].includes(sortBy);
+    return ["distance", "date", "dateFrom", "dateTo"].includes(sortBy);
 };

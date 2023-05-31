@@ -1,16 +1,17 @@
 import type { Coordinates } from "modules/filters/types/distance";
+import { GeoPosition } from "geo-position.ts";
 
 type DistanceParams = {
     current: Coordinates;
     away: Coordinates;
 };
 
-export const distance = (params: DistanceParams) => {
+export const distanceKm = (params: DistanceParams) => {
     const { current, away } = params;
-    const distance = Math.sqrt(
-        Math.pow(current.latitude - away.latitude, 2) +
-            Math.pow(current.longitude - away.longitude, 2)
+    const currentPostition = new GeoPosition(
+        current.latitude,
+        current.longitude
     );
-
-    return distance;
+    const awayPostition = new GeoPosition(away.latitude, away.longitude);
+    return +(currentPostition.Distance(awayPostition) / 1000).toFixed(0);
 };

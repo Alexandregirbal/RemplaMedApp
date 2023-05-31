@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createSlice } from "@reduxjs/toolkit";
-import { sortByDistance } from "modules/filters/services/sortBy";
+import { sortByDate, sortByDistance } from "modules/filters/services/sortBy";
 import type { Coordinates } from "modules/filters/types/distance";
 import type { PostWithAuthorName } from "modules/post/types/post";
 import { HYDRATE } from "next-redux-wrapper";
@@ -65,6 +65,10 @@ export const postsSlice = createSlice({
             );
             state.data = sortedPosts;
         },
+        sortPostsByDate(state) {
+            const sortedPosts = [...state.data].sort(sortByDate);
+            state.data = sortedPosts;
+        },
         setPostsMetadata(state, action: { payload: PostsState["metadata"] }) {
             state.metadata = action.payload;
         },
@@ -98,6 +102,7 @@ export const {
     setPostsMetadata,
     setSelectedPost,
     sortPostsByDistance,
+    sortPostsByDate,
 } = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;

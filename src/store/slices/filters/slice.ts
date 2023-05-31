@@ -9,7 +9,7 @@ const initialState: FiltersState = {
         from: null,
         to: null,
     },
-    sortBy: "createdAt",
+    sortBy: "date",
 };
 
 export const filtersSlice = createSlice({

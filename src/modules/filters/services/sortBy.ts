@@ -1,5 +1,5 @@
 import type { PostWithAuthorName } from "modules/post/types/post";
-import { distance } from "modules/user/services/distance";
+import { distanceKm } from "modules/user/services/distance";
 import type { Coordinates } from "../types/distance";
 
 export const sortByDistance = (params: {
@@ -8,11 +8,12 @@ export const sortByDistance = (params: {
     pointB: Coordinates;
 }) => {
     const { current, pointA, pointB } = params;
-    const distanceFromA = distance({
+    const distanceFromA = distanceKm({
         away: pointA,
         current,
     });
-    const distanceFromB = distance({
+
+    const distanceFromB = distanceKm({
         away: pointB,
         current,
     });
@@ -20,10 +21,7 @@ export const sortByDistance = (params: {
     else return 1;
 };
 
-export const sortByCreatedAt = (
-    a: PostWithAuthorName,
-    b: PostWithAuthorName
-) => {
+export const sortByDate = (a: PostWithAuthorName, b: PostWithAuthorName) => {
     if (a.createdAt < b.createdAt) return -1;
     if (a.createdAt > b.createdAt) return 1;
     return 0;

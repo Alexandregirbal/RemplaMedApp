@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setSortBy } from "store/slices/filters/slice";
 import { isSortBy } from "store/slices/filters/types";
-import { sortPostsByDistance } from "store/slices/posts/slice";
+import { sortPostsByDate, sortPostsByDistance } from "store/slices/posts/slice";
 
 const options = [
     { display: "Proximité", value: "distance" },
-    { display: "Date de publication", value: "createdAt" },
+    { display: "Disponibilité", value: "date" },
 ];
 
 const DatesFilter = () => {
@@ -28,6 +28,9 @@ const DatesFilter = () => {
                         })
                     );
                 });
+            }
+            if (event.target.value === "date") {
+                dispatch(sortPostsByDate());
             }
         }
     };

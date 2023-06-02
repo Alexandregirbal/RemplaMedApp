@@ -4,7 +4,6 @@ import type { FiltersState } from "./types";
 
 const initialState: FiltersState = {
     displayMode: "map",
-    distance: 50,
     dates: {
         from: null,
         to: null,
@@ -25,9 +24,6 @@ export const filtersSlice = createSlice({
         setDates(state, action: { payload: FiltersState["dates"] }) {
             state.dates = action.payload;
         },
-        setDistance(state, action: { payload: FiltersState["distance"] }) {
-            state.distance = action.payload;
-        },
         setSortBy(state, action: { payload: FiltersState["sortBy"] }) {
             state.sortBy = action.payload;
         },
@@ -35,8 +31,7 @@ export const filtersSlice = createSlice({
     // add extraReducers for server init only
 });
 
-export const { setDates, setDisplayMode, setDistance, setSortBy } =
-    filtersSlice.actions;
+export const { setDates, setDisplayMode, setSortBy } = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;
 

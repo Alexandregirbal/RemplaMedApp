@@ -17,6 +17,7 @@ const handleCreationForm = async (
         authorId: session.user.id,
         ...req.body,
     });
+    console.log(`LOG by Girbal --- | req.body---`, req.body);
 
     if (!parsedPost.success) {
         console.error(parsedPost.error.format());

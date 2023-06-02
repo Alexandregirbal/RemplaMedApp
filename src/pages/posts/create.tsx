@@ -19,7 +19,7 @@ export default function CreatePostPage() {
     };
 
     return (
-        <>
+        <div className="row flex h-full flex-col px-60">
             <select
                 name="step"
                 id="stepSelect"
@@ -37,6 +37,6 @@ export default function CreatePostPage() {
             {step === Steps.METADATA && "I am the metadata page"}
             {step === Steps.PAYMENT && "I am the payment page"}
             {step === Steps.SUCCESS && "I am the success page"}
-        </>
+        </div>
     );
 }

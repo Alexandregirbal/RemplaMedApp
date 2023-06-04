@@ -23,17 +23,18 @@ const CreatePost = () => {
         event
     ) => {
         event.preventDefault();
-        const func = async () => {
-            const result = await axios.post("/api/posts/create", newPost);
-            if (result.status !== 200) {
-                return alert("Une erreur est survenue");
-            }
-            dispatch(resetNewPost());
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            const newPostId = result.data.postId as string;
-            await push(`/posts/${newPostId}`);
-        };
-        void func();
+        void push("/posts/create/preview");
+        // const func = async () => {
+        //     const result = await axios.post("/api/posts/create", newPost);
+        //     if (result.status !== 200) {
+        //         return alert("Une erreur est survenue");
+        //     }
+        //     dispatch(resetNewPost());
+        //     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        //     const newPostId = result.data.postId as string;
+        //     await push(`/posts/${newPostId}`);
+        // };
+        // void func();
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

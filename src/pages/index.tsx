@@ -26,7 +26,7 @@ const Home: NextPage = () => {
                     id="posts-list"
                     className={`${
                         isMapDisplayed ? "w-1/2" : "w-full"
-                    } h-full overflow-y-scroll p-2 pr-4 scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg`}
+                    } flex h-full flex-col gap-4 overflow-y-scroll p-2 pr-4`}
                 >
                     {posts.map((post) => (
                         <Link key={post.id} href={`/posts/${post.id}`}>

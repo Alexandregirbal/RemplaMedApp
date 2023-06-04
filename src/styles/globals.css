@@ -13,3 +13,7 @@ body,
 pre {
     font-family: "IBM Plex Serif, arial";
 }
+
+* {
+    @apply scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg;
+}

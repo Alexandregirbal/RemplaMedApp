@@ -59,8 +59,10 @@ const PostComponent = ({
     return (
         <div
             onMouseEnter={handleMouseEnter}
-            className={`my-4 rounded-lg border ${
+            className={`flex flex-col rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
+            } ${
+                isMini ? "" : "h-full"
             } border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
@@ -81,7 +83,7 @@ const PostComponent = ({
                     {timeDiffMonths ? ` (${timeDiffMonths} mois)` : ""}
                 </span>
             )}
-            <pre className="whitespace-pre-wrap text-paragraph">
+            <pre className="h-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap p-4 text-paragraph">
                 {postMessage}
             </pre>
             {isPrivate && (

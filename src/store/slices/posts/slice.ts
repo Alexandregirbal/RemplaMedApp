@@ -15,6 +15,13 @@ const initialState: PostsState = {
         totalRecentPosts: 0,
     },
     selectedPost: null,
+    newPost: {
+        title: "",
+        message: "",
+        postalCode: "",
+        availablityFrom: new Date(),
+        availablityTo: null,
+    },
 };
 
 export const postsSlice = createSlice({
@@ -78,6 +85,9 @@ export const postsSlice = createSlice({
         ) {
             state.selectedPost = action.payload;
         },
+        setNewPost(state, action: { payload: PostsState["newPost"] }) {
+            state.newPost = action.payload;
+        },
     },
 
     extraReducers: {
@@ -103,6 +113,7 @@ export const {
     setSelectedPost,
     sortPostsByDistance,
     sortPostsByDate,
+    setNewPost,
 } = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;

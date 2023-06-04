@@ -19,8 +19,7 @@ const initialState: PostsState = {
         title: "",
         message: "",
         postalCode: "",
-        availablityFrom: new Date(),
-        availablityTo: null,
+        availablityFrom: new Date().toISOString(),
     },
 };
 
@@ -88,6 +87,15 @@ export const postsSlice = createSlice({
         setNewPost(state, action: { payload: PostsState["newPost"] }) {
             state.newPost = action.payload;
         },
+        resetNewPost(state) {
+            console.log(`LOG by Girbal --- | resetNewPost | state---`, state);
+            console.log(
+                `LOG by Girbal --- | resetNewPost | initialState---`,
+                initialState
+            );
+
+            state.newPost = initialState.newPost;
+        },
     },
 
     extraReducers: {
@@ -114,6 +122,7 @@ export const {
     sortPostsByDistance,
     sortPostsByDate,
     setNewPost,
+    resetNewPost,
 } = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;

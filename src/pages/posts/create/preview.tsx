@@ -1,7 +1,13 @@
+import PostComponent from "modules/post/components/PostComponent";
+import { useSelector } from "react-redux";
+import { selectPostsState } from "store/slices/posts/slice";
+
 const Preview = () => {
+    const { newPost } = useSelector(selectPostsState);
+
     return (
         <div>
-            <h1>Preview</h1>
+            <PostComponent post={newPost} />
         </div>
     );
 };

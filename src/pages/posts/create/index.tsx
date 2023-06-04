@@ -1,12 +1,17 @@
 "use client";
 import axios from "axios";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPostsState, setNewPost } from "store/slices/posts/slice";
+import {
+    resetNewPost,
+    selectPostsState,
+    setNewPost,
+} from "store/slices/posts/slice";
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
@@ -23,6 +28,7 @@ const CreatePost = () => {
             if (result.status !== 200) {
                 return alert("Une erreur est survenue");
             }
+            dispatch(resetNewPost());
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             const newPostId = result.data.postId as string;
             await push(`/posts/${newPostId}`);
@@ -50,7 +56,7 @@ const CreatePost = () => {
         dispatch(
             setNewPost({
                 ...newPost,
-                availablityFrom: date,
+                availablityFrom: date?.toISOString(),
             })
         );
     };
@@ -59,7 +65,7 @@ const CreatePost = () => {
         dispatch(
             setNewPost({
                 ...newPost,
-                availablityTo: date,
+                availablityTo: date?.toISOString(),
             })
         );
     };
@@ -118,7 +124,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     </label>
                     <DatePicker
                         className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                        selected={newPost.availablityFrom}
+                        selected={dayjs(newPost.availablityFrom).toDate()}
                         onChange={handleFromChange}
                         dateFormat={"dd/MM/yyyy"}
                     />
@@ -130,7 +136,11 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
 
                     <DatePicker
                         className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                        selected={newPost.availablityTo}
+                        selected={
+                            newPost.availablityTo
+                                ? dayjs(newPost.availablityTo).toDate()
+                                : null
+                        }
                         onChange={handleToChange}
                         dateFormat={"dd/MM/yyyy"}
                     />

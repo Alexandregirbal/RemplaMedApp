@@ -4,7 +4,7 @@ import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
@@ -13,6 +13,8 @@ import { selectPostsState, setPosts } from "store/slices/posts/slice";
 const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
     const { data: posts, selectedPost } = useSelector(selectPostsState);
+    const [isMouseOverPostsList, setIsMouseOverPostsList] =
+        useState<boolean>(false);
 
     const isMapDisplayed = displayMode === "map";
     const postIdPrefix = "home_";
@@ -24,11 +26,18 @@ const Home: NextPage = () => {
         const ref = window.document.getElementById(
             postIdPrefix + selectedPost.id
         );
-        if (!ref) {
+        if (!ref || isMouseOverPostsList) {
             return;
         }
         ref.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, [selectedPost]);
+    }, [selectedPost, isMouseOverPostsList]);
+
+    const handleMouseEnterOnPostsList = () => {
+        setIsMouseOverPostsList(true);
+    };
+    const handleMouseLeaveOnPostsList = () => {
+        setIsMouseOverPostsList(false);
+    };
 
     return (
         <>
@@ -38,6 +47,8 @@ const Home: NextPage = () => {
                 className="flex-column flex h-[calc(100%-5rem)] w-full "
             >
                 <div
+                    onMouseEnter={handleMouseEnterOnPostsList}
+                    onMouseLeave={handleMouseLeaveOnPostsList}
                     id="posts-list"
                     className={`${
                         isMapDisplayed ? "w-1/2" : "w-full"

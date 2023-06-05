@@ -1,10 +1,10 @@
 import { type PostWithAuthorName } from "modules/post/types/post";
-import { type MapboxEvent, Marker, PointLike } from "react-map-gl";
-import Pin from "./pin";
+import { hashStringToNumber } from "modules/utils/hash";
+import { useRouter } from "next/router";
+import { Marker, type MapboxEvent, type PointLike } from "react-map-gl";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPostsState, setSelectedPost } from "store/slices/posts/slice";
-import { useRouter } from "next/router";
-import { hashStringToNumber } from "modules/utils/hash";
+import Pin from "./pin";
 
 type MarkerComponentProps = {
     post: PostWithAuthorName;

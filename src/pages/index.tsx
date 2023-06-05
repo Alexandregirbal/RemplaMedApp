@@ -4,6 +4,7 @@ import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
@@ -11,9 +12,23 @@ import { selectPostsState, setPosts } from "store/slices/posts/slice";
 
 const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
-    const { data: posts } = useSelector(selectPostsState);
+    const { data: posts, selectedPost } = useSelector(selectPostsState);
 
     const isMapDisplayed = displayMode === "map";
+    const postIdPrefix = "home_";
+
+    useEffect(() => {
+        if (!selectedPost) {
+            return;
+        }
+        const ref = window.document.getElementById(
+            postIdPrefix + selectedPost.id
+        );
+        if (!ref) {
+            return;
+        }
+        ref.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, [selectedPost]);
 
     return (
         <>
@@ -29,7 +44,11 @@ const Home: NextPage = () => {
                     } flex h-full flex-col gap-4 overflow-y-scroll p-2 pr-4`}
                 >
                     {posts.map((post) => (
-                        <Link key={post.id} href={`/posts/${post.id}`}>
+                        <Link
+                            id={`${postIdPrefix}${post.id}`}
+                            key={post.id}
+                            href={`/posts/${post.id}`}
+                        >
                             <PostComponent post={post} isMini />
                         </Link>
                     ))}

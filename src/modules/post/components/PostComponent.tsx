@@ -55,10 +55,14 @@ const PostComponent = ({
     const handleMouseEnter = () => {
         dispatch(setSelectedPost(post));
     };
+    const handleMouseLeave = () => {
+        dispatch(setSelectedPost(null));
+    };
 
     return (
         <div
             onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             className={`flex flex-col rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
             } ${

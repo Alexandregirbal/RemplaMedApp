@@ -53,9 +53,11 @@ const PostComponent = ({
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     const handleMouseEnter = () => {
+        if (!isMini) return;
         dispatch(setSelectedPost(post));
     };
     const handleMouseLeave = () => {
+        if (!isMini) return;
         dispatch(setSelectedPost(null));
     };
 

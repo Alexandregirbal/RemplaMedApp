@@ -6,7 +6,6 @@ const Schema: z.ZodType<Prisma.PostUncheckedCreateInput> = z
     .object({
         id: z.string().optional(),
         authorId: z.string(),
-        published: z.boolean().optional(),
         title: z.string(),
         postalCode: z.string(),
         city: z.string().optional().nullable(),

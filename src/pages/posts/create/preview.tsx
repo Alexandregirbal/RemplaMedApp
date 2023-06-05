@@ -1,4 +1,5 @@
-import PostComponent from "modules/post/components/PostComponent";
+import axios from "axios";
+import PostPreview from "modules/post/components/PostPreview";
 import { useSession } from "next-auth/react";
 import router from "next/router";
 import { useSelector } from "react-redux";
@@ -14,21 +15,27 @@ const Preview = () => {
     }
 
     const handleNextClick = () => {
+        const func = async () => {
+            const result = await axios.post("/api/posts/create", newPost);
+            if (result.status !== 200) {
+                alert("Une erreur est survenue");
+            }
+        };
+        void func();
         void router.push("/posts/create/payment");
     };
 
     const handlePreviousClick = () => {
-        void router.push("/posts/create");
+        void router.back();
     };
 
     return (
         <div className="flex h-full flex-col gap-8 px-60 pt-8">
             <div className=" h-5/6">
-                <PostComponent
+                <PostPreview
                     post={{
                         ...newPost,
-                        id: "not_defined_yet",
-                        author: { name: author.name ?? "vous" },
+                        authorName: author.name ?? "vous",
                     }}
                 />
             </div>

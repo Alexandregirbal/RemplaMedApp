@@ -1,5 +1,5 @@
 import type { PostWithAuthorName } from "modules/post/types/post";
-import { distanceKm } from "modules/user/services/distance";
+import { distanceKm } from "modules/utils/location/distance";
 import type { Coordinates } from "../types/distance";
 
 export const sortByDistance = (params: {

@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import dayjs from "dayjs";
+import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setDates } from "store/slices/filters/slice";
 
@@ -8,79 +9,58 @@ const DatesFilter = () => {
     } = useSelector(selectFiltersState);
     const dispatch = useDispatch();
 
-    const fromRef = useRef<HTMLInputElement>(null);
-    const toRef = useRef<HTMLInputElement>(null);
-
-    const showFromPicker = () => {
-        if (fromRef.current) {
-            fromRef.current.showPicker();
-        }
-    };
-    const handleDateFromChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const newFrom =
-            event.target.value === "" ? null : new Date(event.target.value);
+    const handleDateFromChange = (date: Date | null) => {
         dispatch(
             setDates({
-                from: newFrom,
+                from: date ? dayjs(date).format("YYYY-MM-DD") : null,
                 to,
             })
         );
     };
 
-    const showToPicker = () => {
-        if (toRef.current) {
-            toRef.current.showPicker();
-        }
-    };
-    const handleDateToChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newTo =
-            event.target.value === "" ? null : new Date(event.target.value);
+    const handleDateToChange = (date: Date | null) => {
         dispatch(
             setDates({
                 from,
-                to: newTo,
+                to: date ? dayjs(date).format("YYYY-MM-DD") : null,
             })
         );
     };
 
+    const dateObjects = [
+        {
+            key: "dateFrom",
+            date: from,
+            min: null,
+            handleDateChange: handleDateFromChange,
+            label: "Disponible à partir du",
+        },
+        {
+            key: "dateTo",
+            date: to,
+            min: from,
+            handleDateChange: handleDateToChange,
+            label: "jusqu'au",
+        },
+    ];
+
     return (
-        <div className="flex items-center gap-2">
-            <span
-                className="flex cursor-pointer items-center gap-2"
-                onClick={showFromPicker}
-            >
-                Du
-                <input
-                    onClick={showFromPicker}
-                    ref={fromRef}
-                    value={from?.toISOString().slice(0, 10)}
-                    onChange={handleDateFromChange}
-                    type="date"
-                    className={
-                        "w-9/12 cursor-pointer border-0 p-0 text-cta" +
-                        (from ? " font-bold" : "")
-                    }
-                />
-            </span>
-            <span
-                className="flex cursor-pointer items-center gap-2"
-                onClick={showToPicker}
-            >
-                Au
-                <input
-                    onClick={showToPicker}
-                    ref={toRef}
-                    value={to?.toISOString().slice(0, 10)}
-                    onChange={handleDateToChange}
-                    type="date"
-                    className={
-                        "w-9/12 cursor-pointer border-0 p-0 text-cta" +
-                        (to ? " font-bold" : "")
-                    }
-                />
-            </span>
+        <div className="flex items-center gap-2 whitespace-nowrap">
+            {dateObjects.map(({ key, date, min, handleDateChange, label }) => (
+                <div
+                    key={key}
+                    className="flex cursor-pointer items-center gap-2"
+                >
+                    <label>{label}</label>
+                    <DatePicker
+                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
+                        selected={date ? dayjs(date).toDate() : null}
+                        minDate={min ? dayjs(min).toDate() : null}
+                        onChange={handleDateChange}
+                        dateFormat={"dd/MM/yyyy"}
+                    />
+                </div>
+            ))}
         </div>
     );
 };

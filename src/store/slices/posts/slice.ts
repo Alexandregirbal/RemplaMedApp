@@ -88,12 +88,6 @@ export const postsSlice = createSlice({
             state.newPost = action.payload;
         },
         resetNewPost(state) {
-            console.log(`LOG by Girbal --- | resetNewPost | state---`, state);
-            console.log(
-                `LOG by Girbal --- | resetNewPost | initialState---`,
-                initialState
-            );
-
             state.newPost = initialState.newPost;
         },
     },

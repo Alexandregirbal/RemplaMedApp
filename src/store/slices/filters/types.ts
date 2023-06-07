@@ -1,10 +1,10 @@
 export type FiltersState = {
     displayMode: "list" | "map";
     dates: {
-        from: Date | null;
-        to: Date | null;
+        from: string | null;
+        to: string | null;
     };
-    sortBy: "distance" | "date"; //| "dateFrom" | "dateTo";
+    sortBy: "distance" | "date";
 };
 
 export const isDisplayMode = (

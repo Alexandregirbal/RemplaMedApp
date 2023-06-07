@@ -1,17 +1,10 @@
 "use client";
-import axios from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    resetNewPost,
-    selectPostsState,
-    setNewPost,
-} from "store/slices/posts/slice";
+import { selectPostsState, setNewPost } from "store/slices/posts/slice";
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
@@ -24,17 +17,6 @@ const CreatePost = () => {
     ) => {
         event.preventDefault();
         void push("/posts/create/preview");
-        // const func = async () => {
-        //     const result = await axios.post("/api/posts/create", newPost);
-        //     if (result.status !== 200) {
-        //         return alert("Une erreur est survenue");
-        //     }
-        //     dispatch(resetNewPost());
-        //     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        //     const newPostId = result.data.postId as string;
-        //     await push(`/posts/${newPostId}`);
-        // };
-        // void func();
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +67,7 @@ const CreatePost = () => {
                     id="title"
                     value={newPost.title}
                     onChange={handleTitleChange}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     placeholder="Cherche remplacement sur Montpellier en Juin"
                     required
                 />
@@ -100,7 +82,7 @@ const CreatePost = () => {
                     placeholder={`Bonjour,
 Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 8 jours par mois à partir de Juin...`}
                     onChange={handleMessageChange}
-                    className="h-full w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-lg focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    className="h-full w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-lg focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     required
                 />
             </div>
@@ -124,7 +106,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                         A partir du
                     </label>
                     <DatePicker
-                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
                         selected={dayjs(newPost.availablityFrom).toDate()}
                         onChange={handleFromChange}
                         dateFormat={"dd/MM/yyyy"}
@@ -136,7 +118,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     </label>
 
                     <DatePicker
-                        className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
                         selected={
                             newPost.availablityTo
                                 ? dayjs(newPost.availablityTo).toDate()

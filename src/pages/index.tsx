@@ -77,10 +77,7 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getStaticProps = wrapper.getStaticProps((store) => async () => {
-    const posts = await findManyPosts({
-        orderBy: { createdAt: "desc" },
-    });
-
+    const posts = await findManyPosts({});
     store.dispatch(setPosts(posts));
     return {
         props: {},

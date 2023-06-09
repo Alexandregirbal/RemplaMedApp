@@ -3,7 +3,7 @@ import type { Post, User } from "@prisma/client";
 export type PostDateFields = {
     createdAt: string;
     updatedAt?: string;
-    availablityFrom?: string;
+    availablityFrom: string;
     availablityTo?: string;
 };
 

@@ -75,20 +75,26 @@ const PostComponent = ({
                 <div className="truncate text-xl font-bold">{post.title}</div>
                 <div className="">{post.postalCode}</div>
             </div>
-            {post.availablityFrom && (
-                <span className="">
-                    A partir du{" "}
-                    {dayjs(post.availablityFrom).format("DD MMM YYYY")}
-                </span>
-            )}
-            {post.availablityTo && (
-                <span className="">
-                    {", "}
-                    {"jusqu'au"}{" "}
-                    {dayjs(post.availablityTo).format("DD MMM YYYY")}
-                    {timeDiffMonths ? ` (${timeDiffMonths} mois)` : ""}
-                </span>
-            )}
+            <p>
+                {post.availablityFrom && (
+                    <span className="">
+                        A partir du{" "}
+                        <span className="font-bold">
+                            {dayjs(post.availablityFrom).format("DD MMM YYYY")}
+                        </span>
+                    </span>
+                )}
+                {post.availablityTo && (
+                    <span className="">
+                        {" "}
+                        {"jusqu'au"}{" "}
+                        <span className="font-bold">
+                            {dayjs(post.availablityTo).format("DD MMM YYYY")}
+                        </span>
+                        {timeDiffMonths ? ` (${timeDiffMonths} mois)` : ""}
+                    </span>
+                )}
+            </p>
             <pre className="h-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap p-4 text-paragraph">
                 {postMessage}
             </pre>

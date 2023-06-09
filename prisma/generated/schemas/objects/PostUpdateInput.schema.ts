@@ -87,12 +87,9 @@ const Schema: z.ZodType<Prisma.PostUpdateInput> = z
         availablityFrom: z
             .union([
                 z.date(),
-                z.lazy(
-                    () => NullableDateTimeFieldUpdateOperationsInputObjectSchema
-                ),
+                z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema),
             ])
-            .optional()
-            .nullable(),
+            .optional(),
         availablityTo: z
             .union([
                 z.date(),

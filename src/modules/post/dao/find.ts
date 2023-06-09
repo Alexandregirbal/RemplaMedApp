@@ -3,8 +3,9 @@ import { prisma } from "server/db";
 import { postToPostWithDatesStrings } from "../services/postWithDatesStrings";
 import { type MetaData } from "../types/metadata";
 import { type PostWithAuthorName } from "../types/post";
+import dayjs from "dayjs";
 
-const JOUR = 1000 * 60 * 60 * 24;
+const MIN_DATE = dayjs().subtract(3, "month");
 
 export const findOnePost = async (
     id: string | undefined
@@ -32,7 +33,7 @@ export const findOnePost = async (
 };
 
 export const findManyPosts = async (
-    params: Prisma.PostFindManyArgs
+    params: Omit<Prisma.PostFindManyArgs, "orderBy">
 ): Promise<Array<PostWithAuthorName>> => {
     const posts = await prisma.post.findMany({
         ...params,
@@ -42,6 +43,15 @@ export const findManyPosts = async (
                     name: true,
                 },
             },
+        },
+        orderBy: {
+            availablityFrom: "asc",
+        },
+        where: {
+            createdAt: {
+                gte: MIN_DATE.toDate(),
+            },
+            ...params.where,
         },
     });
     return posts.map((post) => postToPostWithDatesStrings(post));
@@ -58,7 +68,7 @@ export const getMetaData = async (): Promise<MetaData> => {
     const totalRecentPosts = await prisma.post.count({
         where: {
             createdAt: {
-                gt: new Date(new Date().getTime() - 31 * JOUR),
+                gte: MIN_DATE.toDate(),
             },
         },
     });

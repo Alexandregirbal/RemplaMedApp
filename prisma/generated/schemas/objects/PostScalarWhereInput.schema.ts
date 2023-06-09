@@ -65,9 +65,8 @@ const Schema: z.ZodType<Prisma.PostScalarWhereInput> = z
             .optional()
             .nullable(),
         availablityFrom: z
-            .union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()])
-            .optional()
-            .nullable(),
+            .union([z.lazy(() => DateTimeFilterObjectSchema), z.date()])
+            .optional(),
         availablityTo: z
             .union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.date()])
             .optional()

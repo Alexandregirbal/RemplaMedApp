@@ -103,11 +103,10 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
             .nullable(),
         availablityFrom: z
             .union([
-                z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema),
+                z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
                 z.date(),
             ])
-            .optional()
-            .nullable(),
+            .optional(),
         availablityTo: z
             .union([
                 z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema),

@@ -14,7 +14,7 @@ const Schema: z.ZodType<Prisma.PostUncheckedCreateWithoutAuthorInput> = z
         message: z.string(),
         createdAt: z.date().optional(),
         updatedAt: z.date().optional().nullable(),
-        availablityFrom: z.date().optional().nullable(),
+        availablityFrom: z.date(),
         availablityTo: z.date().optional().nullable(),
         views: z.number().optional(),
     })

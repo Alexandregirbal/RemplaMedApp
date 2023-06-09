@@ -6,6 +6,7 @@ const Schema: z.ZodType<Prisma.PostUncheckedCreateInput> = z
     .object({
         id: z.string().optional(),
         authorId: z.string(),
+        published: z.boolean().optional(),
         title: z.string(),
         postalCode: z.string(),
         city: z.string().optional().nullable(),
@@ -14,7 +15,7 @@ const Schema: z.ZodType<Prisma.PostUncheckedCreateInput> = z
         message: z.string(),
         createdAt: z.date().optional(),
         updatedAt: z.date().optional().nullable(),
-        availablityFrom: z.coerce.date().optional().nullable(),
+        availablityFrom: z.coerce.date(),
         availablityTo: z.coerce.date().optional().nullable(),
         views: z.number().optional(),
     })

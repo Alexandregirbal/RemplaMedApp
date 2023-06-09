@@ -1,6 +1,7 @@
 import type { PostWithAuthorName } from "modules/post/types/post";
 import { distanceKm } from "modules/utils/location/distance";
 import type { Coordinates } from "../types/distance";
+import dayjs from "dayjs";
 
 export const sortByDistance = (params: {
     current: Coordinates;
@@ -22,7 +23,7 @@ export const sortByDistance = (params: {
 };
 
 export const sortByDate = (a: PostWithAuthorName, b: PostWithAuthorName) => {
-    if (a.createdAt < b.createdAt) return -1;
-    if (a.createdAt > b.createdAt) return 1;
+    if (dayjs(a.availablityFrom).isBefore(b.availablityFrom)) return -1;
+    if (dayjs(a.availablityFrom).isAfter(b.availablityFrom)) return 1;
     return 0;
 };

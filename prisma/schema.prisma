@@ -83,7 +83,7 @@ model Post {
   message         String
   createdAt       DateTime  @default(now())
   updatedAt       DateTime? @updatedAt
-  availablityFrom DateTime?
+  availablityFrom DateTime
   availablityTo   DateTime?
   views           Int       @default(0)
 }

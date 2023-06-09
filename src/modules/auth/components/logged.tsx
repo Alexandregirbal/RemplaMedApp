@@ -32,7 +32,7 @@ export default function Logged({ user }: LoggedProps) {
                 className="rounded-md bg-gray-700 px-6 py-2 text-sm text-white "
                 onClick={() => handleSignout()}
             >
-                Sign Out
+                Déconnexion
             </button>
             {user && (
                 <Link href={"/users/me"}>
@@ -46,7 +46,6 @@ export default function Logged({ user }: LoggedProps) {
                                 lineHeight: "50px",
                                 fontSize: "20px",
                             }}
-                            // tailwind css for center test in a div
                             className="rounded-full bg-primary text-center text-white shadow-xl"
                         >
                             {initials}

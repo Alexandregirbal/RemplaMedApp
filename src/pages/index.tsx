@@ -48,7 +48,7 @@ const Home: NextPage = () => {
             <Filters />
             <div
                 id="posts"
-                className="flex-column flex h-[calc(100%-5rem)] w-full "
+                className="flex-column flex h-[calc(100%-4rem)] w-full "
             >
                 <div
                     onMouseEnter={handleMouseEnterOnPostsList}

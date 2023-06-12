@@ -4,8 +4,8 @@ import { isSortBy } from "store/slices/filters/types";
 import { sortPostsByDate, sortPostsByDistance } from "store/slices/posts/slice";
 
 const options = [
-    { display: "Proximité", value: "distance" },
-    { display: "Disponibilité", value: "date" },
+    { display: "proximité", value: "distance" },
+    { display: "disponibilité", value: "date" },
 ];
 
 const DatesFilter = () => {

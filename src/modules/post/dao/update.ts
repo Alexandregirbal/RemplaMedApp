@@ -1,7 +1,7 @@
 import { prisma } from "server/db";
 
 export const incrementPostViews = async (postId: string) => {
-    await prisma.post.update({
+    return await prisma.post.update({
         where: {
             id: postId,
         },

@@ -86,5 +86,6 @@ export const getStaticProps = wrapper.getStaticProps((store) => async () => {
     store.dispatch(setPosts(posts));
     return {
         props: {},
+        revalidate: 30,
     };
 });

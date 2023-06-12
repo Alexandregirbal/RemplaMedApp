@@ -39,7 +39,9 @@ const CreatePost = () => {
         dispatch(
             setNewPost({
                 ...newPost,
-                availablityFrom: date?.toISOString(),
+                availablityFrom: date
+                    ? date?.toISOString()
+                    : dayjs().toISOString(),
             })
         );
     };

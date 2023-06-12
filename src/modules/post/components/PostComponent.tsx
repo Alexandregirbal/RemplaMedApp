@@ -20,10 +20,11 @@ const PostComponent = ({
     isMini = false,
     maxMessageLength = 150,
 }: PostProps) => {
-    const { status } = useSession();
+    const { status, data } = useSession();
     const dispatch = useDispatch();
 
     const [isPrivate, setIsPrivate] = useState(false);
+    const [isAuthor, setIsAuthor] = useState(false);
     const [postMessage, setPostMessage] = useState(post.message);
     const timeDiffMonths = post.availablityTo
         ? dayjs(post.availablityTo).diff(post.availablityFrom, "month")
@@ -38,7 +39,10 @@ const PostComponent = ({
         } else {
             setIsPrivate(false);
         }
-    }, [post.message, status]);
+        if (data?.user?.id === post.authorId) {
+            setIsAuthor(true);
+        }
+    }, [post.message, post.authorId, status, data]);
 
     useEffect(() => {
         if (isPrivate) {
@@ -100,7 +104,12 @@ const PostComponent = ({
             </pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
-                    This post is private, register to see the full content.
+                    The post est privé, inscrivez-vous pour voir le contenu.
+                </div>
+            )}
+            {isAuthor && (
+                <div className="text-sm text-red-700">
+                    {post.views} vue{post.views > 1 ? "s" : ""}
                 </div>
             )}
             <div className="flex flex-row-reverse gap-1 text-sm">

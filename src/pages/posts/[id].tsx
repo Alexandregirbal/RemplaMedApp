@@ -1,6 +1,8 @@
 import PostComponent from "modules/post/components/PostComponent";
 import { findOnePost, findPostsIds } from "modules/post/dao/find";
+import { incrementPostViews } from "modules/post/dao/update";
 import type { PostWithAuthorName } from "modules/post/types/post";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 
 type PostParams = {
@@ -31,6 +33,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: PostParams }) {
     const post = await findOnePost(params.id);
+    await incrementPostViews(params.id);
+
     return {
         props: {
             post,

@@ -14,7 +14,7 @@ const PostComponent = ({ post }: PostProps) => {
         : 0;
     return (
         <div
-            className={`flex flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
+            className={`flex h-full flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div className="truncate text-xl font-bold">{post.title}</div>

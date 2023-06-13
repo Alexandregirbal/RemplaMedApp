@@ -69,7 +69,7 @@ const PostComponent = ({
         <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={`flex flex-col rounded-lg border ${
+            className={`flex h-full flex-col rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
             } ${
                 isMini ? "" : "h-full"

@@ -31,7 +31,7 @@ const Preview = () => {
 
     return (
         <div className="flex h-full flex-col gap-8 px-60 pt-8">
-            <div className=" h-5/6">
+            <div className="h-5/6">
                 <PostPreview
                     post={{
                         ...newPost,

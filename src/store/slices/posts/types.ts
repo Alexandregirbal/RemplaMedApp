@@ -4,7 +4,7 @@ import { type PostWithAuthorName } from "modules/post/types/post";
 export type PostsState = {
     metadata: MetaData;
     data: PostWithAuthorName[];
-    selectedPost: PostWithAuthorName | null;
+    selectedPost: Partial<PostWithAuthorName> | null;
     newPost: Pick<
         PostWithAuthorName,
         "title" | "message" | "postalCode" | "availablityFrom" | "availablityTo"

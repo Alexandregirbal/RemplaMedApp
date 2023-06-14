@@ -10,7 +10,7 @@ require("dayjs/locale/fr");
 dayjs.locale("fr");
 
 type PostProps = {
-    post: PostWithAuthorName;
+    post: Partial<PostWithAuthorName>;
     isMini?: boolean;
     maxMessageLength?: number;
 };
@@ -45,6 +45,7 @@ const PostComponent = ({
     }, [post.message, post.authorId, status, data]);
 
     useEffect(() => {
+        if (!post.message) return;
         if (isPrivate) {
             setPostMessage(hidePrivateInformations(post.message));
         } else {
@@ -69,7 +70,7 @@ const PostComponent = ({
         <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={`flex flex-col rounded-lg border ${
+            className={`flex h-full flex-col rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
             } ${
                 isMini ? "" : "h-full"
@@ -104,17 +105,18 @@ const PostComponent = ({
             </pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
-                    The post est privé, inscrivez-vous pour voir le contenu.
+                    Les informations privées ont été masquées. Inscrivez-vous ou
+                    connectez-vous pour y accéder.
                 </div>
             )}
-            {isAuthor && (
+            {isAuthor && post.views !== undefined && (
                 <div className="text-sm text-red-700">
                     {post.views} vue{post.views > 1 ? "s" : ""}
                 </div>
             )}
             <div className="flex flex-row-reverse gap-1 text-sm">
                 le {dayjs(post.createdAt).format("D MMMM YYYY")}
-                <p className="italic">{post.author.name ?? "un inconnu"}</p>
+                <p className="italic">{post.author?.name ?? "un inconnu"}</p>
                 Posté par
             </div>
         </div>

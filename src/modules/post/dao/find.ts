@@ -45,7 +45,7 @@ export const findManyPosts = async (
             },
         },
         orderBy: {
-            availablityFrom: "asc",
+            createdAt: "desc",
         },
         where: {
             createdAt: {

@@ -26,7 +26,7 @@ export default function PostPage({ post }: PostPageProps) {
                 <meta name="description" content={post.authorId} />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div id={`post_${post.id}`} className="py-10 px-60">
+            <div id={`post_${post.id}`} className="h-full py-10 px-60">
                 <PostComponent post={post} />
             </div>
         </>

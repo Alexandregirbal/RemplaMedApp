@@ -1,5 +1,5 @@
 import axios from "axios";
-import PostPreview from "modules/post/components/PostPreview";
+import PostComponent from "modules/post/components/PostComponent";
 import { useSession } from "next-auth/react";
 import router from "next/router";
 import { useSelector } from "react-redux";
@@ -31,11 +31,11 @@ const Preview = () => {
 
     return (
         <div className="flex h-full flex-col gap-8 px-60 pt-8">
-            <div className=" h-5/6">
-                <PostPreview
+            <div className="h-5/6">
+                <PostComponent
                     post={{
                         ...newPost,
-                        authorName: author.name ?? "vous",
+                        author: { name: author.name ?? "vous" },
                     }}
                 />
             </div>

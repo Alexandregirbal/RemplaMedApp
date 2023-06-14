@@ -23,7 +23,8 @@ export const sortByDistance = (params: {
 };
 
 export const sortByDate = (a: PostWithAuthorName, b: PostWithAuthorName) => {
-    if (dayjs(a.availablityFrom).isBefore(b.availablityFrom)) return -1;
-    if (dayjs(a.availablityFrom).isAfter(b.availablityFrom)) return 1;
+    const sortingField = "createdAt";
+    if (dayjs(a[sortingField]).isBefore(b[sortingField])) return -1;
+    if (dayjs(a[sortingField]).isAfter(b[sortingField])) return 1;
     return 0;
 };

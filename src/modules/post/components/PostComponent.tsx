@@ -105,10 +105,11 @@ const PostComponent = ({
             </pre>
             {isPrivate && (
                 <div className="text-sm text-red-700">
-                    The post est privé, inscrivez-vous pour voir le contenu.
+                    Les informations privées ont été masquées. Inscrivez-vous ou
+                    connectez-vous pour y accéder.
                 </div>
             )}
-            {isAuthor && post.views && (
+            {isAuthor && post.views !== undefined && (
                 <div className="text-sm text-red-700">
                     {post.views} vue{post.views > 1 ? "s" : ""}
                 </div>

@@ -24,11 +24,11 @@ const Home: NextPage = () => {
     const postIdPrefix = "home_";
 
     useEffect(() => {
-        if (!selectedPost) {
+        if (!selectedPost || !selectedPost.id) {
             return;
         }
         const ref = window.document.getElementById(
-            postIdPrefix + selectedPost.id
+            `${postIdPrefix}${selectedPost.id}`
         );
         if (!ref || isMouseOverPostsList) {
             return;

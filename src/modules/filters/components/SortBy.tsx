@@ -5,7 +5,7 @@ import { sortPostsByDate, sortPostsByDistance } from "store/slices/posts/slice";
 
 const options = [
     { display: "proximité", value: "distance" },
-    { display: "disponibilité", value: "date" },
+    { display: "date du poste", value: "date" },
 ];
 
 const DatesFilter = () => {

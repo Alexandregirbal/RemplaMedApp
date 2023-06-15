@@ -54,9 +54,9 @@ const Home: NextPage = () => {
                     onMouseEnter={handleMouseEnterOnPostsList}
                     onMouseLeave={handleMouseLeaveOnPostsList}
                     id="posts-list"
-                    className={`${
-                        isMapDisplayed ? "w-1/2" : "w-full"
-                    } flex h-full flex-col gap-4 overflow-y-scroll p-2 pr-4`}
+                    className={`p-2 ${
+                        isMapDisplayed ? "w-1/2 pr-4" : "w-full px-40 pt-10"
+                    } flex h-full flex-col gap-4 overflow-y-scroll`}
                 >
                     {posts.map((post) => (
                         <Link

@@ -16,13 +16,14 @@ const Schema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z
         image: z.lazy(() => SortOrderSchema).optional(),
         roles: z.lazy(() => SortOrderSchema).optional(),
         createdAt: z.lazy(() => SortOrderSchema).optional(),
+        postsViewed: z.lazy(() => SortOrderSchema).optional(),
         accounts: z
             .lazy(() => AccountOrderByRelationAggregateInputObjectSchema)
             .optional(),
         sessions: z
             .lazy(() => SessionOrderByRelationAggregateInputObjectSchema)
             .optional(),
-        Post: z
+        posts: z
             .lazy(() => PostOrderByRelationAggregateInputObjectSchema)
             .optional(),
     })

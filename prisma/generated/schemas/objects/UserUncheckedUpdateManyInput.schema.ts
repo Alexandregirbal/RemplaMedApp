@@ -5,6 +5,7 @@ import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./Nullab
 import { UserUpdaterolesInputObjectSchema } from "./UserUpdaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
+import { UserUpdatepostsViewedInputObjectSchema } from "./UserUpdatepostsViewedInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -71,6 +72,12 @@ const Schema: z.ZodType<Prisma.UserUncheckedUpdateManyInput> = z
             .union([
                 z.date(),
                 z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema),
+            ])
+            .optional(),
+        postsViewed: z
+            .union([
+                z.lazy(() => UserUpdatepostsViewedInputObjectSchema),
+                z.string().array(),
             ])
             .optional(),
     })

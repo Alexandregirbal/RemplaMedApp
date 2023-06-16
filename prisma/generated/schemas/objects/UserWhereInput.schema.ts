@@ -4,6 +4,7 @@ import { StringNullableFilterObjectSchema } from "./StringNullableFilter.schema"
 import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.schema";
 import { EnumRoleNullableListFilterObjectSchema } from "./EnumRoleNullableListFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
+import { StringNullableListFilterObjectSchema } from "./StringNullableListFilter.schema";
 import { AccountListRelationFilterObjectSchema } from "./AccountListRelationFilter.schema";
 import { SessionListRelationFilterObjectSchema } from "./SessionListRelationFilter.schema";
 import { PostListRelationFilterObjectSchema } from "./PostListRelationFilter.schema";
@@ -55,13 +56,16 @@ const Schema: z.ZodType<Prisma.UserWhereInput> = z
         createdAt: z
             .union([z.lazy(() => DateTimeFilterObjectSchema), z.date()])
             .optional(),
+        postsViewed: z
+            .lazy(() => StringNullableListFilterObjectSchema)
+            .optional(),
         accounts: z
             .lazy(() => AccountListRelationFilterObjectSchema)
             .optional(),
         sessions: z
             .lazy(() => SessionListRelationFilterObjectSchema)
             .optional(),
-        Post: z.lazy(() => PostListRelationFilterObjectSchema).optional(),
+        posts: z.lazy(() => PostListRelationFilterObjectSchema).optional(),
     })
     .strict();
 

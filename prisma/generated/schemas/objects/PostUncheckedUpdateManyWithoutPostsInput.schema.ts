@@ -9,7 +9,7 @@ import { IntFieldUpdateOperationsInputObjectSchema } from "./IntFieldUpdateOpera
 
 import type { Prisma } from "@prisma/client";
 
-const Schema: z.ZodType<Prisma.PostUncheckedUpdateManyWithoutPostInput> = z
+const Schema: z.ZodType<Prisma.PostUncheckedUpdateManyWithoutPostsInput> = z
     .object({
         id: z
             .union([
@@ -107,4 +107,4 @@ const Schema: z.ZodType<Prisma.PostUncheckedUpdateManyWithoutPostInput> = z
     })
     .strict();
 
-export const PostUncheckedUpdateManyWithoutPostInputObjectSchema = Schema;
+export const PostUncheckedUpdateManyWithoutPostsInputObjectSchema = Schema;

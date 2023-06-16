@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { UserCreaterolesInputObjectSchema } from "./UserCreaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
+import { UserCreatepostsViewedInputObjectSchema } from "./UserCreatepostsViewedInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -19,6 +20,12 @@ const Schema: z.ZodType<Prisma.UserCreateManyInput> = z
             ])
             .optional(),
         createdAt: z.date().optional(),
+        postsViewed: z
+            .union([
+                z.lazy(() => UserCreatepostsViewedInputObjectSchema),
+                z.string().array(),
+            ])
+            .optional(),
     })
     .strict();
 

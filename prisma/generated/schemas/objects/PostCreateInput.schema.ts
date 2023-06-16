@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserCreateNestedOneWithoutPostInputObjectSchema } from "./UserCreateNestedOneWithoutPostInput.schema";
+import { UserCreateNestedOneWithoutPostsInputObjectSchema } from "./UserCreateNestedOneWithoutPostsInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -18,7 +18,7 @@ const Schema: z.ZodType<Prisma.PostCreateInput> = z
         availablityFrom: z.date(),
         availablityTo: z.date().optional().nullable(),
         views: z.number().optional(),
-        author: z.lazy(() => UserCreateNestedOneWithoutPostInputObjectSchema),
+        author: z.lazy(() => UserCreateNestedOneWithoutPostsInputObjectSchema),
     })
     .strict();
 

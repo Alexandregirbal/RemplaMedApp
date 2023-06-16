@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PostScalarWhereInputObjectSchema } from "./PostScalarWhereInput.schema";
 import { PostUpdateManyMutationInputObjectSchema } from "./PostUpdateManyMutationInput.schema";
-import { PostUncheckedUpdateManyWithoutPostInputObjectSchema } from "./PostUncheckedUpdateManyWithoutPostInput.schema";
+import { PostUncheckedUpdateManyWithoutPostsInputObjectSchema } from "./PostUncheckedUpdateManyWithoutPostsInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -10,7 +10,7 @@ const Schema: z.ZodType<Prisma.PostUpdateManyWithWhereWithoutAuthorInput> = z
         where: z.lazy(() => PostScalarWhereInputObjectSchema),
         data: z.union([
             z.lazy(() => PostUpdateManyMutationInputObjectSchema),
-            z.lazy(() => PostUncheckedUpdateManyWithoutPostInputObjectSchema),
+            z.lazy(() => PostUncheckedUpdateManyWithoutPostsInputObjectSchema),
         ]),
     })
     .strict();

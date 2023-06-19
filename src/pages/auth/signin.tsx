@@ -1,4 +1,4 @@
-import EmailProviderComponent from "modules/auth/components/providers/EmailProviderComponent";
+import CredentialsProviderComponent from "modules/auth/components/providers/CredentialsProviderComponent";
 import GoogleProviderComponent from "modules/auth/components/providers/GoogleProviderComponent";
 import type {
     GetServerSidePropsContext,
@@ -33,7 +33,9 @@ const SigninPage = ({
                         <hr />
 
                         {providers["credentials_provider"] && (
-                            <EmailProviderComponent csrfToken={csrfToken} />
+                            <CredentialsProviderComponent
+                                csrfToken={csrfToken}
+                            />
                         )}
 
                         <p className="text-sm font-light text-gray-500 dark:text-gray-400">

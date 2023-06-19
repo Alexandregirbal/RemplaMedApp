@@ -1,11 +1,9 @@
 "use client";
-import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
 const LoginButton = () => {
-    const router = useRouter();
-
     const handleLogin = () => {
-        void router.push("/auth/signin");
+        void signIn();
     };
 
     return (

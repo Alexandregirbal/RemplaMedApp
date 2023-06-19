@@ -7,7 +7,7 @@ const credentialsProvider = Credentials({
     name: "Credentials",
     type: "credentials",
     credentials: {
-        email: { label: "email", type: "email" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
     },
     authorize: async (credentials) => {

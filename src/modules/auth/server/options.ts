@@ -36,7 +36,7 @@ const authOptions: NextAuthOptions = {
         logo: "/logo-transparent-png-no-text.png",
     },
     pages: {
-        signIn: "/api/auth/signin",
+        signIn: "/auth/signin",
     },
 };
 

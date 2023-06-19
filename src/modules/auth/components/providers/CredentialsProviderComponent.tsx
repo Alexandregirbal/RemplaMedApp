@@ -1,8 +1,10 @@
-type EmailProviderComponentProps = {
+type CredentialsProviderComponentProps = {
     csrfToken?: string;
 };
 
-const EmailProviderComponent = ({ csrfToken }: EmailProviderComponentProps) => {
+const CredentialsProviderComponent = ({
+    csrfToken,
+}: CredentialsProviderComponentProps) => {
     return (
         <form
             className="space-y-4 md:space-y-6"
@@ -58,4 +60,4 @@ const EmailProviderComponent = ({ csrfToken }: EmailProviderComponentProps) => {
     );
 };
 
-export default EmailProviderComponent;
+export default CredentialsProviderComponent;

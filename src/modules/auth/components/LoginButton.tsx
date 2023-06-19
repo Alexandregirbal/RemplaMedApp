@@ -1,17 +1,11 @@
 "use client";
-
-import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const LoginButton = () => {
+    const router = useRouter();
+
     const handleLogin = () => {
-        console.log("Logging in...");
-        signIn()
-            .then(() => {
-                console.log("Logged in!");
-            })
-            .catch((error) => {
-                console.log("Error logging in: ", error);
-            });
+        void router.push("/auth/signin");
     };
 
     return (

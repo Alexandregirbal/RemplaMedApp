@@ -35,6 +35,9 @@ const authOptions: NextAuthOptions = {
         brandColor: "#FF0000",
         logo: "/logo-transparent-png-no-text.png",
     },
+    pages: {
+        signIn: "/api/auth/signin",
+    },
 };
 
 export default authOptions;

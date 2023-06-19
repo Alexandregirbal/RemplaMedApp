@@ -1,6 +1,5 @@
-import { createOneUser } from "modules/user/dao/create";
 import { findOneUser } from "modules/user/dao/find";
-import { validateUserPassword } from "modules/user/services/password";
+import { validatePassword } from "modules/user/services/password";
 import Credentials from "next-auth/providers/credentials";
 
 const credentialsProvider = Credentials({
@@ -15,16 +14,18 @@ const credentialsProvider = Credentials({
         if (!credentials || !credentials.email || !credentials.password) {
             return null;
         }
-        let user = await findOneUser(credentials.email);
+        const user = await findOneUser(credentials.email);
         if (user) {
-            const isPasswordValid = await validateUserPassword(credentials);
+            const isPasswordValid = await validatePassword({
+                password: credentials.password,
+                hashedPassword: user.password ?? "no_password",
+            });
             if (!isPasswordValid) {
                 return null;
             }
-        } else {
-            user = await createOneUser(credentials);
+            return user;
         }
-        return user;
+        return null;
     },
 });
 

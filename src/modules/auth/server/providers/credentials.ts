@@ -1,9 +1,9 @@
 import { findOneUser } from "modules/user/dao/find";
 import { validatePassword } from "modules/user/services/password";
-import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-const credentialsProvider = Credentials({
-    id: "credentials_provider",
+const credentialsProvider = CredentialsProvider({
+    id: "credentials",
     name: "Credentials",
     type: "credentials",
     credentials: {

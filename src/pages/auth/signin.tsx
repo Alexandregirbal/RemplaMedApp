@@ -32,7 +32,7 @@ const SigninPage = ({
 
                         <hr />
 
-                        {providers["credentials_provider"] && (
+                        {providers["credentials"] && (
                             <CredentialsProviderComponent
                                 csrfToken={csrfToken}
                             />

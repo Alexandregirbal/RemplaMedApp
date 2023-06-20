@@ -1,17 +1,9 @@
 "use client";
-
 import { signIn } from "next-auth/react";
 
 const LoginButton = () => {
     const handleLogin = () => {
-        console.log("Logging in...");
-        signIn()
-            .then(() => {
-                console.log("Logged in!");
-            })
-            .catch((error) => {
-                console.log("Error logging in: ", error);
-            });
+        void signIn();
     };
 
     return (

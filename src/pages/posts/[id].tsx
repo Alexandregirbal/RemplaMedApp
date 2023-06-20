@@ -2,6 +2,7 @@ import axios from "axios";
 import PostComponent from "modules/post/components/PostComponent";
 import { findOnePost, findPostsIds } from "modules/post/dao/find";
 import type { PostWithAuthorName } from "modules/post/types/post";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect } from "react";
 
@@ -15,10 +16,16 @@ type PostPageProps = {
 
 export default function PostPage({ post }: PostPageProps) {
     const headTitle = `RemplaMed | ${post.title}`;
+    const session = useSession();
     useEffect(() => {
         void axios.put(`/api/posts/incrementViews`, { postId: post.id });
+        if (session.status === "authenticated") {
+            void axios.put(`/api/users/postViewed`, {
+                postId: post.id,
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [session]);
     return (
         <>
             <Head>

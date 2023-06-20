@@ -9,4 +9,5 @@ export const UserScalarFieldEnumSchema = z.enum([
     "image",
     "roles",
     "createdAt",
+    "postsViewed",
 ]);

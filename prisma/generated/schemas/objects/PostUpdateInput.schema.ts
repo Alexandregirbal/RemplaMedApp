@@ -6,7 +6,7 @@ import { NullableFloatFieldUpdateOperationsInputObjectSchema } from "./NullableF
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./NullableDateTimeFieldUpdateOperationsInput.schema";
 import { IntFieldUpdateOperationsInputObjectSchema } from "./IntFieldUpdateOperationsInput.schema";
-import { UserUpdateOneRequiredWithoutPostNestedInputObjectSchema } from "./UserUpdateOneRequiredWithoutPostNestedInput.schema";
+import { UserUpdateOneRequiredWithoutPostsNestedInputObjectSchema } from "./UserUpdateOneRequiredWithoutPostsNestedInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -106,7 +106,9 @@ const Schema: z.ZodType<Prisma.PostUpdateInput> = z
             ])
             .optional(),
         author: z
-            .lazy(() => UserUpdateOneRequiredWithoutPostNestedInputObjectSchema)
+            .lazy(
+                () => UserUpdateOneRequiredWithoutPostsNestedInputObjectSchema
+            )
             .optional(),
     })
     .strict();

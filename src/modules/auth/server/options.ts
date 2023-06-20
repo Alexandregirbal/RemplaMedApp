@@ -24,6 +24,12 @@ const authOptions: NextAuthOptions = {
         jwt({ token }) {
             return token;
         },
+        signIn({ user }) {
+            if (user) {
+                return true;
+            }
+            return false;
+        },
     },
     jwt: {
         secret: env.NEXTAUTH_SECRET,
@@ -34,6 +40,9 @@ const authOptions: NextAuthOptions = {
     theme: {
         brandColor: "#FF0000",
         logo: "/logo-transparent-png-no-text.png",
+    },
+    pages: {
+        signIn: "/auth/signin",
     },
 };
 

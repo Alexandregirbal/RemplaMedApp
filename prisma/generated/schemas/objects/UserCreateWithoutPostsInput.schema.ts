@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { UserCreaterolesInputObjectSchema } from "./UserCreaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
+import { UserCreatepostsViewedInputObjectSchema } from "./UserCreatepostsViewedInput.schema";
 import { AccountCreateNestedManyWithoutUserInputObjectSchema } from "./AccountCreateNestedManyWithoutUserInput.schema";
 import { SessionCreateNestedManyWithoutUserInputObjectSchema } from "./SessionCreateNestedManyWithoutUserInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
-const Schema: z.ZodType<Prisma.UserCreateWithoutPostInput> = z
+const Schema: z.ZodType<Prisma.UserCreateWithoutPostsInput> = z
     .object({
         id: z.string().optional(),
         name: z.string().optional().nullable(),
@@ -21,6 +22,12 @@ const Schema: z.ZodType<Prisma.UserCreateWithoutPostInput> = z
             ])
             .optional(),
         createdAt: z.date().optional(),
+        postsViewed: z
+            .union([
+                z.lazy(() => UserCreatepostsViewedInputObjectSchema),
+                z.string().array(),
+            ])
+            .optional(),
         accounts: z
             .lazy(() => AccountCreateNestedManyWithoutUserInputObjectSchema)
             .optional(),
@@ -30,4 +37,4 @@ const Schema: z.ZodType<Prisma.UserCreateWithoutPostInput> = z
     })
     .strict();
 
-export const UserCreateWithoutPostInputObjectSchema = Schema;
+export const UserCreateWithoutPostsInputObjectSchema = Schema;

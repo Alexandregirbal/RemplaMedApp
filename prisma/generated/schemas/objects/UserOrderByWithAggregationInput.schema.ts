@@ -16,6 +16,7 @@ const Schema: z.ZodType<Prisma.UserOrderByWithAggregationInput> = z
         image: z.lazy(() => SortOrderSchema).optional(),
         roles: z.lazy(() => SortOrderSchema).optional(),
         createdAt: z.lazy(() => SortOrderSchema).optional(),
+        postsViewed: z.lazy(() => SortOrderSchema).optional(),
         _count: z
             .lazy(() => UserCountOrderByAggregateInputObjectSchema)
             .optional(),

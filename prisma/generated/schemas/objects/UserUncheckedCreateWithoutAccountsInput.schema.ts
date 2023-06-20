@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { UserCreaterolesInputObjectSchema } from "./UserCreaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
+import { UserCreatepostsViewedInputObjectSchema } from "./UserCreatepostsViewedInput.schema";
 import { SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema } from "./SessionUncheckedCreateNestedManyWithoutUserInput.schema";
 import { PostUncheckedCreateNestedManyWithoutAuthorInputObjectSchema } from "./PostUncheckedCreateNestedManyWithoutAuthorInput.schema";
 
@@ -21,13 +22,19 @@ const Schema: z.ZodType<Prisma.UserUncheckedCreateWithoutAccountsInput> = z
             ])
             .optional(),
         createdAt: z.date().optional(),
+        postsViewed: z
+            .union([
+                z.lazy(() => UserCreatepostsViewedInputObjectSchema),
+                z.string().array(),
+            ])
+            .optional(),
         sessions: z
             .lazy(
                 () =>
                     SessionUncheckedCreateNestedManyWithoutUserInputObjectSchema
             )
             .optional(),
-        Post: z
+        posts: z
             .lazy(
                 () =>
                     PostUncheckedCreateNestedManyWithoutAuthorInputObjectSchema

@@ -57,9 +57,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  Post          Post[]
+  posts         Post[]
   roles         Role[]
   createdAt     DateTime  @default(now())
+  postsViewed   String[]
 }
 
 model VerificationToken {

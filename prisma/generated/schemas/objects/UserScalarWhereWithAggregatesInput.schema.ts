@@ -4,6 +4,7 @@ import { StringNullableWithAggregatesFilterObjectSchema } from "./StringNullable
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from "./DateTimeNullableWithAggregatesFilter.schema";
 import { EnumRoleNullableListFilterObjectSchema } from "./EnumRoleNullableListFilter.schema";
 import { DateTimeWithAggregatesFilterObjectSchema } from "./DateTimeWithAggregatesFilter.schema";
+import { StringNullableListFilterObjectSchema } from "./StringNullableListFilter.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -76,6 +77,9 @@ const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
                 z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
                 z.date(),
             ])
+            .optional(),
+        postsViewed: z
+            .lazy(() => StringNullableListFilterObjectSchema)
             .optional(),
     })
     .strict();

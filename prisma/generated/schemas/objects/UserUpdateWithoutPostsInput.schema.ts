@@ -5,12 +5,13 @@ import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./Nullab
 import { UserUpdaterolesInputObjectSchema } from "./UserUpdaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
+import { UserUpdatepostsViewedInputObjectSchema } from "./UserUpdatepostsViewedInput.schema";
 import { AccountUpdateManyWithoutUserNestedInputObjectSchema } from "./AccountUpdateManyWithoutUserNestedInput.schema";
 import { SessionUpdateManyWithoutUserNestedInputObjectSchema } from "./SessionUpdateManyWithoutUserNestedInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
-const Schema: z.ZodType<Prisma.UserUpdateWithoutPostInput> = z
+const Schema: z.ZodType<Prisma.UserUpdateWithoutPostsInput> = z
     .object({
         id: z
             .union([
@@ -75,6 +76,12 @@ const Schema: z.ZodType<Prisma.UserUpdateWithoutPostInput> = z
                 z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema),
             ])
             .optional(),
+        postsViewed: z
+            .union([
+                z.lazy(() => UserUpdatepostsViewedInputObjectSchema),
+                z.string().array(),
+            ])
+            .optional(),
         accounts: z
             .lazy(() => AccountUpdateManyWithoutUserNestedInputObjectSchema)
             .optional(),
@@ -84,4 +91,4 @@ const Schema: z.ZodType<Prisma.UserUpdateWithoutPostInput> = z
     })
     .strict();
 
-export const UserUpdateWithoutPostInputObjectSchema = Schema;
+export const UserUpdateWithoutPostsInputObjectSchema = Schema;

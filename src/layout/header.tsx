@@ -1,5 +1,5 @@
-import Logged from "modules/auth/components/logged";
-import Login from "modules/auth/components/login";
+import Logged from "modules/auth/components/LoggedIcon";
+import Login from "modules/auth/components/LoginButton";
 import { getMetaData } from "modules/post/services/getMetadata";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";

@@ -1,14 +1,12 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { type NextPage } from "next";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import { getCsrfToken, getProviders } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useState, type FormEventHandler } from "react";
 
 const SignupPage: NextPage = () => {
-    const router = useRouter();
-
     const [email, setEmail] = useState("");
+    const [userAlreadyExists, setUserAlreadyExists] = useState(false);
     const [name, setName] = useState("");
     const [description, setUserTitle] = useState("");
     const [password, setPassword] = useState("");
@@ -16,6 +14,7 @@ const SignupPage: NextPage = () => {
 
     const handleSubmitSignUp: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
+        setUserAlreadyExists(false);
         void axios
             .post("/api/auth/signup", {
                 email,
@@ -24,8 +23,17 @@ const SignupPage: NextPage = () => {
                 password,
             })
             .then((response) => {
-                if (response.status === 200) {
-                    void router.push("/");
+                if (response.status !== 200) {
+                    return;
+                }
+                void axios.post("/api/auth/callback/credentials", {
+                    email,
+                    password,
+                });
+            })
+            .catch((error) => {
+                if ((error as AxiosError).response?.status === 400) {
+                    setUserAlreadyExists(true);
                 }
             });
     };
@@ -80,6 +88,13 @@ const SignupPage: NextPage = () => {
                                     <p className="text-sm text-red-500">
                                         {
                                             "L'email est invalide. Veuillez entrer une adresse email valide."
+                                        }
+                                    </p>
+                                )}
+                                {userAlreadyExists && (
+                                    <p className="text-sm text-red-500">
+                                        {
+                                            "L'utilisateur existe déjà. Veuillez vous connecter ou utiliser une autre adresse email."
                                         }
                                     </p>
                                 )}

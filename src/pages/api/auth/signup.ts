@@ -2,6 +2,7 @@ import { createOneUser } from "modules/user/dao/create";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { UserDescriptionSchema } from "../../../../prisma/generated/schemas";
+import { findOneUser } from "modules/user/dao/find";
 
 const addPostViewedPutBodySchema = z.object({
     email: z.string().email(),
@@ -11,8 +12,6 @@ const addPostViewedPutBodySchema = z.object({
 });
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(`LOG by Girbal --- | handlePost | req.body---`, req.body);
-
     const parsedBody = addPostViewedPutBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
@@ -21,6 +20,14 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
             message: "failed",
             data: "Data is unvalid",
             errors: parsedBody.error,
+        });
+    }
+
+    const userAlreadyExist = await findOneUser(parsedBody.data.email);
+    if (userAlreadyExist) {
+        return res.status(400).json({
+            message: "failed",
+            data: "User already exists",
         });
     }
 

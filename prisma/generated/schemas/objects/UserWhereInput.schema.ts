@@ -2,6 +2,8 @@ import { z } from "zod";
 import { StringFilterObjectSchema } from "./StringFilter.schema";
 import { StringNullableFilterObjectSchema } from "./StringNullableFilter.schema";
 import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.schema";
+import { EnumUserDescriptionNullableFilterObjectSchema } from "./EnumUserDescriptionNullableFilter.schema";
+import { UserDescriptionSchema } from "../enums/UserDescription.schema";
 import { EnumRoleNullableListFilterObjectSchema } from "./EnumRoleNullableListFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
 import { StringNullableListFilterObjectSchema } from "./StringNullableListFilter.schema";
@@ -50,6 +52,13 @@ const Schema: z.ZodType<Prisma.UserWhereInput> = z
             .nullable(),
         image: z
             .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
+            .optional()
+            .nullable(),
+        description: z
+            .union([
+                z.lazy(() => EnumUserDescriptionNullableFilterObjectSchema),
+                z.lazy(() => UserDescriptionSchema),
+            ])
             .optional()
             .nullable(),
         roles: z.lazy(() => EnumRoleNullableListFilterObjectSchema).optional(),

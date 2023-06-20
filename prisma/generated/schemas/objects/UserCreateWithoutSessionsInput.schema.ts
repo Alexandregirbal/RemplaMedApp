@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UserDescriptionSchema } from "../enums/UserDescription.schema";
 import { UserCreaterolesInputObjectSchema } from "./UserCreaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
 import { UserCreatepostsViewedInputObjectSchema } from "./UserCreatepostsViewedInput.schema";
@@ -15,6 +16,10 @@ const Schema: z.ZodType<Prisma.UserCreateWithoutSessionsInput> = z
         password: z.string().optional().nullable(),
         emailVerified: z.date().optional().nullable(),
         image: z.string().optional().nullable(),
+        description: z
+            .lazy(() => UserDescriptionSchema)
+            .optional()
+            .nullable(),
         roles: z
             .union([
                 z.lazy(() => UserCreaterolesInputObjectSchema),

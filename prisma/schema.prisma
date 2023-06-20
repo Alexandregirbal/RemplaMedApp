@@ -48,18 +48,26 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum UserDescription {
+  OWNER
+  REPLACER
+  STUDENT
+  OTHER
+}
+
 model User {
-  id            String    @id @default(cuid())
+  id            String           @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?          @unique
   password      String?
   emailVerified DateTime?
   image         String?
+  description   UserDescription?
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
   roles         Role[]
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime         @default(now())
   postsViewed   String[]
 }
 

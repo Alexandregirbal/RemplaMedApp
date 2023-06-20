@@ -10,6 +10,7 @@ const Schema: z.ZodType<Prisma.UserMaxAggregateInputType> = z
         password: z.literal(true).optional(),
         emailVerified: z.literal(true).optional(),
         image: z.literal(true).optional(),
+        description: z.literal(true).optional(),
         createdAt: z.literal(true).optional(),
     })
     .strict();

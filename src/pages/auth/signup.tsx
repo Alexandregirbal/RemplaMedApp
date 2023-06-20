@@ -1,8 +1,48 @@
+import axios from "axios";
 import { type NextPage } from "next";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import { getCsrfToken, getProviders } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useState, type FormEventHandler } from "react";
 
 const SignupPage: NextPage = () => {
+    const router = useRouter();
+
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [description, setUserTitle] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordVerification, setPasswordVerification] = useState("");
+
+    const handleSubmitSignUp: FormEventHandler<HTMLFormElement> = (event) => {
+        event.preventDefault();
+        void axios
+            .post("/api/auth/signup", {
+                email,
+                name,
+                description,
+                password,
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    void router.push("/");
+                }
+            });
+    };
+
+    const isEmailValid = email !== "" && email.match(/.+@.+\..+/) !== null;
+    const isNameValid = name !== "" && name.length >= 2;
+    const isUserTitleValid = description && description !== "";
+    const isPasswordValid = password !== "" && password.length >= 6;
+    const arePasswordsMatching = password === passwordVerification;
+
+    const isFormSubmittable =
+        isEmailValid &&
+        isNameValid &&
+        isUserTitleValid &&
+        isPasswordValid &&
+        arePasswordsMatching;
+
     return (
         <section className="h-full bg-background text-primary ">
             <div className="flex h-full flex-col items-center justify-center px-6">
@@ -16,8 +56,7 @@ const SignupPage: NextPage = () => {
                         </h1>
                         <form
                             className="space-y-4 md:space-y-6"
-                            method="post"
-                            action="/api/auth/signup"
+                            onSubmit={handleSubmitSignUp}
                         >
                             <div>
                                 <label
@@ -32,7 +71,18 @@ const SignupPage: NextPage = () => {
                                     id="email"
                                     className="dark:border-gray block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                                     placeholder="amelie.durand@gmail.com"
+                                    value={email}
+                                    onChange={(event) =>
+                                        setEmail(event.target.value)
+                                    }
                                 />
+                                {!isEmailValid && email !== "" && (
+                                    <p className="text-sm text-red-500">
+                                        {
+                                            "L'email est invalide. Veuillez entrer une adresse email valide."
+                                        }
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label
@@ -52,19 +102,34 @@ const SignupPage: NextPage = () => {
                                     id="name"
                                     className="dark:border-gray block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                                     placeholder="Amelie Durand"
+                                    value={name}
+                                    onChange={(event) =>
+                                        setName(event.target.value)
+                                    }
                                 />
+                                {!isNameValid && name !== "" && (
+                                    <p className="text-sm text-red-500">
+                                        {
+                                            "Le nom d'utilisateur est invalide. Il doit contenir au moins 2 caractères."
+                                        }
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label
-                                    htmlFor="userTitle"
+                                    htmlFor="description"
                                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                                 >
                                     {"Je suis"}
                                 </label>
                                 <select
-                                    id="userTitle"
-                                    name="userTitle"
+                                    id="description"
+                                    name="description"
                                     className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                    value={description}
+                                    onChange={(event) =>
+                                        setUserTitle(event.target.value)
+                                    }
                                 >
                                     <option selected>
                                         Choisissez une option
@@ -74,6 +139,11 @@ const SignupPage: NextPage = () => {
                                     <option value="STUDENT">En étude</option>
                                     <option value="OTHER">Autre</option>
                                 </select>
+                                {!isUserTitleValid && description !== "" && (
+                                    <p className="text-sm text-red-500">
+                                        {"Veuillez choisir une option."}
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label
@@ -88,8 +158,19 @@ const SignupPage: NextPage = () => {
                                     min={6}
                                     id="password"
                                     placeholder="••••••••"
+                                    value={password}
+                                    onChange={(event) =>
+                                        setPassword(event.target.value)
+                                    }
                                     className="dark:border-gray block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                                 />
+                                {!isPasswordValid && password !== "" && (
+                                    <p className="text-sm text-red-500">
+                                        {
+                                            "Le mot de passe est invalide. Il doit contenir au moins 6 caractères."
+                                        }
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label
@@ -104,13 +185,28 @@ const SignupPage: NextPage = () => {
                                     min={6}
                                     id="password-verification"
                                     placeholder="••••••••"
+                                    value={passwordVerification}
+                                    onChange={(event) =>
+                                        setPasswordVerification(
+                                            event.target.value
+                                        )
+                                    }
                                     className="dark:border-gray block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                                 />
+                                {!arePasswordsMatching &&
+                                    passwordVerification !== "" && (
+                                        <p className="text-sm text-red-500">
+                                            {
+                                                "Les mots de passe ne correspondent pas."
+                                            }
+                                        </p>
+                                    )}
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full rounded-lg bg-cta px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary"
+                                className="w-full rounded-lg bg-cta px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary disabled:bg-gray-400"
+                                disabled={!isFormSubmittable}
                             >
                                 {"Créer mon compte"}
                             </button>

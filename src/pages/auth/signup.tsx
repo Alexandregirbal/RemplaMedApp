@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { type NextPage } from "next";
 import type { CtxOrReq } from "next-auth/client/_utils";
-import { getCsrfToken, getProviders } from "next-auth/react";
+import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import { useState, type FormEventHandler } from "react";
 
 const SignupPage: NextPage = () => {
@@ -26,9 +26,11 @@ const SignupPage: NextPage = () => {
                 if (response.status !== 200) {
                     return;
                 }
-                void axios.post("/api/auth/callback/credentials", {
+                console.log("Need to sign in ...");
+                void signIn("credentials", {
                     email,
                     password,
+                    callbackUrl: "/",
                 });
             })
             .catch((error) => {
@@ -146,7 +148,7 @@ const SignupPage: NextPage = () => {
                                         setUserTitle(event.target.value)
                                     }
                                 >
-                                    <option selected>
+                                    <option value="">
                                         Choisissez une option
                                     </option>
                                     <option value="OWNER">Titulaire</option>

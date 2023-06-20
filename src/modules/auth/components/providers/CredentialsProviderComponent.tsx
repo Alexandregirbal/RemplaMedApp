@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 type CredentialsProviderComponentProps = {
     csrfToken?: string;
 };
@@ -5,6 +8,10 @@ type CredentialsProviderComponentProps = {
 const CredentialsProviderComponent = ({
     csrfToken,
 }: CredentialsProviderComponentProps) => {
+    const router = useRouter();
+    const { error } = router.query;
+    const isUnauthorized = error === "CredentialsSignin";
+
     return (
         <form
             className="space-y-4 md:space-y-6"
@@ -50,6 +57,19 @@ const CredentialsProviderComponent = ({
                     Mot de passe oublié?
                 </a>
             </div> */}
+            {isUnauthorized && (
+                <p className="text-red-600">
+                    {
+                        "Votre email ou votre mot de passe est incorrecte. Réessayez ou"
+                    }{" "}
+                    <Link
+                        href={"/auth/signup"}
+                        className="text-primary hover:cursor-pointer"
+                    >
+                        {"créez un compte"}
+                    </Link>
+                </p>
+            )}
             <button
                 type="submit"
                 className="w-full rounded-lg bg-cta px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary"

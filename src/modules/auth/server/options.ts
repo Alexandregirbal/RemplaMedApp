@@ -24,12 +24,7 @@ const authOptions: NextAuthOptions = {
         jwt({ token }) {
             return token;
         },
-        signIn({ account, user, profile, email, credentials }) {
-            console.log(
-                `LOG by Girbal --- | signIn | { account, user, profile, email, credentials }---`,
-                { account, user, profile, email, credentials }
-            );
-
+        signIn({ user }) {
             if (user) {
                 return true;
             }

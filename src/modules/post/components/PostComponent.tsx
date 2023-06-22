@@ -70,15 +70,15 @@ const PostComponent = ({
         <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={`flex h-full flex-col rounded-lg border ${
+            className={`flex max-h-full flex-col rounded-lg border ${
                 isSelected ? " outline outline-2" : ""
-            } ${
-                isMini ? "" : "h-full"
-            } border-primary bg-background p-2 shadow-xl transition`}
+            }} border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div className="truncate text-xl font-bold">{post.title}</div>
-                <div className="">{post.postalCode}</div>
+                {post.city && post.postalCode && (
+                    <div>{`${post.postalCode} ${post.city}`}</div>
+                )}
             </div>
             <p>
                 {post.availablityFrom && (

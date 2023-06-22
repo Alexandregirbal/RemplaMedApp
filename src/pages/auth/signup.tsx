@@ -1,10 +1,14 @@
-import axios, { AxiosError } from "axios";
+import axios, { type AxiosError } from "axios";
 import { type NextPage } from "next";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import { useState, type FormEventHandler } from "react";
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "store/slices/ui/slice";
 
 const SignupPage: NextPage = () => {
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState("");
     const [userAlreadyExists, setUserAlreadyExists] = useState(false);
     const [name, setName] = useState("");
@@ -15,6 +19,7 @@ const SignupPage: NextPage = () => {
     const handleSubmitSignUp: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
         setUserAlreadyExists(false);
+        dispatch(setIsLoading(true));
         void axios
             .post("/api/auth/signup", {
                 email,
@@ -37,6 +42,9 @@ const SignupPage: NextPage = () => {
                 if ((error as AxiosError).response?.status === 400) {
                     setUserAlreadyExists(true);
                 }
+            })
+            .finally(() => {
+                dispatch(setIsLoading(false));
             });
     };
 

@@ -2,7 +2,7 @@ import type { Post, Prisma } from "@prisma/client";
 import { prisma } from "server/db";
 import { postToPostWithDatesStrings } from "../services/postWithDatesStrings";
 import { type MetaData } from "../types/metadata";
-import { type PostWithAuthorName } from "../types/post";
+import { PostWithDatesStrings, type PostWithAuthorName } from "../types/post";
 import dayjs from "dayjs";
 
 const MIN_DATE = dayjs().subtract(3, "month");
@@ -74,4 +74,23 @@ export const getMetaData = async (): Promise<MetaData> => {
     });
 
     return { totalOverallPosts, totalRecentPosts };
+};
+
+export const findUserPosts = async (
+    userId: string | undefined
+): Promise<PostWithDatesStrings[]> => {
+    if (!userId) {
+        return [];
+    }
+
+    const posts = await prisma.post.findMany({
+        where: {
+            authorId: userId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+
+    return posts.map((post) => postToPostWithDatesStrings(post));
 };

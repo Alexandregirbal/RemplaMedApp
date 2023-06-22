@@ -2,7 +2,6 @@ import Filters from "modules/filters";
 import MapComponent from "modules/map";
 import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
-import Loading from "modules/ui/loading";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,12 +9,10 @@ import { useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
 import { selectPostsState, setPosts } from "store/slices/posts/slice";
-import { selectUIState } from "store/slices/ui/slice";
 
 const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
     const { data: posts, selectedPost } = useSelector(selectPostsState);
-    const { isLoading } = useSelector(selectUIState);
 
     const [isMouseOverPostsList, setIsMouseOverPostsList] =
         useState<boolean>(false);
@@ -73,7 +70,6 @@ const Home: NextPage = () => {
                         <MapComponent posts={posts} />
                     </div>
                 )}
-                {isLoading && <Loading />}
             </div>
         </>
     );

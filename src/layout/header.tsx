@@ -1,3 +1,4 @@
+import { Tooltip } from "flowbite-react";
 import Logged from "modules/auth/components/LoggedIcon";
 import Login from "modules/auth/components/LoginButton";
 import { getMetaData } from "modules/post/services/getMetadata";
@@ -34,11 +35,25 @@ const Header: NextPage = () => {
                             height={64}
                         />
                     </Link>
-                    <Link href={"/posts/create"}>
-                        <button className="h-10 rounded-lg border border-cta px-8 text-cta outline-cta">
-                            + Publier
-                        </button>
-                    </Link>
+                    <Tooltip
+                        content={
+                            session
+                                ? "Commencez à créer un poste"
+                                : "Connectez vous pour créer un poste"
+                        }
+                    >
+                        <Link href={session ? "/posts/create" : "/"}>
+                            <button
+                                className={`h-10 rounded-lg border px-8 ${
+                                    session
+                                        ? "border-cta  text-cta outline-cta"
+                                        : "border-gray-500  text-gray-500 outline-gray-500 hover:cursor-default"
+                                }`}
+                            >
+                                + Publier
+                            </button>
+                        </Link>
+                    </Tooltip>
                 </div>
                 <div id="posts-number" className="text-xl">
                     Plus de {metadata.totalRecentPosts} annonces récentes

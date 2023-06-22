@@ -31,6 +31,9 @@ const Preview = () => {
 
     return (
         <div className="flex h-full flex-col gap-8 px-60 pt-8">
+            <h1 className="flex justify-center text-xl">
+                {`Ceci est un aperçu de votre poste. Si il vous convient, cliquez sur "Suivant".`}
+            </h1>
             <div className="h-5/6">
                 <PostComponent
                     post={{

@@ -1,12 +1,12 @@
 import type { Prisma } from "@prisma/client";
-import { getLocationFromPostalCode } from "modules/geocode";
+import { getGeocodeDataFromPostalCode } from "modules/geocode";
 import { prisma } from "server/db";
 
 export const createOnePost = async (post: Prisma.PostUncheckedCreateInput) => {
-    const geocodeData = await getLocationFromPostalCode(post.postalCode);
+    const geocodeData = await getGeocodeDataFromPostalCode(post.postalCode);
     const enrichedPost = {
         ...post,
-        ...geocodeData,
+        ...geocodeData[0], // TODO use a city to help finding the right geocodeData
     };
 
     const newPost = await prisma.post.create({

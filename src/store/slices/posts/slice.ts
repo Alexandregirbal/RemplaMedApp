@@ -19,6 +19,9 @@ const initialState: PostsState = {
         title: "",
         message: "",
         postalCode: "",
+        city: "",
+        latitude: 0,
+        longitude: 0,
         availablityFrom: new Date().toISOString(),
     },
 };

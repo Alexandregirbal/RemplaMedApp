@@ -2,6 +2,8 @@ import { z } from "zod";
 import { StringFieldUpdateOperationsInputObjectSchema } from "./StringFieldUpdateOperationsInput.schema";
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from "./NullableStringFieldUpdateOperationsInput.schema";
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./NullableDateTimeFieldUpdateOperationsInput.schema";
+import { UserDescriptionSchema } from "../enums/UserDescription.schema";
+import { NullableEnumUserDescriptionFieldUpdateOperationsInputObjectSchema } from "./NullableEnumUserDescriptionFieldUpdateOperationsInput.schema";
 import { UserUpdaterolesInputObjectSchema } from "./UserUpdaterolesInput.schema";
 import { RoleSchema } from "../enums/Role.schema";
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
@@ -60,6 +62,16 @@ const Schema: z.ZodType<Prisma.UserUncheckedUpdateWithoutSessionsInput> = z
                 z.string(),
                 z.lazy(
                     () => NullableStringFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
+        description: z
+            .union([
+                z.lazy(() => UserDescriptionSchema),
+                z.lazy(
+                    () =>
+                        NullableEnumUserDescriptionFieldUpdateOperationsInputObjectSchema
                 ),
             ])
             .optional()

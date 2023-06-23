@@ -2,6 +2,8 @@ import { z } from "zod";
 import { StringWithAggregatesFilterObjectSchema } from "./StringWithAggregatesFilter.schema";
 import { StringNullableWithAggregatesFilterObjectSchema } from "./StringNullableWithAggregatesFilter.schema";
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from "./DateTimeNullableWithAggregatesFilter.schema";
+import { EnumUserDescriptionNullableWithAggregatesFilterObjectSchema } from "./EnumUserDescriptionNullableWithAggregatesFilter.schema";
+import { UserDescriptionSchema } from "../enums/UserDescription.schema";
 import { EnumRoleNullableListFilterObjectSchema } from "./EnumRoleNullableListFilter.schema";
 import { DateTimeWithAggregatesFilterObjectSchema } from "./DateTimeWithAggregatesFilter.schema";
 import { StringNullableListFilterObjectSchema } from "./StringNullableListFilter.schema";
@@ -68,6 +70,16 @@ const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
             .union([
                 z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
                 z.string(),
+            ])
+            .optional()
+            .nullable(),
+        description: z
+            .union([
+                z.lazy(
+                    () =>
+                        EnumUserDescriptionNullableWithAggregatesFilterObjectSchema
+                ),
+                z.lazy(() => UserDescriptionSchema),
             ])
             .optional()
             .nullable(),

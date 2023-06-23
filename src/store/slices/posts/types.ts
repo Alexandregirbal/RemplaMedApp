@@ -7,6 +7,13 @@ export type PostsState = {
     selectedPost: Partial<PostWithAuthorName> | null;
     newPost: Pick<
         PostWithAuthorName,
-        "title" | "message" | "postalCode" | "availablityFrom" | "availablityTo"
+        | "title"
+        | "message"
+        | "postalCode"
+        | "city"
+        | "latitude"
+        | "longitude"
+        | "availablityFrom"
+        | "availablityTo"
     >;
 };

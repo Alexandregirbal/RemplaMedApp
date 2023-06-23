@@ -2,7 +2,7 @@ import type { Post, Prisma } from "@prisma/client";
 import { prisma } from "server/db";
 import { postToPostWithDatesStrings } from "../services/postWithDatesStrings";
 import { type MetaData } from "../types/metadata";
-import { PostWithDatesStrings, type PostWithAuthorName } from "../types/post";
+import type { PostWithDatesStrings, PostWithAuthorName } from "../types/post";
 import dayjs from "dayjs";
 
 const MIN_DATE = dayjs().subtract(3, "month");

@@ -16,3 +16,18 @@ export const addPostViewed = async (params: {
         },
     });
 };
+
+export const updateProfile = async (params: {
+    userId: string;
+    name: string;
+}) => {
+    const { userId, name } = params;
+    return await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            name: name,
+        },
+    });
+};

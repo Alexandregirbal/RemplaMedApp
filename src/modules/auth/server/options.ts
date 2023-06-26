@@ -21,7 +21,12 @@ const authOptions: NextAuthOptions = {
             }
             return session;
         },
-        jwt({ token }) {
+        jwt({ token, trigger, session }) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (trigger === "update" && session?.name) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                token.name = session.name;
+            }
             return token;
         },
         signIn({ user }) {

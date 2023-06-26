@@ -100,7 +100,11 @@ const PostComponent = ({
                     </span>
                 )}
             </p>
-            <pre className="h-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap p-4 text-paragraph">
+            <pre
+                className={`h-full ${
+                    isMini ? "max-h-40" : ""
+                } overflow-y-auto overflow-x-hidden whitespace-pre-wrap p-4 text-paragraph`}
+            >
                 {postMessage}
             </pre>
             {isPrivate && (

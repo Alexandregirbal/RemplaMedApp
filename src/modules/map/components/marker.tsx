@@ -5,6 +5,7 @@ import { Marker, type MapboxEvent, type PointLike } from "react-map-gl";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPostsState, setSelectedPost } from "store/slices/posts/slice";
 import Pin from "./pin";
+import { selectUIState } from "store/slices/ui/slice";
 
 type MarkerComponentProps = {
     post: PostWithAuthorName;
@@ -14,6 +15,8 @@ const CustomMarkerComponent = ({ post }: MarkerComponentProps) => {
     const dispatch = useDispatch();
     const { push } = useRouter();
     const { selectedPost } = useSelector(selectPostsState);
+    const { isMobile } = useSelector(selectUIState);
+
     const isSelected = selectedPost && selectedPost.id === post.id;
 
     const hashedNumber = hashStringToNumber(post.id) % 13;
@@ -22,7 +25,9 @@ const CustomMarkerComponent = ({ post }: MarkerComponentProps) => {
     const handleMarkerClick = (event: MapboxEvent<MouseEvent>) => {
         event.originalEvent.stopPropagation(); // avoid `closeOnClick: true` on the Popup
         dispatch(setSelectedPost(post));
-        void push(`/posts/${post.id}`);
+        if (!isMobile) {
+            void push(`/posts/${post.id}`);
+        }
     };
 
     const handleMouseEnter = () => {

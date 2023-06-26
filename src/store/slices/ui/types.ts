@@ -5,5 +5,6 @@ export type Toaster = {
 
 export type UIState = {
     isLoading: boolean;
+    isMobile: boolean;
     toaster: Toaster | null;
 };

@@ -27,9 +27,9 @@ const Header: NextPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="h-32 p-4">
-            <nav id="navbar" className="flex  items-center justify-between ">
-                <div className="flex items-center gap-6">
+        <div className="flex h-36 flex-col p-2">
+            <nav id="navbar" className="flex items-center justify-between ">
+                <div className="flex w-1/4 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>
                         <Image
                             src="/logo-transparent-png-no-text.png"
@@ -62,20 +62,22 @@ const Header: NextPage = () => {
                 </div>
                 <div
                     id="headline"
-                    className=" flex h-8 flex-col justify-center "
+                    className=" flex h-8 justify-center text-3xl"
                 >
-                    <span className="flex justify-center text-3xl">
-                        {"RemplaMed"}
-                    </span>
-                    <span className="flex justify-center">
-                        {"Réseau de remplacement infirmier"}
-                    </span>
+                    {"RemplaMed"}
                 </div>
 
-                {session ? <Logged user={session.user} /> : <Login />}
+                <div className="flex w-1/4 flex-row-reverse">
+                    {session ? <Logged user={session.user} /> : <Login />}
+                </div>
             </nav>
-            <div id="posts-number" className="flex justify-center text-xl">
-                Plus de {metadata.totalRecentPosts} annonces récentes
+            <div className="flex grow flex-col justify-center ">
+                <span className="flex justify-center text-xl">
+                    {"Réseau de remplacement infirmier"}
+                </span>
+                <span id="posts-number" className="flex justify-center">
+                    {`Plus de ${metadata.totalRecentPosts} annonces récentes`}
+                </span>
             </div>
         </div>
     );

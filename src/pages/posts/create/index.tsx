@@ -99,9 +99,9 @@ const CreatePost = () => {
     return (
         <form
             onSubmit={handleSubmitCreatePostForm}
-            className="row flex h-full grow flex-col px-60 text-lg"
+            className="row md:px-30 flex h-full grow flex-col gap-6 px-8 pb-4 text-lg sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
         >
-            <div className="mb-6">
+            <div>
                 <label htmlFor="title" className="mb-2 block ">
                     Titre
                 </label>
@@ -115,7 +115,7 @@ const CreatePost = () => {
                     required
                 />
             </div>
-            <div className="mb-6 flex grow flex-col">
+            <div className="flex grow flex-col">
                 <label htmlFor="message" className="mb-2 block ">
                     Message
                 </label>
@@ -129,13 +129,13 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     required
                 />
             </div>
-            <div className="mb-6">
+            <div>
                 <label htmlFor="postalCode" className="mb-2 block ">
                     Code postal
                 </label>
                 <div
                     id="postalCode-container"
-                    className="flex flex-row items-center gap-4"
+                    className="flex flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
                 >
                     <input
                         type="text"
@@ -188,7 +188,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     )}
                 </div>
             </div>
-            <div className="mb-6 flex items-start gap-4">
+            <div className="flex items-start gap-4">
                 <div className="mb-6">
                     <label htmlFor="from" className="mb-2 block ">
                         A partir du
@@ -217,7 +217,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     />
                 </div>
             </div>
-            <div className="flex justify-evenly">
+            <div className="flex justify-evenly gap-8">
                 <button
                     type="reset"
                     className="w-full rounded-lg bg-red-900 px-5 py-2.5 text-center text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"

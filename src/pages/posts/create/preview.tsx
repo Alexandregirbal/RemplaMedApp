@@ -30,7 +30,7 @@ const Preview = () => {
     };
 
     return (
-        <div className="flex h-full flex-col gap-8 px-60 pt-8">
+        <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-8 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
             <h1 className="flex justify-center text-xl">
                 {`Ceci est un aperçu de votre poste. Si il vous convient, cliquez sur "Suivant".`}
             </h1>
@@ -42,7 +42,7 @@ const Preview = () => {
                     }}
                 />
             </div>
-            <div className="flex justify-evenly">
+            <div className="flex justify-evenly gap-8">
                 <button
                     onClick={handlePreviousClick}
                     className="w-full rounded-lg bg-red-900 px-5 py-2.5 text-center text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"

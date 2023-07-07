@@ -1,16 +1,25 @@
 import Head from "next/head";
 import Footer from "./footer";
 import Header from "./header";
-import { useSelector } from "react-redux";
-import { selectUIState } from "store/slices/ui/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUIState, setIsMobile } from "store/slices/ui/slice";
 import Loading from "modules/ui/loading";
+import { useEffect } from "react";
 
 type LayoutProps = {
     children: React.ReactNode;
 };
 
 const Layout = ({ children }: LayoutProps) => {
+    const dispatch = useDispatch();
     const { isLoading } = useSelector(selectUIState);
+
+    useEffect(() => {
+        const { matches } = window.matchMedia("(max-width: 450px)");
+        if (matches) {
+            dispatch(setIsMobile(true));
+        }
+    }, [dispatch]);
 
     return (
         <>

@@ -5,18 +5,16 @@ import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectFiltersState } from "store/slices/filters/slice";
 import { selectPostsState, setPosts } from "store/slices/posts/slice";
-import { selectUIState, setIsMobile } from "store/slices/ui/slice";
+import { selectUIState } from "store/slices/ui/slice";
 
 const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
     const { data: posts, selectedPost } = useSelector(selectPostsState);
     const { isMobile } = useSelector(selectUIState);
-
-    const dispatch = useDispatch();
 
     const [isMouseOverPostsList, setIsMouseOverPostsList] =
         useState<boolean>(false);
@@ -43,19 +41,13 @@ const Home: NextPage = () => {
     const handleMouseLeaveOnPostsList = () => {
         setIsMouseOverPostsList(false);
     };
-    useEffect(() => {
-        const { matches } = window.matchMedia("(max-width: 450px)");
-        if (matches) {
-            dispatch(setIsMobile(true));
-        }
-    }, [dispatch]);
 
     return (
         <>
-            <Filters />
+            {!isMobile && <Filters />}
             <div
                 id="posts"
-                className="flex-column relative flex h-[calc(100%-4rem)] w-full "
+                className="flex-column relative flex h-full w-full sm:h-[calc(100%-4rem)] "
             >
                 {!isMobile && (
                     <div

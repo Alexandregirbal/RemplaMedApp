@@ -6,6 +6,8 @@ import { FloatNullableFilterObjectSchema } from "./FloatNullableFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
 import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.schema";
 import { IntFilterObjectSchema } from "./IntFilter.schema";
+import { EnumSourceNullableFilterObjectSchema } from "./EnumSourceNullableFilter.schema";
+import { SourceSchema } from "../enums/Source.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -74,6 +76,13 @@ const Schema: z.ZodType<Prisma.PostScalarWhereInput> = z
         views: z
             .union([z.lazy(() => IntFilterObjectSchema), z.number()])
             .optional(),
+        source: z
+            .union([
+                z.lazy(() => EnumSourceNullableFilterObjectSchema),
+                z.lazy(() => SourceSchema),
+            ])
+            .optional()
+            .nullable(),
     })
     .strict();
 

@@ -24,6 +24,7 @@ const Schema: z.ZodType<Prisma.PostOrderByWithAggregationInput> = z
         availablityFrom: z.lazy(() => SortOrderSchema).optional(),
         availablityTo: z.lazy(() => SortOrderSchema).optional(),
         views: z.lazy(() => SortOrderSchema).optional(),
+        source: z.lazy(() => SortOrderSchema).optional(),
         _count: z
             .lazy(() => PostCountOrderByAggregateInputObjectSchema)
             .optional(),

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SourceSchema } from "../enums/Source.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -17,6 +18,10 @@ const Schema: z.ZodType<Prisma.PostCreateWithoutAuthorInput> = z
         availablityFrom: z.date(),
         availablityTo: z.date().optional().nullable(),
         views: z.number().optional(),
+        source: z
+            .lazy(() => SourceSchema)
+            .optional()
+            .nullable(),
     })
     .strict();
 

@@ -18,6 +18,7 @@ const Schema: z.ZodType<Prisma.PostMinAggregateInputType> = z
         availablityFrom: z.literal(true).optional(),
         availablityTo: z.literal(true).optional(),
         views: z.literal(true).optional(),
+        source: z.literal(true).optional(),
     })
     .strict();
 

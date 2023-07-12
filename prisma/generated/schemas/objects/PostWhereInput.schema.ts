@@ -6,6 +6,8 @@ import { FloatNullableFilterObjectSchema } from "./FloatNullableFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
 import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.schema";
 import { IntFilterObjectSchema } from "./IntFilter.schema";
+import { EnumSourceNullableFilterObjectSchema } from "./EnumSourceNullableFilter.schema";
+import { SourceSchema } from "../enums/Source.schema";
 import { UserRelationFilterObjectSchema } from "./UserRelationFilter.schema";
 import { UserWhereInputObjectSchema } from "./UserWhereInput.schema";
 
@@ -76,6 +78,13 @@ const Schema: z.ZodType<Prisma.PostWhereInput> = z
         views: z
             .union([z.lazy(() => IntFilterObjectSchema), z.number()])
             .optional(),
+        source: z
+            .union([
+                z.lazy(() => EnumSourceNullableFilterObjectSchema),
+                z.lazy(() => SourceSchema),
+            ])
+            .optional()
+            .nullable(),
         author: z
             .union([
                 z.lazy(() => UserRelationFilterObjectSchema),

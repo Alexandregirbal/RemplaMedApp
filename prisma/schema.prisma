@@ -79,6 +79,10 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum Source {
+  STETHONET
+}
+
 model Post {
   id              String    @id @default(cuid())
   author          User      @relation(fields: [authorId], references: [id])
@@ -95,4 +99,5 @@ model Post {
   availablityFrom DateTime
   availablityTo   DateTime?
   views           Int       @default(0)
+  source          Source?
 }

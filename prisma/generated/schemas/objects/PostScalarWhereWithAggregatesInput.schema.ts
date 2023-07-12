@@ -6,6 +6,8 @@ import { FloatNullableWithAggregatesFilterObjectSchema } from "./FloatNullableWi
 import { DateTimeWithAggregatesFilterObjectSchema } from "./DateTimeWithAggregatesFilter.schema";
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from "./DateTimeNullableWithAggregatesFilter.schema";
 import { IntWithAggregatesFilterObjectSchema } from "./IntWithAggregatesFilter.schema";
+import { EnumSourceNullableWithAggregatesFilterObjectSchema } from "./EnumSourceNullableWithAggregatesFilter.schema";
+import { SourceSchema } from "../enums/Source.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -120,6 +122,15 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
                 z.number(),
             ])
             .optional(),
+        source: z
+            .union([
+                z.lazy(
+                    () => EnumSourceNullableWithAggregatesFilterObjectSchema
+                ),
+                z.lazy(() => SourceSchema),
+            ])
+            .optional()
+            .nullable(),
     })
     .strict();
 

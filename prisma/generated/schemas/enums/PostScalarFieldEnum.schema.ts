@@ -15,4 +15,5 @@ export const PostScalarFieldEnumSchema = z.enum([
     "availablityFrom",
     "availablityTo",
     "views",
+    "source",
 ]);

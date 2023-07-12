@@ -20,6 +20,7 @@ const Schema: z.ZodType<Prisma.PostOrderByWithRelationInput> = z
         availablityFrom: z.lazy(() => SortOrderSchema).optional(),
         availablityTo: z.lazy(() => SortOrderSchema).optional(),
         views: z.lazy(() => SortOrderSchema).optional(),
+        source: z.lazy(() => SortOrderSchema).optional(),
         author: z
             .lazy(() => UserOrderByWithRelationInputObjectSchema)
             .optional(),

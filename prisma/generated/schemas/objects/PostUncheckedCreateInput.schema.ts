@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SourceSchema } from "../enums/Source.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -18,6 +19,10 @@ const Schema: z.ZodType<Prisma.PostUncheckedCreateInput> = z
         availablityFrom: z.coerce.date(),
         availablityTo: z.coerce.date().optional().nullable(),
         views: z.number().optional(),
+        source: z
+            .lazy(() => SourceSchema)
+            .optional()
+            .nullable(),
     })
     .strict();
 

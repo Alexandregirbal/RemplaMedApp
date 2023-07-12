@@ -6,6 +6,8 @@ import { NullableFloatFieldUpdateOperationsInputObjectSchema } from "./NullableF
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./NullableDateTimeFieldUpdateOperationsInput.schema";
 import { IntFieldUpdateOperationsInputObjectSchema } from "./IntFieldUpdateOperationsInput.schema";
+import { SourceSchema } from "../enums/Source.schema";
+import { NullableEnumSourceFieldUpdateOperationsInputObjectSchema } from "./NullableEnumSourceFieldUpdateOperationsInput.schema";
 import { UserUpdateOneRequiredWithoutPostsNestedInputObjectSchema } from "./UserUpdateOneRequiredWithoutPostsNestedInput.schema";
 
 import type { Prisma } from "@prisma/client";
@@ -105,6 +107,16 @@ const Schema: z.ZodType<Prisma.PostUpdateInput> = z
                 z.lazy(() => IntFieldUpdateOperationsInputObjectSchema),
             ])
             .optional(),
+        source: z
+            .union([
+                z.lazy(() => SourceSchema),
+                z.lazy(
+                    () =>
+                        NullableEnumSourceFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
         author: z
             .lazy(
                 () => UserUpdateOneRequiredWithoutPostsNestedInputObjectSchema

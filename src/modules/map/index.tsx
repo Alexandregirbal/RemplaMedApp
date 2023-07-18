@@ -1,21 +1,48 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { PostWithAuthorName } from "modules/post/types/post";
-import { useEffect, useState } from "react";
-import Map, {
-    GeolocateControl,
-    NavigationControl,
-    type ViewState,
-    type ViewStateChangeEvent,
-} from "react-map-gl";
-import CustomMarkerComponent from "./components/marker";
+import { useEffect, useRef, useState } from "react";
+import { type ViewState, type ViewStateChangeEvent } from "react-map-gl";
 import { useDispatch } from "react-redux";
 import { setSelectedPost } from "store/slices/posts/slice";
+
+import mapboxgl from "mapbox-gl";
+import type { Feature, FeatureCollection } from "geojson";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 type MapComponentProps = {
     posts: PostWithAuthorName[];
 };
 
+const postToGeoJson = (post: PostWithAuthorName): Feature | null => {
+    if (!post.latitude || !post.longitude) return null;
+    return {
+        type: "Feature",
+        properties: {
+            ...post,
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [post.longitude, post.latitude],
+        },
+    };
+};
+
+const postsToGeoJSON = (posts: PostWithAuthorName[]): FeatureCollection => {
+    return {
+        type: "FeatureCollection",
+        features: posts.reduce<Feature[]>((acc, post) => {
+            const geoJson = postToGeoJson(post);
+            if (geoJson) {
+                acc.push(geoJson);
+            }
+            return acc;
+        }, []),
+    };
+};
+
 const MapComponent = ({ posts }: MapComponentProps) => {
+    const geoJsonPosts = postsToGeoJSON(posts);
+
     const dispatch = useDispatch();
 
     const [isGeolocationAvailable, setIsGeolocationAvailable] =
@@ -61,6 +88,87 @@ const MapComponent = ({ posts }: MapComponentProps) => {
         dispatch(setSelectedPost(null));
     };
 
+    mapboxgl.accessToken =
+        "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
+    const mapContainer = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (!mapContainer.current) return;
+        const map = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: "mapbox://styles/mapbox/streets-v11",
+            center: [-103.59179687498357, 40.66995747013945],
+            zoom: 3,
+        });
+
+        map.on("load", () => {
+            map.addSource("posts", {
+                type: "geojson",
+                data: geoJsonPosts,
+                cluster: true,
+                clusterMaxZoom: 14,
+                clusterRadius: 50,
+            });
+
+            map.addLayer({
+                id: "clusters",
+                type: "circle",
+                source: "posts",
+                filter: ["has", "point_count"],
+                paint: {
+                    "circle-color": [
+                        "step",
+                        ["get", "point_count"],
+                        "#51bbd6",
+                        100,
+                        "#f1f075",
+                        750,
+                        "#f28cb1",
+                    ],
+                    "circle-radius": [
+                        "step",
+                        ["get", "point_count"],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40,
+                    ],
+                },
+            });
+
+            map.addLayer({
+                id: "cluster-count",
+                type: "symbol",
+                source: "posts",
+                filter: ["has", "point_count"],
+                layout: {
+                    "text-field": "{point_count_abbreviated}",
+                    "text-font": [
+                        "DIN Offc Pro Medium",
+                        "Arial Unicode MS Bold",
+                    ],
+                    "text-size": 12,
+                },
+            });
+
+            map.addLayer({
+                id: "unclustered-point",
+                type: "circle",
+                source: "posts",
+                filter: ["!", ["has", "point_count"]],
+                paint: {
+                    "circle-color": "#11b4da",
+                    "circle-radius": 8,
+                    "circle-stroke-width": 1,
+                    "circle-stroke-color": "#fff",
+                },
+            });
+        });
+
+        return () => map.remove();
+    }, []);
+
     return (
         <>
             {!isGeolocationAvailable && (
@@ -70,7 +178,12 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                     }
                 </div>
             )}
-            <Map
+            <div
+                ref={mapContainer}
+                style={{ width: "100%", height: "100vh" }}
+            />
+
+            {/* <Map
                 mapboxAccessToken="pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw"
                 initialViewState={viewport}
                 mapStyle="mapbox://styles/mapbox/streets-v12"
@@ -92,7 +205,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                         post={post}
                     />
                 ))}
-            </Map>
+            </Map> */}
         </>
     );
 };

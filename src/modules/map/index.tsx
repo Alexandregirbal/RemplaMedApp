@@ -153,33 +153,14 @@ const MapComponent = ({ posts }: MapComponentProps) => {
             },
         });
 
-        // map.on("mousemove", "unclustered-point", (e) => {
-        //     if (e.features.length > 0) {
-        //         if (hoveredPolygonId !== null) {
-        //             map.setFeatureState(
-        //                 { source: "states", id: hoveredPolygonId },
-        //                 { hover: false }
-        //             );
-        //         }
-        //         hoveredPolygonId = e.features[0].id;
-        //         map.setFeatureState(
-        //             { source: "states", id: hoveredPolygonId },
-        //             { hover: true }
-        //         );
-        //     }
-        // });
-
-        // // When the mouse leaves the state-fill layer, update the feature state of the
-        // // previously hovered feature.
-        // map.on("mouseleave", "unclustered-point", () => {
-        //     if (hoveredPolygonId !== null) {
-        //         map.setFeatureState(
-        //             { source: "states", id: hoveredPolygonId },
-        //             { hover: false }
-        //         );
-        //     }
-        //     hoveredPolygonId = null;
-        // });
+        map.on("mousemove", "unclustered-point", (e) => {
+            if (!e || !e.features || e.features.length < 0) return;
+            const feature = e.features[0];
+            if (!feature) return;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const postId = feature.properties?.id;
+            console.log(`~~~~~ LOG by Girbal | | map.on | postId: `, postId);
+        });
     };
 
     mapboxgl.accessToken =

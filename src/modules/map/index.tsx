@@ -8,6 +8,10 @@ import { setSelectedPost } from "store/slices/posts/slice";
 import mapboxgl from "mapbox-gl";
 import type { Feature, FeatureCollection } from "geojson";
 import "mapbox-gl/dist/mapbox-gl.css";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../../tailwind.config.cjs";
+
+const fullConfig = resolveConfig(tailwindConfig);
 
 type MapComponentProps = {
     posts: PostWithAuthorName[];
@@ -88,83 +92,113 @@ const MapComponent = ({ posts }: MapComponentProps) => {
         dispatch(setSelectedPost(null));
     };
 
+    const handleMapLoad = (map: mapboxgl.Map) => {
+        map.addSource("posts", {
+            type: "geojson",
+            data: geoJsonPosts,
+            cluster: true,
+            clusterMaxZoom: 14,
+            clusterRadius: 50,
+        });
+
+        map.addLayer({
+            id: "clusters",
+            type: "circle",
+            source: "posts",
+            filter: ["has", "point_count"],
+            paint: {
+                "circle-color": [
+                    "step",
+                    ["get", "point_count"],
+                    "#00BBBF",
+                    50,
+                    "#007C9F",
+                    100,
+                    fullConfig.theme?.colors?.primary,
+                ],
+                "circle-radius": [
+                    "step",
+                    ["get", "point_count"],
+                    20,
+                    50,
+                    30,
+                    100,
+                    40,
+                ],
+            },
+        });
+
+        map.addLayer({
+            id: "cluster-count",
+            type: "symbol",
+            source: "posts",
+            filter: ["has", "point_count"],
+            layout: {
+                "text-field": "{point_count_abbreviated}",
+                "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                "text-size": 12,
+            },
+        });
+
+        map.addLayer({
+            id: "unclustered-point",
+            type: "circle",
+            source: "posts",
+            filter: ["!", ["has", "point_count"]],
+            paint: {
+                "circle-color": fullConfig.theme?.colors?.cta,
+                "circle-radius": 8,
+                "circle-stroke-width": 1,
+                "circle-stroke-color": "#fff",
+            },
+        });
+
+        // map.on("mousemove", "unclustered-point", (e) => {
+        //     if (e.features.length > 0) {
+        //         if (hoveredPolygonId !== null) {
+        //             map.setFeatureState(
+        //                 { source: "states", id: hoveredPolygonId },
+        //                 { hover: false }
+        //             );
+        //         }
+        //         hoveredPolygonId = e.features[0].id;
+        //         map.setFeatureState(
+        //             { source: "states", id: hoveredPolygonId },
+        //             { hover: true }
+        //         );
+        //     }
+        // });
+
+        // // When the mouse leaves the state-fill layer, update the feature state of the
+        // // previously hovered feature.
+        // map.on("mouseleave", "unclustered-point", () => {
+        //     if (hoveredPolygonId !== null) {
+        //         map.setFeatureState(
+        //             { source: "states", id: hoveredPolygonId },
+        //             { hover: false }
+        //         );
+        //     }
+        //     hoveredPolygonId = null;
+        // });
+    };
+
     mapboxgl.accessToken =
         "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
     const mapContainer = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!mapContainer.current) return;
+
         const map = new mapboxgl.Map({
             container: mapContainer.current,
-            style: "mapbox://styles/mapbox/streets-v11",
-            center: [-103.59179687498357, 40.66995747013945],
-            zoom: 3,
+            style: "mapbox://styles/mapbox/streets-v12",
+            center: [2.4338675388986273, 46.77177190772532],
+            zoom: 5,
+            bearing: 0,
+            pitch: 0,
         });
 
-        map.on("load", () => {
-            map.addSource("posts", {
-                type: "geojson",
-                data: geoJsonPosts,
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50,
-            });
-
-            map.addLayer({
-                id: "clusters",
-                type: "circle",
-                source: "posts",
-                filter: ["has", "point_count"],
-                paint: {
-                    "circle-color": [
-                        "step",
-                        ["get", "point_count"],
-                        "#51bbd6",
-                        100,
-                        "#f1f075",
-                        750,
-                        "#f28cb1",
-                    ],
-                    "circle-radius": [
-                        "step",
-                        ["get", "point_count"],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40,
-                    ],
-                },
-            });
-
-            map.addLayer({
-                id: "cluster-count",
-                type: "symbol",
-                source: "posts",
-                filter: ["has", "point_count"],
-                layout: {
-                    "text-field": "{point_count_abbreviated}",
-                    "text-font": [
-                        "DIN Offc Pro Medium",
-                        "Arial Unicode MS Bold",
-                    ],
-                    "text-size": 12,
-                },
-            });
-
-            map.addLayer({
-                id: "unclustered-point",
-                type: "circle",
-                source: "posts",
-                filter: ["!", ["has", "point_count"]],
-                paint: {
-                    "circle-color": "#11b4da",
-                    "circle-radius": 8,
-                    "circle-stroke-width": 1,
-                    "circle-stroke-color": "#fff",
-                },
-            });
-        });
+        map.on("load", () => handleMapLoad(map));
 
         return () => map.remove();
     }, []);
@@ -178,10 +212,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                     }
                 </div>
             )}
-            <div
-                ref={mapContainer}
-                style={{ width: "100%", height: "100vh" }}
-            />
+            <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
 
             {/* <Map
                 mapboxAccessToken="pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw"

@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import type { Feature, FeatureCollection } from "geojson";
+import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { PostWithAuthorName } from "modules/post/types/post";
 import { useEffect, useRef, useState } from "react";
 import { type ViewState, type ViewStateChangeEvent } from "react-map-gl";
 import { useDispatch } from "react-redux";
 import { setSelectedPost } from "store/slices/posts/slice";
-
-import mapboxgl from "mapbox-gl";
-import type { Feature, FeatureCollection } from "geojson";
-import "mapbox-gl/dist/mapbox-gl.css";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../tailwind.config.cjs";
 
@@ -16,6 +16,9 @@ const fullConfig = resolveConfig(tailwindConfig);
 type MapComponentProps = {
     posts: PostWithAuthorName[];
 };
+
+const getNewZoomedValue = (zoom: number) =>
+    Math.max(Math.min(zoom + Math.exp(zoom / 5), 12), 0);
 
 const postToGeoJson = (post: PostWithAuthorName): Feature | null => {
     if (!post.latitude || !post.longitude) return null;
@@ -102,7 +105,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
         });
 
         map.addLayer({
-            id: "clusters",
+            id: "posts-clusters",
             type: "circle",
             source: "posts",
             filter: ["has", "point_count"],
@@ -129,7 +132,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
         });
 
         map.addLayer({
-            id: "cluster-count",
+            id: "posts-cluster-count",
             type: "symbol",
             source: "posts",
             filter: ["has", "point_count"],
@@ -141,7 +144,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
         });
 
         map.addLayer({
-            id: "unclustered-point",
+            id: "post-point",
             type: "circle",
             source: "posts",
             filter: ["!", ["has", "point_count"]],
@@ -153,13 +156,53 @@ const MapComponent = ({ posts }: MapComponentProps) => {
             },
         });
 
-        map.on("mousemove", "unclustered-point", (e) => {
+        map.on("mousemove", "post-point", (e) => {
             if (!e || !e.features || e.features.length < 0) return;
             const feature = e.features[0];
             if (!feature) return;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const postId = feature.properties?.id;
             console.log(`~~~~~ LOG by Girbal | | map.on | postId: `, postId);
+        });
+
+        map.on("click", "posts-clusters", (e) => {
+            if (!e || !e.features || e.features.length < 0) return;
+            const feature = e.features[0];
+            if (!feature) return;
+
+            const clusterCenterCoordinates = (feature.geometry as any)
+                .coordinates;
+
+            const flyToOptions: FlyToOptions = {
+                center: clusterCenterCoordinates,
+                duration: 2000,
+            };
+
+            const zoom = map.getZoom();
+            if (zoom < 12) {
+                map.flyTo({
+                    ...flyToOptions,
+                    zoom: getNewZoomedValue(zoom),
+                });
+                return;
+            }
+
+            // TODO: go to page with posts in the cluster
+
+            const clusterId = feature.properties?.cluster_id;
+            const clusterSource = map.getSource("posts") as GeoJSONSource;
+            clusterSource.getClusterLeaves(
+                +clusterId,
+                10000,
+                0,
+                (error, features) => {
+                    if (!error) {
+                        console.log(
+                            "Going to a page with following posts:",
+                            features
+                        );
+                    }
+                }
+            );
         });
     };
 

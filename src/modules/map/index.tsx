@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { Feature, FeatureCollection } from "geojson";
@@ -7,9 +8,10 @@ import type { PostWithAuthorName } from "modules/post/types/post";
 import { useEffect, useRef, useState } from "react";
 import { type ViewState, type ViewStateChangeEvent } from "react-map-gl";
 import { useDispatch } from "react-redux";
-import { setSelectedPost } from "store/slices/posts/slice";
+import { setSelectedPost, setSelectedPosts } from "store/slices/posts/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../tailwind.config.cjs";
+import { useRouter } from "next/router";
 
 const fullConfig = resolveConfig(tailwindConfig);
 
@@ -51,6 +53,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
     const geoJsonPosts = postsToGeoJSON(posts);
 
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const [isGeolocationAvailable, setIsGeolocationAvailable] =
         useState<boolean>(true);
@@ -156,12 +159,12 @@ const MapComponent = ({ posts }: MapComponentProps) => {
             },
         });
 
-        map.on("mousemove", "post-point", (e) => {
+        map.on("click", "post-point", (e) => {
             if (!e || !e.features || e.features.length < 0) return;
             const feature = e.features[0];
             if (!feature) return;
-            const postId = feature.properties?.id;
-            console.log(`~~~~~ LOG by Girbal | | map.on | postId: `, postId);
+            const postId = feature.properties?.id as string;
+            void router.push(`/posts/${postId}`);
         });
 
         map.on("click", "posts-clusters", (e) => {
@@ -174,7 +177,7 @@ const MapComponent = ({ posts }: MapComponentProps) => {
 
             const flyToOptions: FlyToOptions = {
                 center: clusterCenterCoordinates,
-                duration: 2000,
+                duration: 1500,
             };
 
             const zoom = map.getZoom();
@@ -186,23 +189,28 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                 return;
             }
 
-            // TODO: go to page with posts in the cluster
-
             const clusterId = feature.properties?.cluster_id;
             const clusterSource = map.getSource("posts") as GeoJSONSource;
             clusterSource.getClusterLeaves(
                 +clusterId,
-                10000,
+                1000,
                 0,
                 (error, features) => {
                     if (!error) {
-                        console.log(
-                            "Going to a page with following posts:",
-                            features
+                        const postsIds = features.map(
+                            (feature) => feature.properties?.id as string
                         );
+                        dispatch(setSelectedPosts({ postsIds }));
                     }
                 }
             );
+        });
+
+        map.on("mouseenter", ["posts-clusters", "post-point"], () => {
+            map.getCanvas().style.cursor = "pointer";
+        });
+        map.on("mouseleave", ["posts-clusters", "post-point"], () => {
+            map.getCanvas().style.cursor = "";
         });
     };
 
@@ -237,30 +245,6 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                 </div>
             )}
             <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
-
-            {/* <Map
-                mapboxAccessToken="pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw"
-                initialViewState={viewport}
-                mapStyle="mapbox://styles/mapbox/streets-v12"
-                latitude={viewport.latitude}
-                longitude={viewport.longitude}
-                zoom={viewport.zoom}
-                onMove={handleMapMove}
-                onClick={handleMapClick}
-            >
-                <GeolocateControl
-                    position="top-left"
-                    trackUserLocation
-                    showUserLocation
-                />
-                <NavigationControl position="top-left" />
-                {posts.map((post) => (
-                    <CustomMarkerComponent
-                        key={`marker-${post.id}`}
-                        post={post}
-                    />
-                ))}
-            </Map> */}
         </>
     );
 };

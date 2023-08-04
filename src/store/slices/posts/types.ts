@@ -5,6 +5,7 @@ export type PostsState = {
     metadata: MetaData;
     data: PostWithAuthorName[];
     selectedPost: Partial<PostWithAuthorName> | null;
+    selectedPosts: Array<PostWithAuthorName>;
     newPost: Pick<
         PostWithAuthorName,
         | "title"

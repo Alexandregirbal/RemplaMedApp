@@ -13,7 +13,11 @@ import { selectUIState } from "store/slices/ui/slice";
 
 const Home: NextPage = () => {
     const { displayMode } = useSelector(selectFiltersState);
-    const { data: posts, selectedPost } = useSelector(selectPostsState);
+    const {
+        data: posts,
+        selectedPost,
+        selectedPosts,
+    } = useSelector(selectPostsState);
     const { isMobile } = useSelector(selectUIState);
 
     const [isMouseOverPostsList, setIsMouseOverPostsList] =
@@ -62,15 +66,17 @@ const Home: NextPage = () => {
                                   } `
                         } flex h-full flex-col gap-4 overflow-y-scroll`}
                     >
-                        {posts.map((post) => (
-                            <Link
-                                id={`${postIdPrefix}${post.id}`}
-                                key={post.id}
-                                href={`/posts/${post.id}`}
-                            >
-                                <PostComponent post={post} isMini />
-                            </Link>
-                        ))}
+                        {(selectedPosts.length > 0 ? selectedPosts : posts).map(
+                            (post) => (
+                                <Link
+                                    id={`${postIdPrefix}${post.id}`}
+                                    key={post.id}
+                                    href={`/posts/${post.id}`}
+                                >
+                                    <PostComponent post={post} isMini />
+                                </Link>
+                            )
+                        )}
                     </div>
                 )}
                 {isMapDisplayed && (
@@ -79,6 +85,7 @@ const Home: NextPage = () => {
                     </div>
                 )}
                 {isMapDisplayed && selectedPost && isMobile && (
+                    // TODO: caroussel of selectedPosts !
                     <div className="absolute bottom-4 left-4 right-4 z-20 ">
                         <Link
                             id={`${postIdPrefix}${selectedPost.id ?? "post"}`}

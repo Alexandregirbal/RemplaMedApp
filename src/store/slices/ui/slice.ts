@@ -4,7 +4,7 @@ import { type AppState } from "store";
 
 const initialState: UIState = {
     isLoading: false,
-    isMobile: false,
+    isMobile: true,
     toaster: null,
 };
 

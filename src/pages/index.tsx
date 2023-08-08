@@ -81,19 +81,22 @@ const Home: NextPage = () => {
                 )}
                 {isMapDisplayed && (
                     <div id="posts-map" className="w-full">
-                        <MapComponent posts={posts} />
+                        <MapComponent posts={posts} isMobile />
                     </div>
                 )}
-                {isMapDisplayed && selectedPost && isMobile && (
-                    // TODO: caroussel of selectedPosts !
-                    <div className="absolute bottom-4 left-4 right-4 z-20 ">
-                        <Link
-                            id={`${postIdPrefix}${selectedPost.id ?? "post"}`}
-                            key={selectedPost.id}
-                            href={`/posts/${selectedPost.id ?? ""}`}
-                        >
-                            <PostComponent post={selectedPost} isMini />
-                        </Link>
+                {isMapDisplayed && selectedPosts.length > 0 && isMobile && (
+                    <div className="absolute bottom-4 left-0 right-0 z-20 flex flex-row gap-4 overflow-x-scroll bg-opac">
+                        {(selectedPosts.length > 0 ? selectedPosts : posts).map(
+                            (post) => (
+                                <Link
+                                    id={`${postIdPrefix}${post.id}`}
+                                    key={post.id}
+                                    href={`/posts/${post.id}`}
+                                >
+                                    <PostComponent post={post} isMini />
+                                </Link>
+                            )
+                        )}
                     </div>
                 )}
             </div>

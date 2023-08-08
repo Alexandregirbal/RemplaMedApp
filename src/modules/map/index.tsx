@@ -17,6 +17,7 @@ const fullConfig = resolveConfig(tailwindConfig);
 
 type MapComponentProps = {
     posts: PostWithAuthorName[];
+    isMobile: boolean;
 };
 
 const getNewZoomedValue = (zoom: number) =>
@@ -49,7 +50,7 @@ const postsToGeoJSON = (posts: PostWithAuthorName[]): FeatureCollection => {
     };
 };
 
-const MapComponent = ({ posts }: MapComponentProps) => {
+const MapComponent = ({ posts, isMobile }: MapComponentProps) => {
     const geoJsonPosts = postsToGeoJSON(posts);
 
     const dispatch = useDispatch();
@@ -57,29 +58,15 @@ const MapComponent = ({ posts }: MapComponentProps) => {
 
     const [isGeolocationAvailable, setIsGeolocationAvailable] =
         useState<boolean>(true);
-    const [viewport, setViewport] = useState<ViewState>({
-        latitude: 46.77177190772532, // Bruère-Allichamps
-        longitude: 2.4338675388986273, // Bruère-Allichamps
-        zoom: 5,
-        bearing: 0,
-        pitch: 0,
-        padding: {
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-        },
-    });
+
+    mapboxgl.accessToken =
+        "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
+    const mapContainer = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
-            (pos) => {
+            () => {
                 setIsGeolocationAvailable(true);
-                setViewport({
-                    ...viewport,
-                    latitude: pos.coords.latitude,
-                    longitude: pos.coords.longitude,
-                    zoom: 10,
-                });
             },
             (error) => {
                 if (error.code === 1) {
@@ -87,153 +74,144 @@ const MapComponent = ({ posts }: MapComponentProps) => {
                 }
             }
         );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
-    const handleMapMove = (e: ViewStateChangeEvent): void => {
-        setViewport(e.viewState);
-    };
-
-    const handleMapClick = () => {
-        dispatch(setSelectedPost(null));
-    };
-
-    const handleMapLoad = (map: mapboxgl.Map) => {
-        map.addSource("posts", {
-            type: "geojson",
-            data: geoJsonPosts,
-            cluster: true,
-            clusterMaxZoom: 14,
-            clusterRadius: 50,
-        });
-
-        map.addLayer({
-            id: "posts-clusters",
-            type: "circle",
-            source: "posts",
-            filter: ["has", "point_count"],
-            paint: {
-                "circle-color": [
-                    "step",
-                    ["get", "point_count"],
-                    "#00BBBF",
-                    50,
-                    "#007C9F",
-                    100,
-                    fullConfig.theme?.colors?.primary,
-                ],
-                "circle-radius": [
-                    "step",
-                    ["get", "point_count"],
-                    20,
-                    50,
-                    30,
-                    100,
-                    40,
-                ],
-            },
-        });
-
-        map.addLayer({
-            id: "posts-cluster-count",
-            type: "symbol",
-            source: "posts",
-            filter: ["has", "point_count"],
-            layout: {
-                "text-field": "{point_count_abbreviated}",
-                "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                "text-size": 12,
-            },
-        });
-
-        map.addLayer({
-            id: "post-point",
-            type: "circle",
-            source: "posts",
-            filter: ["!", ["has", "point_count"]],
-            paint: {
-                "circle-color": fullConfig.theme?.colors?.cta,
-                "circle-radius": 8,
-                "circle-stroke-width": 1,
-                "circle-stroke-color": "#fff",
-            },
-        });
-
-        map.on("click", "post-point", (e) => {
-            if (!e || !e.features || e.features.length < 0) return;
-            const feature = e.features[0];
-            if (!feature) return;
-            const postId = feature.properties?.id as string;
-            void router.push(`/posts/${postId}`);
-        });
-
-        map.on("click", "posts-clusters", (e) => {
-            if (!e || !e.features || e.features.length < 0) return;
-            const feature = e.features[0];
-            if (!feature) return;
-
-            const clusterCenterCoordinates = (feature.geometry as any)
-                .coordinates;
-
-            const flyToOptions: FlyToOptions = {
-                center: clusterCenterCoordinates,
-                duration: 1500,
-            };
-
-            const zoom = map.getZoom();
-            if (zoom < 12) {
-                map.flyTo({
-                    ...flyToOptions,
-                    zoom: getNewZoomedValue(zoom),
-                });
-                return;
-            }
-
-            const clusterId = feature.properties?.cluster_id;
-            const clusterSource = map.getSource("posts") as GeoJSONSource;
-            clusterSource.getClusterLeaves(
-                +clusterId,
-                1000,
-                0,
-                (error, features) => {
-                    if (!error) {
-                        const postsIds = features.map(
-                            (feature) => feature.properties?.id as string
-                        );
-                        dispatch(setSelectedPosts({ postsIds }));
-                    }
-                }
-            );
-        });
-
-        map.on("mouseenter", ["posts-clusters", "post-point"], () => {
-            map.getCanvas().style.cursor = "pointer";
-        });
-        map.on("mouseleave", ["posts-clusters", "post-point"], () => {
-            map.getCanvas().style.cursor = "";
-        });
-    };
-
-    mapboxgl.accessToken =
-        "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
-    const mapContainer = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
         if (!mapContainer.current) return;
 
         const map = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
-            center: [2.4338675388986273, 46.77177190772532],
+            center: [2.4338675388986273, 46.77177190772532], // Bruère-Allichamps
             zoom: 5,
             bearing: 0,
             pitch: 0,
         });
+        const handleMapLoad = (map: mapboxgl.Map) => {
+            map.addSource("posts", {
+                type: "geojson",
+                data: geoJsonPosts,
+                cluster: true,
+                clusterMaxZoom: 14,
+                clusterRadius: 50,
+            });
+
+            map.addLayer({
+                id: "posts-clusters",
+                type: "circle",
+                source: "posts",
+                filter: ["has", "point_count"],
+                paint: {
+                    "circle-color": [
+                        "step",
+                        ["get", "point_count"],
+                        "#00BBBF",
+                        50,
+                        "#007C9F",
+                        100,
+                        fullConfig.theme?.colors?.primary,
+                    ],
+                    "circle-radius": [
+                        "step",
+                        ["get", "point_count"],
+                        20,
+                        50,
+                        30,
+                        100,
+                        40,
+                    ],
+                },
+            });
+
+            map.addLayer({
+                id: "posts-cluster-count",
+                type: "symbol",
+                source: "posts",
+                filter: ["has", "point_count"],
+                layout: {
+                    "text-field": "{point_count_abbreviated}",
+                    "text-font": [
+                        "DIN Offc Pro Medium",
+                        "Arial Unicode MS Bold",
+                    ],
+                    "text-size": 12,
+                },
+            });
+
+            map.addLayer({
+                id: "post-point",
+                type: "circle",
+                source: "posts",
+                filter: ["!", ["has", "point_count"]],
+                paint: {
+                    "circle-color": fullConfig.theme?.colors?.cta,
+                    "circle-radius": 8,
+                    "circle-stroke-width": 1,
+                    "circle-stroke-color": "#fff",
+                },
+            });
+
+            map.on("click", "post-point", (e) => {
+                if (!e || !e.features || e.features.length < 0) return;
+                const feature = e.features[0];
+                if (!feature) return;
+                const postId = feature.properties?.id as string;
+                void router.push(`/posts/${postId}`);
+            });
+
+            map.on("click", "posts-clusters", (e) => {
+                if (!e || !e.features || e.features.length < 0) return;
+                const feature = e.features[0];
+                if (!feature) return;
+
+                const clusterCenterCoordinates = (feature.geometry as any)
+                    .coordinates;
+
+                const flyToOptions: FlyToOptions = {
+                    center: clusterCenterCoordinates,
+                    duration: 1500,
+                };
+
+                const zoom = map.getZoom();
+                if (zoom < 12) {
+                    map.flyTo({
+                        ...flyToOptions,
+                        zoom: getNewZoomedValue(zoom),
+                    });
+                    return;
+                }
+
+                const clusterId = feature.properties?.cluster_id;
+                const clusterSource = map.getSource("posts") as GeoJSONSource;
+                clusterSource.getClusterLeaves(
+                    +clusterId,
+                    1000,
+                    0,
+                    (error, features) => {
+                        if (!error) {
+                            const postsIds = features.map(
+                                (feature) => feature.properties?.id as string
+                            );
+                            dispatch(setSelectedPosts({ postsIds }));
+                            return;
+                        }
+                        console.error(error);
+                    }
+                );
+            });
+
+            map.on("mouseenter", ["posts-clusters", "post-point"], () => {
+                map.getCanvas().style.cursor = "pointer";
+            });
+            map.on("mouseleave", ["posts-clusters", "post-point"], () => {
+                map.getCanvas().style.cursor = "";
+            });
+        };
 
         map.on("load", () => handleMapLoad(map));
+        map.addControl(new mapboxgl.NavigationControl(), "top-left");
+        map.addControl(new mapboxgl.GeolocateControl(), "top-left");
 
         return () => map.remove();
-    }, []);
+    }, [isMobile]);
 
     return (
         <>

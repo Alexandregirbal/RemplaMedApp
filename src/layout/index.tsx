@@ -16,9 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
 
     useEffect(() => {
         const { matches } = window.matchMedia("(max-width: 450px)");
-        if (matches) {
-            dispatch(setIsMobile(true));
-        }
+        dispatch(setIsMobile(matches));
     }, [dispatch]);
 
     return (

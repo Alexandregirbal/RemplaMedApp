@@ -5,13 +5,13 @@ import type { Feature, FeatureCollection } from "geojson";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { PostWithAuthorName } from "modules/post/types/post";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { type ViewState, type ViewStateChangeEvent } from "react-map-gl";
 import { useDispatch } from "react-redux";
-import { setSelectedPost, setSelectedPosts } from "store/slices/posts/slice";
+import { setSelectedPosts } from "store/slices/posts/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../tailwind.config.cjs";
-import { useRouter } from "next/router";
+import GeolocationFallback from "./components/fallback";
 
 const fullConfig = resolveConfig(tailwindConfig);
 
@@ -204,6 +204,12 @@ const MapComponent = ({ posts, isMobile }: MapComponentProps) => {
             map.on("mouseleave", ["posts-clusters", "post-point"], () => {
                 map.getCanvas().style.cursor = "";
             });
+
+            map.on("click", () => {
+                if (posts.length > 0) {
+                    dispatch(setSelectedPosts({ postsIds: [] }));
+                }
+            });
         };
 
         map.on("load", () => handleMapLoad(map));
@@ -215,13 +221,7 @@ const MapComponent = ({ posts, isMobile }: MapComponentProps) => {
 
     return (
         <>
-            {!isGeolocationAvailable && (
-                <div className="relative top-0 left-0 px-2 text-tertiary">
-                    {
-                        "La géolocalisation n'est pas disponible. Activez la, puis rafraîchissez la page pour une meilleure expérience."
-                    }
-                </div>
-            )}
+            {!isGeolocationAvailable && <GeolocationFallback />}
             <div ref={mapContainer} style={{ width: "100%", height: "100%" }} />
         </>
     );

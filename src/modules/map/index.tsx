@@ -145,10 +145,16 @@ const MapComponent = ({ posts, isMobile }: MapComponentProps) => {
                 };
 
                 const zoom = map.getZoom();
-                if (zoom < 12) {
+                const maxZoom = 12;
+                // remove 0.2 to upgrade fluidity
+                if (zoom < maxZoom - 0.2) {
                     map.flyTo({
                         ...flyToOptions,
-                        zoom: getNewZoomedValue(zoom),
+                        zoom: getNewZoomedValue({
+                            zoom,
+                            min: 5,
+                            max: maxZoom,
+                        }),
                     });
                     return;
                 }

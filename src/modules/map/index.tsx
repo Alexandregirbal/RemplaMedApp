@@ -133,11 +133,14 @@ const MapComponent = ({ posts, isMobile }: MapComponentProps) => {
                 const feature = e.features[0];
                 if (!feature) return;
 
-                const clusterCenterCoordinates = (feature.geometry as any)
-                    .coordinates;
+                const clusterCenterCoordinates =
+                    feature.geometry.type === "Point"
+                        ? feature.geometry.coordinates
+                        : null;
+                if (!clusterCenterCoordinates) return;
 
                 const flyToOptions: FlyToOptions = {
-                    center: clusterCenterCoordinates,
+                    center: clusterCenterCoordinates as [number, number],
                     duration: 1500,
                 };
 

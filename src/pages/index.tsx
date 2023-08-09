@@ -81,7 +81,7 @@ const Home: NextPage = () => {
                 )}
                 {isMapDisplayed && (
                     <div id="posts-map" className="w-full">
-                        <MapComponent posts={posts} isMobile />
+                        <MapComponent posts={posts} />
                     </div>
                 )}
                 {isMapDisplayed && selectedPosts.length > 0 && isMobile && (

@@ -85,13 +85,14 @@ const Home: NextPage = () => {
                     </div>
                 )}
                 {isMapDisplayed && selectedPosts.length > 0 && isMobile && (
-                    <div className="absolute bottom-4 left-0 right-0 z-20 flex flex-row gap-4 overflow-x-scroll bg-opac">
+                    <div className="absolute bottom-0 left-0 right-0 z-20 flex h-1/2 flex-row gap-4 overflow-x-scroll bg-opac p-4">
                         {(selectedPosts.length > 0 ? selectedPosts : posts).map(
                             (post) => (
                                 <Link
                                     id={`${postIdPrefix}${post.id}`}
                                     key={post.id}
                                     href={`/posts/${post.id}`}
+                                    className="flex w-80 items-center justify-center"
                                 >
                                     <PostComponent post={post} isMini />
                                 </Link>

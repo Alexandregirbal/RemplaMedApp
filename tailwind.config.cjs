@@ -11,7 +11,7 @@ module.exports = {
                 cta: "#3DA9FC",
                 paragraph: "#5F6C7B",
                 background: "#FFFFFE",
-                opac: "rgba(0, 0, 0, 0.1)",
+                opac: "rgba(0, 0, 0, 0.2)",
             },
         },
     },

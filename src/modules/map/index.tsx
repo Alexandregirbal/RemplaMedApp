@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import type { Feature, FeatureCollection } from "geojson";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { PostWithAuthorName } from "modules/post/types/post";
@@ -12,42 +11,14 @@ import { setSelectedPosts } from "store/slices/posts/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../tailwind.config.cjs";
 import GeolocationFallback from "./components/fallback";
+import { postsToGeoJSON } from "./utils/geojson";
+import { getNewZoomedValue } from "./utils/zoom";
 
 const fullConfig = resolveConfig(tailwindConfig);
 
 type MapComponentProps = {
     posts: PostWithAuthorName[];
     isMobile: boolean;
-};
-
-const getNewZoomedValue = (zoom: number) =>
-    Math.max(Math.min(zoom + Math.exp(zoom / 5), 12), 0);
-
-const postToGeoJson = (post: PostWithAuthorName): Feature | null => {
-    if (!post.latitude || !post.longitude) return null;
-    return {
-        type: "Feature",
-        properties: {
-            ...post,
-        },
-        geometry: {
-            type: "Point",
-            coordinates: [post.longitude, post.latitude],
-        },
-    };
-};
-
-const postsToGeoJSON = (posts: PostWithAuthorName[]): FeatureCollection => {
-    return {
-        type: "FeatureCollection",
-        features: posts.reduce<Feature[]>((acc, post) => {
-            const geoJson = postToGeoJson(post);
-            if (geoJson) {
-                acc.push(geoJson);
-            }
-            return acc;
-        }, []),
-    };
 };
 
 const MapComponent = ({ posts, isMobile }: MapComponentProps) => {

@@ -14,7 +14,6 @@ const initialState: PostsState = {
         totalOverallPosts: 0,
         totalRecentPosts: 0,
     },
-    selectedPost: null,
     selectedPosts: [],
     newPost: {
         title: "",
@@ -82,12 +81,6 @@ export const postsSlice = createSlice({
         setPostsMetadata(state, action: { payload: PostsState["metadata"] }) {
             state.metadata = action.payload;
         },
-        setSelectedPost(
-            state,
-            action: { payload: PostsState["selectedPost"] }
-        ) {
-            state.selectedPost = action.payload;
-        },
         setNewPost(state, action: { payload: PostsState["newPost"] }) {
             state.newPost = action.payload;
         },
@@ -112,8 +105,8 @@ export const postsSlice = createSlice({
                 data: serverState.posts.data,
             };
             if (clientState.metadata) nextState.metadata = clientState.metadata;
-            if (clientState.selectedPost)
-                nextState.selectedPost = clientState.selectedPost;
+            if (clientState.selectedPosts.length > 0)
+                nextState.selectedPosts = clientState.selectedPosts;
             return nextState;
         },
     },
@@ -123,7 +116,6 @@ export const {
     addPosts,
     setPosts,
     setPostsMetadata,
-    setSelectedPost,
     sortPostsByDistance,
     sortPostsByDate,
     setNewPost,

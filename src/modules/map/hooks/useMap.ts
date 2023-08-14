@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -9,6 +10,13 @@ import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../../tailwind.config.cjs";
 import { getNewZoomedValue } from "../utils/zoom";
 
+const MAPBOX_IDS = {
+    posts: "posts",
+    postsClusters: "posts-clusters",
+    postsClusterCount: "posts-cluster-count",
+    postPoint: "post-point",
+};
+
 export const useMap = (params: {
     mapContainer: RefObject<HTMLInputElement>;
     data: FeatureCollection<Geometry, GeoJsonProperties>;
@@ -19,10 +27,11 @@ export const useMap = (params: {
     const [isGeolocationAvailable, setIsGeolocationAvailable] =
         useState<boolean>(true);
 
+    const [map, setMap] = useState<mapboxgl.Map | null>(null);
+
     const dispatch = useDispatch();
     const router = useRouter();
 
-    useState<boolean>(true);
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             () => {
@@ -37,7 +46,7 @@ export const useMap = (params: {
 
         if (!mapContainer.current) return;
 
-        const map = new mapboxgl.Map({
+        const mapboxClient = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
             center: [2.4338675388986273, 46.77177190772532], // Bruère-Allichamps
@@ -46,7 +55,7 @@ export const useMap = (params: {
             pitch: 0,
         });
         const handleMapLoad = (map: mapboxgl.Map) => {
-            map.addSource("posts", {
+            map.addSource(MAPBOX_IDS.posts, {
                 type: "geojson",
                 data,
                 cluster: true,
@@ -55,9 +64,9 @@ export const useMap = (params: {
             });
 
             map.addLayer({
-                id: "posts-clusters",
+                id: MAPBOX_IDS.postsClusters,
                 type: "circle",
-                source: "posts",
+                source: MAPBOX_IDS.posts,
                 filter: ["has", "point_count"],
                 paint: {
                     "circle-color": [
@@ -82,9 +91,9 @@ export const useMap = (params: {
             });
 
             map.addLayer({
-                id: "posts-cluster-count",
+                id: MAPBOX_IDS.postsClusterCount,
                 type: "symbol",
-                source: "posts",
+                source: MAPBOX_IDS.posts,
                 filter: ["has", "point_count"],
                 layout: {
                     "text-field": "{point_count_abbreviated}",
@@ -97,9 +106,9 @@ export const useMap = (params: {
             });
 
             map.addLayer({
-                id: "post-point",
+                id: MAPBOX_IDS.postPoint,
                 type: "circle",
-                source: "posts",
+                source: MAPBOX_IDS.posts,
                 filter: ["!", ["has", "point_count"]],
                 paint: {
                     "circle-color": fullConfig.theme?.colors?.cta,
@@ -109,7 +118,7 @@ export const useMap = (params: {
                 },
             });
 
-            map.on("click", "post-point", (e) => {
+            map.on("click", MAPBOX_IDS.postPoint, (e) => {
                 if (!e || !e.features || e.features.length < 0) return;
                 const feature = e.features[0];
                 if (!feature) return;
@@ -117,7 +126,7 @@ export const useMap = (params: {
                 void router.push(`/posts/${postId}`);
             });
 
-            map.on("click", "posts-clusters", (e) => {
+            map.on("click", MAPBOX_IDS.postsClusters, (e) => {
                 if (!e || !e.features || e.features.length < 0) return;
                 const feature = e.features[0];
                 if (!feature) return;
@@ -148,9 +157,11 @@ export const useMap = (params: {
                     return;
                 }
 
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const clusterId = feature.properties?.cluster_id;
-                const clusterSource = map.getSource("posts") as GeoJSONSource;
+                const clusterId = feature.properties?.cluster_id as string;
+                const clusterSource = map.getSource(
+                    MAPBOX_IDS.posts
+                ) as GeoJSONSource;
+
                 clusterSource.getClusterLeaves(
                     +clusterId,
                     1000,
@@ -168,25 +179,41 @@ export const useMap = (params: {
                 );
             });
 
-            map.on("mouseenter", ["posts-clusters", "post-point"], () => {
-                map.getCanvas().style.cursor = "pointer";
-            });
-            map.on("mouseleave", ["posts-clusters", "post-point"], () => {
-                map.getCanvas().style.cursor = "";
-            });
+            map.on(
+                "mouseenter",
+                [MAPBOX_IDS.postsClusters, MAPBOX_IDS.postPoint],
+                () => {
+                    map.getCanvas().style.cursor = "pointer";
+                }
+            );
+            map.on(
+                "mouseleave",
+                [MAPBOX_IDS.postsClusters, MAPBOX_IDS.postPoint],
+                () => {
+                    map.getCanvas().style.cursor = "";
+                }
+            );
 
             map.on("click", () => {
                 dispatch(setSelectedPosts({ postsIds: [] }));
             });
         };
 
-        map.on("load", () => handleMapLoad(map));
-        map.addControl(new mapboxgl.NavigationControl(), "top-left");
-        map.addControl(new mapboxgl.GeolocateControl(), "top-left");
+        mapboxClient.on("load", () => handleMapLoad(mapboxClient));
+        mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
+        mapboxClient.addControl(new mapboxgl.GeolocateControl(), "top-left");
 
-        return () => map.remove();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setMap(mapboxClient);
+
+        return () => mapboxClient.remove();
     }, []);
+
+    useEffect(() => {
+        if (!map) return;
+        const mapSource = map.getSource(MAPBOX_IDS.posts) as GeoJSONSource;
+        if (!mapSource) return;
+        mapSource.setData(data);
+    }, [data]);
 
     return { isGeolocationAvailable };
 };

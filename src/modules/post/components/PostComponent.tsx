@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectPostsState, setSelectedPost } from "store/slices/posts/slice";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
 import { type PostWithAuthorName } from "../types/post";
 
@@ -21,7 +19,6 @@ const PostComponent = ({
     maxMessageLength = 150,
 }: PostProps) => {
     const { status, data } = useSession();
-    const dispatch = useDispatch();
 
     const [isPrivate, setIsPrivate] = useState(false);
     const [isAuthor, setIsAuthor] = useState(false);
@@ -29,9 +26,6 @@ const PostComponent = ({
     const timeDiffMonths = post.availablityTo
         ? dayjs(post.availablityTo).diff(post.availablityFrom, "month")
         : 0;
-
-    const { selectedPost } = useSelector(selectPostsState);
-    const isSelected = selectedPost && selectedPost.id === post.id;
 
     useEffect(() => {
         if (status != "authenticated") {
@@ -57,22 +51,9 @@ const PostComponent = ({
         }
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
-    const handleMouseEnter = () => {
-        if (!isMini) return;
-        dispatch(setSelectedPost(post));
-    };
-    const handleMouseLeave = () => {
-        if (!isMini) return;
-        dispatch(setSelectedPost(null));
-    };
-
     return (
         <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={`flex max-h-full max-w-full flex-col rounded-lg border ${
-                isSelected ? " outline outline-2" : ""
-            }} border-primary bg-background p-2 shadow-xl transition`}
+            className={`flex max-h-full max-w-full flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div className="truncate text-xl font-bold">{post.title}</div>
@@ -119,9 +100,7 @@ const PostComponent = ({
                 </div>
             )}
             <div className="flex flex-row-reverse gap-1 text-sm">
-                le {dayjs(post.createdAt).format("D MMMM YYYY")}
-                <p className="italic">{post.author?.name ?? "un inconnu"}</p>
-                Posté par
+                Posté le {dayjs(post.createdAt).format("D MMMM YYYY")}
             </div>
         </div>
     );

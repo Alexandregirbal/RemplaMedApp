@@ -1,6 +1,13 @@
+"use client";
+
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
+import { filterByCreatedAt } from "../services/createdAt";
 
 const CreatedAt = () => {
+    const dispatch = useDispatch();
+    const { data } = useSelector(selectPostsState);
     const options = [
         { value: 0, label: "Aucun filtre" },
         { value: 24, label: "Posté dans les 24h" },
@@ -11,9 +18,11 @@ const CreatedAt = () => {
     const [selectedOption, setSelectedOption] = useState(options[0]);
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(event.target.value);
-        const res = options.find((o) => o.value === +event.target.value);
-        setSelectedOption(res);
+        const newOption = options.find((o) => o.value === +event.target.value);
+        setSelectedOption(newOption);
+        dispatch(
+            setFilteredPosts(filterByCreatedAt(data, +event.target.value))
+        );
     };
     return (
         <div className="flex items-center justify-center gap-2">

@@ -15,6 +15,7 @@ const initialState: PostsState = {
         totalRecentPosts: 0,
     },
     selectedPosts: [],
+    filteredPosts: [],
     newPost: {
         title: "",
         message: "",
@@ -94,6 +95,15 @@ export const postsSlice = createSlice({
                 ),
             ];
         },
+        setFilteredPosts(
+            state,
+            action: { payload: PostsState["filteredPosts"] }
+        ) {
+            state.filteredPosts = action.payload;
+        },
+        resetFilteredPosts(state) {
+            state.filteredPosts = [...state.data];
+        },
     },
 
     extraReducers: {
@@ -121,6 +131,8 @@ export const {
     setNewPost,
     resetNewPost,
     setSelectedPosts,
+    resetFilteredPosts,
+    setFilteredPosts,
 } = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;

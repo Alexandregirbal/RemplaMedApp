@@ -1,17 +1,15 @@
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { PostWithAuthorName } from "modules/post/types/post";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectPostsState } from "store/slices/posts/slice";
 import GeolocationFallback from "./components/fallback";
 import { useMap } from "./hooks/useMap";
 import { postsToGeoJSON } from "./utils/geojson";
 
-type MapComponentProps = {
-    posts: PostWithAuthorName[];
-};
-
-const MapComponent = ({ posts }: MapComponentProps) => {
-    const geoJsonPosts = postsToGeoJSON(posts);
+const MapComponent = () => {
+    const { data: posts, filteredPosts } = useSelector(selectPostsState);
+    const [postsToDisplay, setPostsToDisplay] = useState(postsToGeoJSON(posts));
 
     mapboxgl.accessToken =
         "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
@@ -19,8 +17,16 @@ const MapComponent = ({ posts }: MapComponentProps) => {
 
     const { isGeolocationAvailable } = useMap({
         mapContainer,
-        data: geoJsonPosts,
+        data: postsToDisplay,
     });
+
+    useEffect(() => {
+        if (filteredPosts.length > 0) {
+            setPostsToDisplay(postsToGeoJSON(filteredPosts));
+        } else {
+            setPostsToDisplay(postsToGeoJSON(posts));
+        }
+    }, [posts, filteredPosts]);
 
     return (
         <>

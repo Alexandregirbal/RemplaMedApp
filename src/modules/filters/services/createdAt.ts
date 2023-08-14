@@ -5,11 +5,9 @@ export const filterByCreatedAt = (
     posts: PostWithAuthorName[],
     createdAt: number
 ) => {
-    return createdAt <= 0
-        ? posts
-        : posts.filter((post) =>
-              dayjs(post.createdAt).isAfter(
-                  dayjs().subtract(createdAt, "hours")
-              )
-          );
+    if (createdAt <= 0) return posts;
+
+    return posts.filter((post) =>
+        dayjs(post.createdAt).isAfter(dayjs().subtract(createdAt, "hours"))
+    );
 };

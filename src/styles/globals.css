@@ -6,12 +6,12 @@ html,
 body,
 #__next {
     @apply text-primary;
-    font-family: "IBM Plex Serif, arial";
+    font-family: "Maven Pro", arial;
     height: 100%;
 }
 
 pre {
-    font-family: "IBM Plex Serif, arial";
+    font-family: "Maven Pro", arial;
 }
 
 * {

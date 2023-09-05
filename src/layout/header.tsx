@@ -32,7 +32,7 @@ const Header: NextPage = () => {
                 <div className="flex w-1/4 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>
                         <Image
-                            src="/logo-transparent-png-no-text.png"
+                            src="/remplamed_logo.svg"
                             alt="remplamed-logo"
                             width={64}
                             height={64}

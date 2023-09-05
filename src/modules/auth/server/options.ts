@@ -44,7 +44,7 @@ const authOptions: NextAuthOptions = {
     },
     theme: {
         brandColor: "#FF0000",
-        logo: "/logo-transparent-png-no-text.png",
+        logo: "/remplamed_logo.svg",
     },
     pages: {
         signIn: "/auth/signin",

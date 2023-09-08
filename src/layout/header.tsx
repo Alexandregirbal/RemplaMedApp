@@ -27,7 +27,7 @@ const Header: NextPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="flex h-36 flex-col p-2">
+        <div className="h-42 flex flex-col p-2">
             <nav id="navbar" className="flex items-center justify-between ">
                 <div className="flex w-1/4 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>
@@ -44,21 +44,7 @@ const Header: NextPage = () => {
                                 ? "Commencez à créer un poste"
                                 : "Connectez vous pour créer un poste"
                         }
-                    >
-                        <Link
-                            href={session ? "/posts/create" : "/"}
-                            className={`flex items-center gap-2 ${
-                                session
-                                    ? " text-cta "
-                                    : " text-gray-500 hover:cursor-default"
-                            }`}
-                        >
-                            <AddIcon size={45} />
-                            {!isMobile && (
-                                <span className="text-xl">{"Publier"}</span>
-                            )}
-                        </Link>
-                    </Tooltip>
+                    ></Tooltip>
                 </div>
                 <div
                     id="headline"
@@ -71,13 +57,28 @@ const Header: NextPage = () => {
                     {session ? <Logged user={session.user} /> : <Login />}
                 </div>
             </nav>
-            <div className="flex grow flex-col justify-center ">
+            <div className="flex grow flex-col justify-center gap-2 ">
                 <span className="flex justify-center text-xl">
                     {"Réseau de remplacement infirmier"}
                 </span>
-                <span id="posts-number" className="flex justify-center">
-                    {`Plus de ${metadata.totalRecentPosts} annonces récentes`}
-                </span>
+                {metadata.totalRecentPosts > 0 && (
+                    <span id="posts-number" className="flex justify-center">
+                        {`Plus de ${metadata.totalRecentPosts} annonces récentes`}
+                    </span>
+                )}
+                <Link
+                    href={session ? "/posts/create" : "/"}
+                    className={`flex items-center justify-center gap-2 ${
+                        session
+                            ? " text-cta "
+                            : " text-gray-500 hover:cursor-default"
+                    }`}
+                >
+                    <button className="h-8 rounded-lg bg-cta px-6 text-white">
+                        Publier
+                    </button>
+                    {!isMobile && <span className="text-xl">{"Publier"}</span>}
+                </Link>
             </div>
         </div>
     );

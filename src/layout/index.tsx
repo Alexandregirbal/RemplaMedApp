@@ -27,7 +27,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <main className="h-[calc(100%-10.5rem)]">{children}</main>
+            <main className="h-[calc(100%-12.5rem)]">{children}</main>
             {isLoading && <Loading />}
             <Footer />
         </>

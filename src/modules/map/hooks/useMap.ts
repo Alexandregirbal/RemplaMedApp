@@ -72,11 +72,11 @@ export const useMap = (params: {
                     "circle-color": [
                         "step",
                         ["get", "point_count"],
-                        "#00BBBF",
+                        "#3187ca",
                         50,
-                        "#007C9F",
+                        "#2b76b0",
                         100,
-                        fullConfig.theme?.colors?.primary,
+                        "#256597",
                     ],
                     "circle-radius": [
                         "step",
@@ -102,6 +102,9 @@ export const useMap = (params: {
                         "Arial Unicode MS Bold",
                     ],
                     "text-size": 12,
+                },
+                paint: {
+                    "text-color": fullConfig.theme?.colors?.background,
                 },
             });
 

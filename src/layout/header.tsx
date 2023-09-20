@@ -2,7 +2,6 @@ import { Tooltip } from "flowbite-react";
 import Logged from "modules/auth/components/LoggedIcon";
 import Login from "modules/auth/components/LoginButton";
 import { getMetaData } from "modules/post/services/getMetadata";
-import AddIcon from "modules/ui/icons/add";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -10,12 +9,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPostsState, setPostsMetadata } from "store/slices/posts/slice";
-import { selectUIState } from "store/slices/ui/slice";
 
 const Header: NextPage = () => {
     const { data: session } = useSession();
     const { metadata } = useSelector(selectPostsState);
-    const { isMobile } = useSelector(selectUIState);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,57 +24,63 @@ const Header: NextPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="flex h-36 flex-col p-2">
-            <nav id="navbar" className="flex items-center justify-between ">
-                <div className="flex w-1/4 items-center gap-1 sm:gap-4">
+        <div className="h-42 flex flex-col p-2">
+            <nav id="navbar" className="flex justify-between ">
+                <div className="flex w-1/5 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>
                         <Image
                             src="/remplamed_logo.svg"
                             alt="remplamed-logo"
-                            width={64}
-                            height={64}
+                            width={50}
+                            height={50}
                         />
                     </Link>
-                    <Tooltip
-                        content={
-                            session
-                                ? "Commencez à créer un poste"
-                                : "Connectez vous pour créer un poste"
-                        }
-                    >
-                        <Link
-                            href={session ? "/posts/create" : "/"}
-                            className={`flex items-center gap-2 ${
-                                session
-                                    ? " text-cta "
-                                    : " text-gray-500 hover:cursor-default"
-                            }`}
-                        >
-                            <AddIcon size={45} />
-                            {!isMobile && (
-                                <span className="text-xl">{"Publier"}</span>
-                            )}
-                        </Link>
-                    </Tooltip>
                 </div>
-                <div
-                    id="headline"
-                    className=" flex h-8 justify-center text-3xl"
-                >
-                    {"RemplaMed"}
+                <div id="headline" className="flex flex-col items-center gap-1">
+                    <div className="text-3xl">
+                        <span>Rempla</span>
+                        <span className="text-cta">Med</span>
+                    </div>
+                    {metadata.totalRecentPosts > 0 && (
+                        <span
+                            id="posts-number"
+                            className="flex justify-center text-xl"
+                        >
+                            {`${metadata.totalRecentPosts} annonces récentes`}
+                        </span>
+                    )}
                 </div>
 
-                <div className="flex w-1/4 flex-row-reverse">
+                <div className="flex  w-1/5 flex-row-reverse items-center ">
                     {session ? <Logged user={session.user} /> : <Login />}
                 </div>
             </nav>
-            <div className="flex grow flex-col justify-center ">
-                <span className="flex justify-center text-xl">
+            <div className="flex grow flex-col items-center justify-center gap-2">
+                <span className="flex justify-center  text-xl">
                     {"Réseau de remplacement infirmier"}
                 </span>
-                <span id="posts-number" className="flex justify-center">
-                    {`Plus de ${metadata.totalRecentPosts} annonces récentes`}
-                </span>
+                <Tooltip
+                    content={
+                        session
+                            ? "Commencez à créer un poste"
+                            : "Connectez vous pour créer un poste"
+                    }
+                >
+                    <Link
+                        href={session ? "/posts/create" : "/"}
+                        className={`flex items-center justify-center gap-2`}
+                    >
+                        <button
+                            className={`h-8 rounded-lg bg-cta px-6 text-white ${
+                                session
+                                    ? " bg-cta "
+                                    : " bg-gray-500 hover:cursor-default"
+                            }`}
+                        >
+                            Publier
+                        </button>
+                    </Link>
+                </Tooltip>
             </div>
         </div>
     );

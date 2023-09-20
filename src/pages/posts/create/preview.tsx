@@ -2,12 +2,14 @@ import axios from "axios";
 import PostComponent from "modules/post/components/PostComponent";
 import { useSession } from "next-auth/react";
 import router from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectPostsState } from "store/slices/posts/slice";
+import { setIsLoading } from "store/slices/ui/slice";
 
 const Preview = () => {
     const { newPost } = useSelector(selectPostsState);
     const { data: session } = useSession();
+    const dispatch = useDispatch();
 
     const author = session?.user;
     if (!author) {
@@ -16,13 +18,17 @@ const Preview = () => {
 
     const handleNextClick = () => {
         const func = async () => {
+            dispatch(setIsLoading(true));
             const result = await axios.post("/api/posts/create", newPost);
+            dispatch(setIsLoading(false));
             if (result.status !== 200) {
                 alert("Une erreur est survenue");
             }
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access
+            void router.push(`/posts/${result.data.postId}`);
+            // void router.push("/posts/create/payment");
         };
         void func();
-        void router.push("/posts/create/payment");
     };
 
     const handlePreviousClick = () => {

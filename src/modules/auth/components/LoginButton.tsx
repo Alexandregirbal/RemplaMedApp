@@ -1,4 +1,5 @@
 "use client";
+import LoginIcon from "modules/ui/icons/login";
 import { signIn } from "next-auth/react";
 
 const LoginButton = () => {
@@ -8,10 +9,10 @@ const LoginButton = () => {
 
     return (
         <button
-            className="h-10 rounded-lg bg-cta px-4 text-white"
+            className="h-10 rounded-lg px-4 text-cta"
             onClick={() => handleLogin()}
         >
-            Connexion
+            <LoginIcon size={30} />
         </button>
     );
 };

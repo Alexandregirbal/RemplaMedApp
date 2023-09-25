@@ -25,7 +25,7 @@ const CreatedAt = () => {
         );
     };
     return (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center gap-2">
             <label htmlFor="createdAtFilter">Filtrer par date de poste:</label>
             <select
                 name="createdAtFilter"

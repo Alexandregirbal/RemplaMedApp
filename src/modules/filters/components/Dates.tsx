@@ -40,12 +40,12 @@ const DatesFilter = () => {
             date: to,
             min: from,
             handleDateChange: handleDateToChange,
-            label: "jusqu'au",
+            label: "Jusqu'au",
         },
     ];
 
     return (
-        <div className="flex items-center gap-2 whitespace-nowrap">
+        <div className="flex flex-col gap-4 whitespace-nowrap">
             {dateObjects.map(({ key, date, min, handleDateChange, label }) => (
                 <div
                     key={key}

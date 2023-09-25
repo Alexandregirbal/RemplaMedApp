@@ -1,5 +1,6 @@
 import { Modal } from "flowbite-react";
 import CreatedAt from "./CreatedAt";
+import DatesFilter from "./Dates";
 
 type FiltersModalProps = {
     isOpened: boolean;
@@ -12,10 +13,9 @@ const FiltersModal = ({ isOpened, onClose }: FiltersModalProps) => {
             <Modal dismissible show={isOpened} onClose={() => onClose()}>
                 <Modal.Header>Tous les filtres</Modal.Header>
                 <Modal.Body>
-                    <div className="space-y-6 ">
-                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            <CreatedAt />
-                        </p>
+                    <div className="flex flex-col gap-4 ">
+                        <CreatedAt />
+                        <DatesFilter />
                     </div>
                 </Modal.Body>
             </Modal>

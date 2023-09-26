@@ -1,4 +1,4 @@
-import { Modal } from "flowbite-react";
+import ModalComponent from "modules/ui/modal";
 import CreatedAt from "./CreatedAt";
 import DatesFilter from "./Dates";
 
@@ -9,17 +9,16 @@ type FiltersModalProps = {
 
 const FiltersModal = ({ isOpened, onClose }: FiltersModalProps) => {
     return (
-        <>
-            <Modal dismissible show={isOpened} onClose={() => onClose()}>
-                <Modal.Header>Tous les filtres</Modal.Header>
-                <Modal.Body>
-                    <div className="flex flex-col gap-4 ">
-                        <CreatedAt />
-                        <DatesFilter />
-                    </div>
-                </Modal.Body>
-            </Modal>
-        </>
+        <ModalComponent
+            title="Tous les filtres"
+            show={isOpened}
+            onClose={onClose}
+        >
+            <div className="flex flex-col gap-4 ">
+                <CreatedAt />
+                <DatesFilter />
+            </div>
+        </ModalComponent>
     );
 };
 

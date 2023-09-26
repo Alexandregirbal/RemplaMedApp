@@ -12,16 +12,16 @@ const Filters = () => {
         setIsFiltersModalOpened(false);
     };
     return (
-        <div className="flex h-16 items-center justify-around border-t-2 border-gray-300 px-4 shadow-2xl">
-            <div onClick={openFiltersModal}>
-                <FiltersIcon />
+        <>
+            <div className="flex h-16 items-center justify-around gap-2 border-t-2 border-gray-300 px-4 shadow-2xl">
+                <FiltersIcon onClick={openFiltersModal} />
+                <CreatedAt />
             </div>
             <FiltersModal
                 isOpened={isFiltersModalOpened}
                 onClose={closeFiltersModal}
             />
-            <CreatedAt />
-        </div>
+        </>
     );
 };
 export default Filters;

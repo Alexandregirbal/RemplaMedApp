@@ -2,29 +2,42 @@ import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setDates } from "store/slices/filters/slice";
+import type { FiltersState } from "store/slices/filters/types";
+import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
+import { filterByDateFromDateTo } from "../services/filterByDateFromDateTo";
 
 const DatesFilter = () => {
+    const dispatch = useDispatch();
     const {
         dates: { from, to },
     } = useSelector(selectFiltersState);
-    const dispatch = useDispatch();
+    const { data } = useSelector(selectPostsState);
 
-    const handleDateFromChange = (date: Date | null) => {
+    // TODO: use combinedFilters
+    const handleFilterChange = (dates: FiltersState["dates"]) => {
         dispatch(
-            setDates({
-                from: date ? dayjs(date).format("YYYY-MM-DD") : null,
-                to,
-            })
+            setFilteredPosts(
+                filterByDateFromDateTo({ posts: data, datesFilter: dates })
+            )
         );
     };
 
+    const handleDateFromChange = (date: Date | null) => {
+        const newDates = {
+            from: date ? dayjs(date).format("YYYY-MM-DD") : null,
+            to,
+        };
+        dispatch(setDates(newDates));
+        handleFilterChange(newDates);
+    };
+
     const handleDateToChange = (date: Date | null) => {
-        dispatch(
-            setDates({
-                from,
-                to: date ? dayjs(date).format("YYYY-MM-DD") : null,
-            })
-        );
+        const newDates = {
+            from,
+            to: date ? dayjs(date).format("YYYY-MM-DD") : null,
+        };
+        dispatch(setDates(newDates));
+        handleFilterChange(newDates);
     };
 
     const dateObjects = [

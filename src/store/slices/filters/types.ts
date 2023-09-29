@@ -5,6 +5,10 @@ export type FiltersState = {
         to: string | null;
     };
     sortBy: "distance" | "date";
+    createdAt: {
+        value: number;
+        label: string;
+    };
 };
 
 export const isDisplayMode = (

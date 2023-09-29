@@ -9,6 +9,10 @@ const initialState: FiltersState = {
         to: null,
     },
     sortBy: "date",
+    createdAt: {
+        value: 0,
+        label: "Aucun filtre",
+    },
 };
 
 export const filtersSlice = createSlice({
@@ -27,11 +31,15 @@ export const filtersSlice = createSlice({
         setSortBy(state, action: { payload: FiltersState["sortBy"] }) {
             state.sortBy = action.payload;
         },
+        setCreatedAt(state, action: { payload: FiltersState["createdAt"] }) {
+            state.createdAt = action.payload;
+        },
     },
     // add extraReducers for server init only
 });
 
-export const { setDates, setDisplayMode, setSortBy } = filtersSlice.actions;
+export const { setDates, setDisplayMode, setSortBy, setCreatedAt } =
+    filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;
 

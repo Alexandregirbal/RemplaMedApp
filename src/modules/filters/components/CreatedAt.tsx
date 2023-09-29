@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectFiltersState, setCreatedAt } from "store/slices/filters/slice";
 import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
-import { filterByCreatedAt } from "../services/createdAt";
+import { filterByCreatedAt } from "../services/filterByCreatedAt";
 
 const CreatedAt = () => {
     const dispatch = useDispatch();

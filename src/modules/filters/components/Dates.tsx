@@ -40,7 +40,7 @@ const DatesFilter = () => {
             date: to,
             min: from,
             handleDateChange: handleDateToChange,
-            label: "Jusqu'au",
+            label: "Disponible jusqu'au",
         },
     ];
 
@@ -53,7 +53,7 @@ const DatesFilter = () => {
                 >
                     <label>{label}</label>
                     <DatePicker
-                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
+                        className="block w-32 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
                         selected={date ? dayjs(date).toDate() : null}
                         minDate={min ? dayjs(min).toDate() : null}
                         onChange={handleDateChange}

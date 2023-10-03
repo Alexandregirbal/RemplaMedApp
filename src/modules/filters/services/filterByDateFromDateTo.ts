@@ -4,7 +4,7 @@ import type { FiltersState } from "store/slices/filters/types";
 
 export const filterByDateFromDateTo = (params: {
     posts: PostWithAuthorName[];
-    datesFilter: FiltersState["dates"];
+    datesFilter: Omit<FiltersState["dates"], "postsIds">;
 }) => {
     const { posts, datesFilter } = params;
     if (!datesFilter.from && !datesFilter.to) return posts;

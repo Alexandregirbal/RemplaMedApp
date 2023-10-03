@@ -3,15 +3,15 @@ import { type AppState } from "store";
 import type { FiltersState } from "./types";
 
 const initialState: FiltersState = {
-    displayMode: "map",
     dates: {
         from: null,
         to: null,
+        postsIds: [],
     },
-    sortBy: "date",
     createdAt: {
         value: 0,
         label: "Aucun filtre",
+        postsIds: [],
     },
 };
 
@@ -19,17 +19,8 @@ export const filtersSlice = createSlice({
     name: "filters",
     initialState,
     reducers: {
-        setDisplayMode(
-            state,
-            action: { payload: FiltersState["displayMode"] }
-        ) {
-            state.displayMode = action.payload;
-        },
         setDates(state, action: { payload: FiltersState["dates"] }) {
             state.dates = action.payload;
-        },
-        setSortBy(state, action: { payload: FiltersState["sortBy"] }) {
-            state.sortBy = action.payload;
         },
         setCreatedAt(state, action: { payload: FiltersState["createdAt"] }) {
             state.createdAt = action.payload;
@@ -38,8 +29,7 @@ export const filtersSlice = createSlice({
     // add extraReducers for server init only
 });
 
-export const { setDates, setDisplayMode, setSortBy, setCreatedAt } =
-    filtersSlice.actions;
+export const { setDates, setCreatedAt } = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;
 

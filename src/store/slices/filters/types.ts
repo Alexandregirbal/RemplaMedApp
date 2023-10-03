@@ -1,22 +1,14 @@
+import type { PostWithAuthorName } from "modules/post/types/post";
+
+type Results = { postsIds: Array<PostWithAuthorName["id"]> };
+
 export type FiltersState = {
-    displayMode: "list" | "map";
     dates: {
         from: string | null;
         to: string | null;
-    };
-    sortBy: "distance" | "date";
+    } & Results;
     createdAt: {
         value: number;
         label: string;
-    };
-};
-
-export const isDisplayMode = (
-    displayMode: string
-): displayMode is FiltersState["displayMode"] => {
-    return ["list", "map"].includes(displayMode);
-};
-
-export const isSortBy = (sortBy: string): sortBy is FiltersState["sortBy"] => {
-    return ["distance", "date", "dateFrom", "dateTo"].includes(sortBy);
+    } & Results;
 };

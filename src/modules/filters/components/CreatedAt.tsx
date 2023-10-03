@@ -1,12 +1,13 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
-import { selectFiltersState, setCreatedAt } from "store/slices/filters/slice";
-import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
+import { useSelector } from "react-redux";
+import { selectFiltersState } from "store/slices/filters/slice";
+import { selectPostsState } from "store/slices/posts/slice";
+import { useFilters } from "../hooks/useFilters";
 import { filterByCreatedAt } from "../services/filterByCreatedAt";
 
 const CreatedAt = () => {
-    const dispatch = useDispatch();
+    const { addFilter } = useFilters();
     const { data } = useSelector(selectPostsState);
     const { createdAt } = useSelector(selectFiltersState);
     const options = [
@@ -19,10 +20,15 @@ const CreatedAt = () => {
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newOption = options.find((o) => o.value === +event.target.value);
         if (!newOption) return;
-        dispatch(setCreatedAt(newOption));
-        dispatch(
-            setFilteredPosts(filterByCreatedAt(data, +event.target.value))
-        );
+        const filterPosts = filterByCreatedAt(data, +event.target.value);
+        const filteredPostsIds = filterPosts.map((post) => post.id);
+        addFilter({
+            filterState: {
+                name: "createdAt",
+                value: newOption,
+            },
+            postsIds: filteredPostsIds,
+        });
     };
     return (
         <div className="flex items-center gap-2">

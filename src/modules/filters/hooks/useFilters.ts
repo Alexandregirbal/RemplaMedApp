@@ -1,28 +1,33 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+    isCreatedAtFilterSet,
+    isDatesFilterSet,
+} from "store/slices/filters/isSet";
+import {
     resetCreatedAt,
     resetDates,
+    selectFiltersState,
     setCreatedAt,
     setDates,
 } from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
 import {
-    addFilteredPosts,
-    removeAppliedFilter,
     resetFilteredPosts,
     selectPostsState,
+    setFilteredPosts,
 } from "store/slices/posts/slice";
 import { filterByCreatedAt } from "../services/filterByCreatedAt";
 import { filterByDateFromDateTo } from "../services/filterByDateFromDateTo";
 
 type Filter = {
     name: keyof FiltersState;
-    value: Partial<FiltersState[keyof FiltersState]>;
+    value: FiltersState[keyof FiltersState];
 };
 
 export const useFilters = () => {
     const dispatch = useDispatch();
     const { data, filteredPosts } = useSelector(selectPostsState);
+    const { dates, createdAt } = useSelector(selectFiltersState);
 
     /**
      * Adds a filter to the **filters store**
@@ -30,9 +35,7 @@ export const useFilters = () => {
      * @returns The number of filtered posts
      */
     const upsertFilter = (filter: Filter): number => {
-        let postsIds: string[] = [];
         let filterValue: FiltersState[keyof FiltersState];
-        removeFilter(filter.name);
         switch (filter.name) {
             case "createdAt":
                 filterValue = filter.value as FiltersState["createdAt"];
@@ -40,9 +43,6 @@ export const useFilters = () => {
                     setCreatedAt({
                         ...filterValue,
                     })
-                );
-                postsIds = filterByCreatedAt(data, filterValue.value).map(
-                    (post) => post.id
                 );
                 break;
 
@@ -53,37 +53,38 @@ export const useFilters = () => {
                         ...filterValue,
                     })
                 );
-                postsIds = filterByDateFromDateTo({
-                    posts: data,
-                    datesFilter: filterValue,
-                }).map((post) => post.id);
                 break;
 
             default:
                 throw new Error(`Filter name not found.`);
         }
 
-        const postsData =
-            filteredPosts.value.length === 0 ? data : filteredPosts.value;
-
-        const newFilteredPosts = postsData.filter((post) =>
-            postsIds.includes(post.id)
-        );
-        dispatch(
-            addFilteredPosts({
-                name: filter.name,
-                value: newFilteredPosts,
-            })
-        );
-        return newFilteredPosts.length;
-    };
-
-    /**
-     * Removes a filter by its name from the **filters store**
-     * and sets the filteredPosts on the **posts store**
-     */
-    const removeFilter = (filterName: Filter["name"]): void => {
-        dispatch(removeAppliedFilter(filterName));
+        let postsData = data;
+        for (const filterName of ["createdAt", "dates"]) {
+            if (isCreatedAtFilterSet(createdAt) || filterName === "createdAt") {
+                postsData = filterByCreatedAt(
+                    postsData,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    filter.name === "createdAt"
+                        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          filter.value.value
+                        : createdAt.value
+                );
+            }
+            if (isDatesFilterSet(dates) || filterName === "dates") {
+                postsData = filterByDateFromDateTo({
+                    posts: postsData,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    datesFilter: filter.name === "dates" ? filter.value : dates,
+                });
+            }
+        }
+        dispatch(setFilteredPosts(postsData));
+        return postsData.length;
     };
 
     /**
@@ -92,13 +93,11 @@ export const useFilters = () => {
     const resetFilters = (): void => {
         dispatch(resetCreatedAt());
         dispatch(resetDates());
-
         dispatch(resetFilteredPosts());
     };
 
     return {
         upsertFilter,
-        removeFilter,
         resetFilters,
     };
 };

@@ -11,7 +11,7 @@ const CreatedAt = () => {
         { value: 0, label: "Aucun filtre" },
         { value: 24, label: "1J | Posté dans les 24h" },
         { value: 24 * 3, label: "3J | Posté dans les 3 derniers jours" },
-        { value: 24 * 7, label: "7J | Posté dans la semaine" },
+        { value: 24 * 7 * 2, label: "7J | Posté dans la semaine" },
     ];
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

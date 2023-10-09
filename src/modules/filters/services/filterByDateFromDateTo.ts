@@ -4,7 +4,7 @@ import type { FiltersState } from "store/slices/filters/types";
 
 export const filterByDateFromDateTo = (params: {
     posts: PostWithAuthorName[];
-    datesFilter: Omit<FiltersState["dates"], "postsIds">;
+    datesFilter: FiltersState["dates"];
 }) => {
     const { posts, datesFilter } = params;
     if (!datesFilter.from && !datesFilter.to) return posts;
@@ -23,7 +23,7 @@ export const filterByDateFromDateTo = (params: {
 
     return posts.filter(
         (post) =>
-            dayjs(post.availablityFrom).isAfter(datesFilter.from) &&
+            dayjs(post.availablityFrom).isAfter(datesFilter.from) ||
             dayjs(post.availablityTo).isBefore(datesFilter.to)
     );
 };

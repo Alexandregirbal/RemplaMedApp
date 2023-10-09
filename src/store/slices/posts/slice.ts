@@ -102,7 +102,7 @@ export const postsSlice = createSlice({
             state.filteredPosts = action.payload;
         },
         resetFilteredPosts(state) {
-            state.filteredPosts = [...state.data];
+            state.filteredPosts = [];
         },
     },
 

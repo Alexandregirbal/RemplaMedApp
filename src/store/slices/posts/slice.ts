@@ -15,7 +15,10 @@ const initialState: PostsState = {
         totalRecentPosts: 0,
     },
     selectedPosts: [],
-    filteredPosts: [],
+    filteredPosts: {
+        appliedFilters: [],
+        value: [],
+    },
     newPost: {
         title: "",
         message: "",
@@ -101,8 +104,40 @@ export const postsSlice = createSlice({
         ) {
             state.filteredPosts = action.payload;
         },
+        addFilteredPosts(
+            state,
+            action: {
+                payload: {
+                    name: PostsState["filteredPosts"]["appliedFilters"][number];
+                    value: PostsState["filteredPosts"]["value"];
+                };
+            }
+        ) {
+            state.filteredPosts = {
+                appliedFilters: [
+                    ...state.filteredPosts.appliedFilters,
+                    action.payload.name,
+                ],
+                value: action.payload.value,
+            };
+        },
+
+        removeAppliedFilter(
+            state,
+            action: {
+                payload: PostsState["filteredPosts"]["appliedFilters"][number];
+            }
+        ) {
+            const appliedFilters = state.filteredPosts.appliedFilters.filter(
+                (filter) => filter !== action.payload
+            );
+            state.filteredPosts.appliedFilters = appliedFilters;
+        },
         resetFilteredPosts(state) {
-            state.filteredPosts = [...state.data];
+            state.filteredPosts = {
+                appliedFilters: [],
+                value: [],
+            };
         },
     },
 
@@ -133,6 +168,8 @@ export const {
     setSelectedPosts,
     resetFilteredPosts,
     setFilteredPosts,
+    addFilteredPosts,
+    removeAppliedFilter,
 } = postsSlice.actions;
 
 export const selectPostsState = (state: AppState) => state.posts;

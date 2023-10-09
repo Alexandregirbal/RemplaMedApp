@@ -6,12 +6,10 @@ const initialState: FiltersState = {
     dates: {
         from: null,
         to: null,
-        postsIds: [],
     },
     createdAt: {
         value: 0,
         label: "Aucun filtre",
-        postsIds: [],
     },
 };
 
@@ -22,14 +20,21 @@ export const filtersSlice = createSlice({
         setDates(state, action: { payload: FiltersState["dates"] }) {
             state.dates = action.payload;
         },
+        resetDates(state) {
+            state.dates = initialState.dates;
+        },
         setCreatedAt(state, action: { payload: FiltersState["createdAt"] }) {
             state.createdAt = action.payload;
+        },
+        resetCreatedAt(state) {
+            state.createdAt = initialState.createdAt;
         },
     },
     // add extraReducers for server init only
 });
 
-export const { setDates, setCreatedAt } = filtersSlice.actions;
+export const { setDates, setCreatedAt, resetCreatedAt, resetDates } =
+    filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;
 

@@ -1,16 +1,23 @@
-import type { PostWithAuthorName } from "modules/post/types/post";
 import { useDispatch, useSelector } from "react-redux";
-import { setCreatedAt, setDates } from "store/slices/filters/slice";
+import {
+    resetCreatedAt,
+    resetDates,
+    setCreatedAt,
+    setDates,
+} from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
-import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
+import {
+    addFilteredPosts,
+    removeAppliedFilter,
+    resetFilteredPosts,
+    selectPostsState,
+} from "store/slices/posts/slice";
+import { filterByCreatedAt } from "../services/filterByCreatedAt";
+import { filterByDateFromDateTo } from "../services/filterByDateFromDateTo";
 
 type Filter = {
-    filterState: {
-        name: keyof FiltersState;
-        value: Partial<FiltersState[keyof FiltersState]>;
-    };
-    postsIds: Array<PostWithAuthorName["id"]>;
-    operator?: "or" | "and";
+    name: keyof FiltersState;
+    value: Partial<FiltersState[keyof FiltersState]>;
 };
 
 export const useFilters = () => {
@@ -22,64 +29,75 @@ export const useFilters = () => {
      * and sets the filteredPosts on the **posts store**
      * @returns The number of filtered posts
      */
-    const addFilter = (filter: Filter): number => {
-        switch (filter.filterState.name) {
+    const upsertFilter = (filter: Filter): number => {
+        let postsIds: string[] = [];
+        let filterValue: FiltersState[keyof FiltersState];
+        removeFilter(filter.name);
+        switch (filter.name) {
             case "createdAt":
+                filterValue = filter.value as FiltersState["createdAt"];
                 dispatch(
                     setCreatedAt({
-                        ...(filter.filterState
-                            .value as FiltersState["createdAt"]),
-                        postsIds: filter.postsIds,
+                        ...filterValue,
                     })
+                );
+                postsIds = filterByCreatedAt(data, filterValue.value).map(
+                    (post) => post.id
                 );
                 break;
 
             case "dates":
+                filterValue = filter.value as FiltersState["dates"];
                 dispatch(
                     setDates({
-                        ...(filter.filterState.value as FiltersState["dates"]),
-                        postsIds: filter.postsIds,
+                        ...filterValue,
                     })
                 );
+                postsIds = filterByDateFromDateTo({
+                    posts: data,
+                    datesFilter: filterValue,
+                }).map((post) => post.id);
                 break;
 
             default:
                 throw new Error(`Filter name not found.`);
         }
 
-        const postsData = filteredPosts.length === 0 ? data : filteredPosts;
+        const postsData =
+            filteredPosts.value.length === 0 ? data : filteredPosts.value;
 
         const newFilteredPosts = postsData.filter((post) =>
-            filter.postsIds.includes(post.id)
+            postsIds.includes(post.id)
         );
-        dispatch(setFilteredPosts(newFilteredPosts));
+        dispatch(
+            addFilteredPosts({
+                name: filter.name,
+                value: newFilteredPosts,
+            })
+        );
         return newFilteredPosts.length;
     };
 
     /**
      * Removes a filter by its name from the **filters store**
      * and sets the filteredPosts on the **posts store**
-     * @returns The new number of filtered posts
      */
-    const removeFilter = (
-        filterName: Filter["filterState"]["name"]
-    ): number => {
-        console.log(
-            `~~~~~ LOG by Girbal | removeFilter | filterName: `,
-            filterName
-        );
-        return 0;
+    const removeFilter = (filterName: Filter["name"]): void => {
+        dispatch(removeAppliedFilter(filterName));
     };
 
     /**
      * Resets the filters on the **filters store** to an empty array
      */
     const resetFilters = (): void => {
-        dispatch(setFilteredPosts([]));
+        dispatch(resetCreatedAt());
+        dispatch(resetDates());
+
+        dispatch(resetFilteredPosts());
     };
 
     return {
-        addFilter,
+        upsertFilter,
         removeFilter,
         resetFilters,
     };

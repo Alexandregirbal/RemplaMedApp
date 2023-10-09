@@ -12,7 +12,7 @@ const DatesFilter = () => {
         dates: { from, to },
     } = useSelector(selectFiltersState);
     const { data } = useSelector(selectPostsState);
-    const { addFilter } = useFilters();
+    const { upsertFilter } = useFilters();
 
     const handleDateFilterChange = (
         newDatesFilter: Omit<FiltersState["dates"], "postsIds">
@@ -22,12 +22,9 @@ const DatesFilter = () => {
             datesFilter: newDatesFilter,
         });
         const filteredPostsIds = newPosts.map((post) => post.id);
-        addFilter({
-            filterState: {
-                name: "dates",
-                value: newDatesFilter,
-            },
-            postsIds: filteredPostsIds,
+        upsertFilter({
+            name: "dates",
+            value: newDatesFilter,
         });
         return filteredPostsIds;
     };

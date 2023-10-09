@@ -26,7 +26,7 @@ type Filter = {
 
 export const useFilters = () => {
     const dispatch = useDispatch();
-    const { data, filteredPosts } = useSelector(selectPostsState);
+    const { data } = useSelector(selectPostsState);
     const { dates, createdAt } = useSelector(selectFiltersState);
 
     /**
@@ -60,29 +60,28 @@ export const useFilters = () => {
         }
 
         let postsData = data;
-        for (const filterName of ["createdAt", "dates"]) {
-            if (isCreatedAtFilterSet(createdAt) || filterName === "createdAt") {
-                postsData = filterByCreatedAt(
-                    postsData,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    filter.name === "createdAt"
-                        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore
-                          filter.value.value
-                        : createdAt.value
-                );
+        for (const iteratingFilterName of ["createdAt", "dates"]) {
+            if (
+                isCreatedAtFilterSet(createdAt) ||
+                iteratingFilterName === "createdAt"
+            ) {
+                const filterValue = (
+                    filter.name === "createdAt" ? filter.value : createdAt
+                ) as FiltersState["createdAt"];
+                postsData = filterByCreatedAt(postsData, filterValue.value);
             }
-            if (isDatesFilterSet(dates) || filterName === "dates") {
+
+            if (isDatesFilterSet(dates) || iteratingFilterName === "dates") {
+                const filterValue = (
+                    filter.name === "dates" ? filter.value : dates
+                ) as FiltersState["dates"];
                 postsData = filterByDateFromDateTo({
                     posts: postsData,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    datesFilter: filter.name === "dates" ? filter.value : dates,
+                    datesFilter: filterValue,
                 });
             }
         }
+
         dispatch(setFilteredPosts(postsData));
         return postsData.length;
     };

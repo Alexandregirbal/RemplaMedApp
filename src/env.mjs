@@ -26,6 +26,9 @@ const server = z.object({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    MOLLIE_API_KEY: z.string(),
+    MOLLIE_CLIENT_ID: z.string(),
+    MOLLIE_CLIENT_SECRET: z.string(),
 });
 
 /**
@@ -54,6 +57,9 @@ const processEnv = {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
+    MOLLIE_CLIENT_ID: process.env.MOLLIE_CLIENT_ID,
+    MOLLIE_CLIENT_SECRET: process.env.MOLLIE_CLIENT_SECRET,
 };
 
 // Don't touch the part below

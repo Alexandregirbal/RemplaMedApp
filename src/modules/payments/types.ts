@@ -7,6 +7,8 @@ export enum Currency {
 
 export type PaymentMetadata = {
     postId: string;
+    domain: string;
+    origin: "desktop" | "mobile";
 };
 
 export type CreatePaymentIntent = (params: {

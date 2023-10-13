@@ -3,6 +3,8 @@ import { getServerAuthSession } from "modules/auth/server";
 import { getPayment } from "modules/payments";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/db";
+import { getDomainUrl } from "server/domain";
+import { isMobile } from "server/isMobile";
 
 const PRODUCTS = ["post"];
 
@@ -21,16 +23,18 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).json({ message: "Invalid product name" });
     }
 
+    const domainUrl = getDomainUrl();
     const { paymentUrl, paymentId } = await getPayment({
         paymentIntentParams: {
             amount: 5.9,
             description: "RemplaMed: Publication d'un post",
             metadata: {
                 postId,
+                domain: domainUrl,
+                origin: isMobile(req) ? "mobile" : "desktop",
             },
-            redirectUrl: `https://rempla-med.fr/posts/${postId}`,
-            webhookUrl: `https://rempla-med.fr/api/payment/webhook`,
-            // TODO: Use different URL depending on environment
+            redirectUrl: `${domainUrl}/posts/${postId}`,
+            webhookUrl: `${domainUrl}/api/payment/webhook`,
         },
     });
 

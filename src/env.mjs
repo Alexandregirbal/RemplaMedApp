@@ -11,7 +11,7 @@ const server = z.object({
     POSTGRES_PRISMA_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
     POSTGRES_URL: z.string().url(),
-    NODE_ENV: z.enum(["development", "test", "staging", "production"]),
+    NODE_ENV: z.enum(["development", "test", "production"]),
     NEXTAUTH_SECRET:
         process.env.NODE_ENV === "production"
             ? z.string().min(1)
@@ -29,7 +29,8 @@ const server = z.object({
     MOLLIE_API_KEY: z.string(),
     MOLLIE_CLIENT_ID: z.string(),
     MOLLIE_CLIENT_SECRET: z.string(),
-    VERCEL_URL: z.string().url().optional(),
+    VERCEL_URL: z.string().url(),
+    VERCEL_ENV: z.enum(["production", "preview", "development"]),
 });
 
 /**
@@ -62,6 +63,7 @@ const processEnv = {
     MOLLIE_CLIENT_ID: process.env.MOLLIE_CLIENT_ID,
     MOLLIE_CLIENT_SECRET: process.env.MOLLIE_CLIENT_SECRET,
     VERCEL_URL: process.env.VERCEL_URL,
+    VERCEL_ENV: process.env.VERCEL_ENV,
 };
 
 // Don't touch the part below

@@ -1,6 +1,13 @@
 import { getMollieClient } from "./config";
 import { type CreatePaymentIntent, Currency } from "./types";
 
+const getWebhookUrl = (url: string) => {
+    if (url.includes("localhost")) {
+        return "https://rempla-med.fr/api/payment/webhook/local_will_fail";
+    }
+    return url;
+};
+
 export const createPaymentIntent: CreatePaymentIntent = async ({
     amount,
     description,
@@ -15,7 +22,7 @@ export const createPaymentIntent: CreatePaymentIntent = async ({
             currency,
         },
         description,
-        webhookUrl,
+        webhookUrl: getWebhookUrl(webhookUrl),
         redirectUrl,
         metadata,
     });

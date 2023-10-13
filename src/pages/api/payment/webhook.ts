@@ -2,16 +2,9 @@ import { PaymentStatus } from "@mollie/api-client";
 import { getPaymentIntent } from "modules/payments/getPaymentIntent";
 import { updatePaymentStatus } from "modules/post/services/updatePaymentStatus";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-const PRODUCTS = ["post"];
+import { prisma } from "server/db";
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(
-        `~~~~~ LOG by Girbal | file: webhook.ts:7 | handlePost | handlePost: `,
-        req.query,
-        req.body
-    );
-
     const { id } = req.query;
     if (!id || typeof id !== "string") {
         return res
@@ -19,12 +12,25 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
             .json({ message: "A valid payment id is required" });
     }
 
-    const payment = await getPaymentIntent({ id });
-    const status = payment.status;
+    const post = await prisma.post.findFirst({ where: { paymentId: id } });
+    if (!post) {
+        return res.status(400).json({
+            message: "Payment id does not have any corresponding post",
+        });
+    }
 
-    // TODO: update payment status in database
+    const payment = await getPaymentIntent({ id });
+    const { status } = payment;
+    await updatePaymentStatus({ postId: post.id, status });
     if (status === PaymentStatus.paid) {
-        updatePaymentStatus({ paymentId: id, status });
+        await prisma.post.update({
+            data: {
+                published: true,
+            },
+            where: {
+                id: post.id,
+            },
+        });
     }
 
     return res.status(200).json({ success: true });

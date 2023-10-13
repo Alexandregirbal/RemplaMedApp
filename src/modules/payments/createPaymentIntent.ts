@@ -11,7 +11,7 @@ export const createPaymentIntent: CreatePaymentIntent = async ({
 }) => {
     const paymentIntent = await getMollieClient().payments.create({
         amount: {
-            value: amount.toString(),
+            value: amount.toFixed(2),
             currency,
         },
         description,

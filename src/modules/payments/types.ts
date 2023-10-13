@@ -1,8 +1,8 @@
 import type { Payment } from "@mollie/api-client";
 
 export enum Currency {
-    EUR = "eur",
-    USD = "usd",
+    EUR = "EUR",
+    USD = "USD",
 }
 
 export type PaymentMetadata = {

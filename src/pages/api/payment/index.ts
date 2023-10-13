@@ -1,3 +1,4 @@
+import { PaymentStatus } from "@mollie/api-client";
 import { getServerAuthSession } from "modules/auth/server";
 import { getPayment } from "modules/payments";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -6,7 +7,6 @@ import { prisma } from "server/db";
 const PRODUCTS = ["post"];
 
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(`~~~~~ LOG by Girbal | handleGet | req: `, req.query, req.body);
     const { product, postId } = req.query;
     if (!product || typeof product !== "string") {
         return res
@@ -30,19 +30,19 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             redirectUrl: `https://rempla-med.fr/posts/${postId}`,
             webhookUrl: `https://rempla-med.fr/api/payment/webhook`,
+            // TODO: Use different URL depending on environment
         },
     });
-    console.log(
-        `~~~~~ LOG by Girbal | file: index.ts:33 | handleGet | paymentId: `,
-        paymentId
-    );
 
-    // TODO: save paymentId in the database
-    // prisma.post.update({
-    //     data: {
-    //         paymentId
-    //     }
-    // })
+    await prisma.post.update({
+        data: {
+            paymentId,
+            paymentStatus: PaymentStatus.open,
+        },
+        where: {
+            id: postId,
+        },
+    });
     return res.status(200).json({ paymentUrl });
 };
 

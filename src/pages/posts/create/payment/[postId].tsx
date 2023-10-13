@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "store/slices/ui/slice";
 
 const Payment = () => {
     const router = useRouter();
-    // get postId from router
+    const dispatch = useDispatch();
     const { postId } = router.query;
-    console.log(`~~~~~ LOG by Girbal | Payment | postId: `, postId);
 
     if (!postId || Array.isArray(postId)) {
         return (
@@ -16,16 +17,19 @@ const Payment = () => {
         );
     }
 
-    const handlePayment = async () => {
+    const handlePayment = () => {
         console.log("Payment");
-        // TODO: loading state ON
-        const result = await axios.get(
-            `/api/payment?product=post&id=${postId}`
-        );
-        // TODO: loading state OFF
-        const paymentUrl = result.data as string;
-        await router.push(paymentUrl);
-        return;
+        dispatch(setIsLoading(true));
+        axios
+            .get(`/api/payment?product=post&postId=${postId}`)
+            .then((result) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                const paymentUrl = result.data.paymentUrl as string;
+                void router.push(paymentUrl);
+            })
+            .finally(() => {
+                dispatch(setIsLoading(false));
+            });
     };
 
     return (
@@ -33,7 +37,14 @@ const Payment = () => {
             <h1>Page de paiement</h1>
             <div>Merci de régler 5.90 € pour publier votre poste.</div>
             <div>{`Vous serez redirigé vers la page de paiement en cliquant sur le bouton "Payer"`}</div>
-            <button onClick={() => void handlePayment()}>Payer</button>
+            <div className="flex justify-center">
+                <button
+                    className="rounded-lg bg-cta px-5 py-2.5 text-center text-white"
+                    onClick={handlePayment}
+                >
+                    Payer
+                </button>
+            </div>
         </>
     );
 };

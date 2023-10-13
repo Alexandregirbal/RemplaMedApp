@@ -20,13 +20,13 @@ const Preview = () => {
         const func = async () => {
             dispatch(setIsLoading(true));
             const result = await axios.post("/api/posts/create", newPost);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            const postId = result.data.postId as string;
             dispatch(setIsLoading(false));
             if (result.status !== 200) {
                 alert("Une erreur est survenue");
             }
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access
-            void router.push(`/posts/${result.data.postId}`);
-            // void router.push("/posts/create/payment");
+            void router.push(`/posts/create/payment/${postId}`);
         };
         void func();
     };

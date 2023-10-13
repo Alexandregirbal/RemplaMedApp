@@ -1,12 +1,20 @@
 import { type PaymentStatus } from "@mollie/api-client";
+import { prisma } from "server/db";
 
-export const updatePaymentStatus = ({
-    paymentId,
+export const updatePaymentStatus = async ({
+    postId,
     status,
 }: {
-    paymentId: string;
+    postId: string;
     status: PaymentStatus;
-}): number => {
-    // TODO: faire la feature bro
-    return 0;
+}) => {
+    const result = await prisma.post.update({
+        data: {
+            paymentStatus: status,
+        },
+        where: {
+            id: postId,
+        },
+    });
+    return result;
 };

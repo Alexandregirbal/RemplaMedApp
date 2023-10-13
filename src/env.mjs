@@ -29,7 +29,7 @@ const server = z.object({
     MOLLIE_API_KEY: z.string(),
     MOLLIE_CLIENT_ID: z.string(),
     MOLLIE_CLIENT_SECRET: z.string(),
-    VERCEL_URL: z.string().url(),
+    VERCEL_URL: z.string(),
     VERCEL_ENV: z.enum(["production", "preview", "development"]),
 });
 

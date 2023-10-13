@@ -1,11 +1,15 @@
 import { env } from "../env.mjs";
 
 export const getDomainUrl = (): string => {
-    const domainEnvironment = env.VERCEL_ENV;
     const domainUrl = env.VERCEL_URL;
-
-    if (domainEnvironment === "production") {
-        return "https://rempla-med.fr";
+    switch (env.VERCEL_ENV) {
+        case "production":
+            return "https://rempla-med.fr";
+        case "preview":
+            return `https://${domainUrl}`;
+        case "development":
+            return `http://${domainUrl}`;
+        default:
+            return "http://localhost:3000";
     }
-    return domainUrl;
 };

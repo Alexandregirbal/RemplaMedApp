@@ -20,6 +20,8 @@ const Schema: z.ZodType<Prisma.PostCountOrderByAggregateInput> = z
         availablityTo: z.lazy(() => SortOrderSchema).optional(),
         views: z.lazy(() => SortOrderSchema).optional(),
         source: z.lazy(() => SortOrderSchema).optional(),
+        paymentId: z.lazy(() => SortOrderSchema).optional(),
+        paymentStatus: z.lazy(() => SortOrderSchema).optional(),
     })
     .strict();
 

@@ -84,13 +84,13 @@ enum Source {
 }
 
 enum PaymentStatus {
-  OPEN
-  CANCELED
-  PENDING
-  AUTHORIZED
-  EXPIRED
-  FAILED
-  PAID
+  open
+  canceled
+  pending
+  authorized
+  expired
+  failed
+  paid
 }
 
 model Post {

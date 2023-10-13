@@ -8,6 +8,8 @@ import { DateTimeNullableWithAggregatesFilterObjectSchema } from "./DateTimeNull
 import { IntWithAggregatesFilterObjectSchema } from "./IntWithAggregatesFilter.schema";
 import { EnumSourceNullableWithAggregatesFilterObjectSchema } from "./EnumSourceNullableWithAggregatesFilter.schema";
 import { SourceSchema } from "../enums/Source.schema";
+import { EnumPaymentStatusNullableWithAggregatesFilterObjectSchema } from "./EnumPaymentStatusNullableWithAggregatesFilter.schema";
+import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -128,6 +130,23 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
                     () => EnumSourceNullableWithAggregatesFilterObjectSchema
                 ),
                 z.lazy(() => SourceSchema),
+            ])
+            .optional()
+            .nullable(),
+        paymentId: z
+            .union([
+                z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
+                z.string(),
+            ])
+            .optional()
+            .nullable(),
+        paymentStatus: z
+            .union([
+                z.lazy(
+                    () =>
+                        EnumPaymentStatusNullableWithAggregatesFilterObjectSchema
+                ),
+                z.lazy(() => PaymentStatusSchema),
             ])
             .optional()
             .nullable(),

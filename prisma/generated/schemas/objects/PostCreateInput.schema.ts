@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SourceSchema } from "../enums/Source.schema";
+import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
 import { UserCreateNestedOneWithoutPostsInputObjectSchema } from "./UserCreateNestedOneWithoutPostsInput.schema";
 
 import type { Prisma } from "@prisma/client";
@@ -21,6 +22,11 @@ const Schema: z.ZodType<Prisma.PostCreateInput> = z
         views: z.number().optional(),
         source: z
             .lazy(() => SourceSchema)
+            .optional()
+            .nullable(),
+        paymentId: z.string().optional().nullable(),
+        paymentStatus: z
+            .lazy(() => PaymentStatusSchema)
             .optional()
             .nullable(),
         author: z.lazy(() => UserCreateNestedOneWithoutPostsInputObjectSchema),

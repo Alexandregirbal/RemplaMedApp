@@ -1,5 +1,7 @@
+import { getServerAuthSession } from "modules/auth/server";
 import { getPayment } from "modules/payments";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "server/db";
 
 const PRODUCTS = ["post"];
 
@@ -36,6 +38,11 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     // TODO: save paymentId in the database
+    // prisma.post.update({
+    //     data: {
+    //         paymentId
+    //     }
+    // })
     return res.status(200).json({ paymentUrl });
 };
 
@@ -44,6 +51,10 @@ export default async function handler(
     res: NextApiResponse
 ) {
     console.log(`${req.method ?? ""} /api/payment`);
+    const session = await getServerAuthSession({ req, res });
+    if (!session) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
 
     if (req.method === "GET") {
         return await handleGet(req, res);

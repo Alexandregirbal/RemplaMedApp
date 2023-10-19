@@ -62,7 +62,7 @@ const processEnv = {
     MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
     MOLLIE_CLIENT_ID: process.env.MOLLIE_CLIENT_ID,
     MOLLIE_CLIENT_SECRET: process.env.MOLLIE_CLIENT_SECRET,
-    VERCEL_BRANCH_URL: process.env.VERCEL_URL,
+    VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
     VERCEL_ENV: process.env.VERCEL_ENV,
 };
 

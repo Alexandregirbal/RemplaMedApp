@@ -7,7 +7,7 @@ const Policies = () => {
                 Conditions, politique de confidentialité et tarifs
             </h1>
             <p>
-                Les conditions autres terms légaux sont disponibles sur les
+                Les conditions et autres termes légaux sont disponibles sur les
                 pages suivantes:
             </p>
             <ol className="underline">

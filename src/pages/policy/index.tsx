@@ -4,13 +4,15 @@ const Policies = () => {
     return (
         <div className=" flex flex-col gap-4 p-6">
             <h1 className="text-center text-2xl">
-                Conditions, politique de confidentialité et tarifs
+                <strong>
+                    Conditions, politique de confidentialité et tarifs
+                </strong>
             </h1>
             <p>
                 Les conditions et autres termes légaux sont disponibles sur les
                 pages suivantes:
             </p>
-            <ol className="underline">
+            <ul className="flex list-inside list-disc flex-col gap-2 underline">
                 <li>
                     <Link href={"/policy/privacy"}>
                         {"Politique de confidentialité"}
@@ -26,7 +28,7 @@ const Policies = () => {
                         {"Produits et tarifs"}
                     </Link>
                 </li>
-            </ol>
+            </ul>
         </div>
     );
 };

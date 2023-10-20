@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
         <>
             <Head>
                 <meta
-                    http-equiv="Content-Type"
+                    httpEquiv="Content-Type"
                     content="text/html; charset=utf-8"
                 />
                 <title>{"Politique de confidentialité RemplaMed"}</title>
@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
                     <strong>{"Politique de confidentialité RemplaMed"}</strong>
                 </h1>
                 <div className="flex flex-col gap-2">
-                    <p>{"Date d'effet: 1er Septembre 2023"}</p>
+                    <p>{"Date d'effet : 1er Septembre 2023"}</p>
                     <hr />
                     <p>
                         {
@@ -30,14 +30,14 @@ const PrivacyPolicy = () => {
                     </p>
                     <p>
                         {
-                            "Nous recueillons certaines informations lorsque vous utilisez l'application RemplaMed :"
+                            "Nous recueillons certaines informations lorsque vous utilisez l'application RemplaMed: "
                         }
                     </p>
                 </div>
 
                 <ol type="1" className="flex flex-col gap-2" start={1}>
                     <li>
-                        <strong>{"Informations du compte Google:"}</strong>{" "}
+                        <strong>{"Informations du compte Google: "}</strong>
                         {
                             "Afin d'utiliser RemplaMed, vous pouvez vous authentifier via votre compte Google. Nous collectons vos informations de profil de base depuis votre compte Google, notamment votre nom, votre adresse e-mail et votre photo de profil."
                         }
@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
                 </ol>
                 <ol type="1" className="flex flex-col gap-2" start={2}>
                     <li>
-                        <strong>{"Contenu:"}</strong>{" "}
+                        <strong>{"Contenu: "}</strong>
                         {
                             "Lorsque vous interagissez avec RemplaMed, vous pouvez publier du contenu, tel que du texte. Ce contenu peut être associé à votre compte Google et peut être visible par d'autres utilisateurs de RemplaMed."
                         }
@@ -53,7 +53,7 @@ const PrivacyPolicy = () => {
                 </ol>
                 <ol type="1" className="flex flex-col gap-2" start={3}>
                     <li>
-                        <strong>{"Données d'utilisation"}:</strong>{" "}
+                        <strong>{"Données d'utilisation: "}</strong>
                         {
                             "Nous collectons automatiquement certaines informations sur votre interaction avec RemplaMed, y compris les actions que vous effectuez et les fonctionnalités que vous utilisez."
                         }
@@ -64,12 +64,12 @@ const PrivacyPolicy = () => {
                 </p>
                 <p>
                     {
-                        "Nous utilisons les informations collectées pour fournir et améliorer nos services, notamment:"
+                        "Nous utilisons les informations collectées pour fournir et améliorer nos services, notamment :"
                     }
                 </p>
                 <ol type="1" className="numbered-list" start={1}>
                     <li>
-                        <strong>{"Authentification:"}</strong>{" "}
+                        <strong>{"Authentification: "}</strong>
                         {
                             "Vos informations de compte Google sont utilisées pour vérifier votre identité et vous donner accès à RemplaMed."
                         }
@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
                 </ol>
                 <ol type="1" className="numbered-list" start={2}>
                     <li>
-                        <strong>{"Contenu généré par l'utilisateur"}</strong>{" "}
+                        <strong>{"Contenu généré par l'utilisateur: "}</strong>
                         {
                             "Le contenu que vous publiez sur RemplaMed est utilisé pour afficher vos contributions aux autres utilisateurs et améliorer l'expérience globale de l'utilisateur."
                         }
@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
                 </ol>
                 <ol type="1" className="numbered-list" start={3}>
                     <li>
-                        <strong>{"Amélioration de l'application"}</strong>{" "}
+                        <strong>{"Amélioration de l'application: "}</strong>
                         {
                             "Nous analysons les données d'utilisation pour mieux comprendre comment les utilisateurs interagissent avec RemplaMed, identifier les domaines à améliorer et développer de nouvelles fonctionnalités."
                         }
@@ -93,7 +93,7 @@ const PrivacyPolicy = () => {
                 </ol>
                 <ol type="1" className="numbered-list" start={4}>
                     <li>
-                        <strong>{"Communication:"}</strong>{" "}
+                        <strong>{"Communication: "}</strong>
                         {
                             "Nous pouvons utiliser votre adresse e-mail pour vous communiquer des mises à jour importantes, des notifications ou des changements liés à RemplaMed."
                         }
@@ -141,7 +141,7 @@ const PrivacyPolicy = () => {
                         "Si vous avez des questions, des préoccupations ou des demandes concernant vos informations personnelles ou cette Politique de confidentialité, veuillez nous contacter à l'adresse e-mail de contact fournie sur "
                     }
                     <Link href="/about/contact" className="underline">
-                        {"rempal-med.fr/about/contact"}
+                        {"rempla-med.fr/about/contact"}
                     </Link>
                     {"."}
                 </p>

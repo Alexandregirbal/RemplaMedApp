@@ -7,24 +7,24 @@ const ContactPage = () => {
     return (
         <div className="flex flex-col gap-4 p-4">
             <h1 className="text-center text-2xl font-bold">
-                {"Contactez nous"}
+                {"Contactez-nous"}
             </h1>
             <ul className="flex list-inside list-disc flex-col gap-2">
                 <li>
-                    {"Pour une information: "}
-                    <a className="underline" href={`emailto:${emails.info}`}>
+                    {"Pour une information : "}
+                    <a className="underline" href={`mailto:${emails.info}`}>
                         {emails.info}
                     </a>
                 </li>
                 <li>
-                    {"Pour de l'aide: "}
-                    <a className="underline" href={`emailto:${emails.help}`}>
+                    {"Pour de l'aide : "}
+                    <a className="underline" href={`mailto:${emails.help}`}>
                         {emails.help}
                     </a>
                 </li>
                 <li>
-                    {"Pour d'autres sujets: "}
-                    <a className="underline" href={`emailto:${emails.contact}`}>
+                    {"Pour d'autres sujets : "}
+                    <a className="underline" href={`mailto:${emails.contact}`}>
                         {emails.contact}
                     </a>
                 </li>

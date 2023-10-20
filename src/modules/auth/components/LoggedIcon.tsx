@@ -57,9 +57,12 @@ export default function Logged({ user }: LoggedProps) {
                         <li>
                             <Link href="users/me">Mon profil</Link>
                         </li>
+                        <li>
+                            <Link href="/about">À propos</Link>
+                        </li>
                         <hr />
                         <li
-                            className="hover:cursor-pointer"
+                            className="text-tertiary hover:cursor-pointer"
                             onClick={handleSignout}
                         >
                             Déconnexion

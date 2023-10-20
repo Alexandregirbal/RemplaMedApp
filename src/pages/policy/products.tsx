@@ -12,7 +12,7 @@ const Products = () => {
                     http-equiv="Content-Type"
                     content="text/html; charset=utf-8"
                 />
-                <title>{"RemplaMed | Tarifs"} </title>
+                <title>{"RemplaMed | Tarifs"}</title>
             </Head>
             <article className="flex h-full flex-col gap-2 p-4">
                 <div className="flex flex-col gap-4">
@@ -20,7 +20,7 @@ const Products = () => {
                     <hr />
                     <p className="text-xl">
                         <strong>
-                            {"RemplaMed propose les produits suivants:"}
+                            {"RemplaMed propose les produits suivants: "}
                         </strong>
                     </p>
                 </div>
@@ -28,7 +28,7 @@ const Products = () => {
                     <li>
                         {`${PRICING.POST.toFixed(
                             2
-                        )}€ : Publication d'un post sur le réseau.`}
+                        )} € : Publication d'un post sur le réseau.`}
                     </li>
                 </ul>
             </article>

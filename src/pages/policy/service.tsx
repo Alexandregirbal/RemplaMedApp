@@ -20,20 +20,20 @@ const ServicePolicy = () => {
                         "En utilisant l'application web RemplaMed, vous acceptez les conditions suivantes :"
                     }
                 </div>
-                <p className="">
+                <p>
                     <strong>1. Utilisation de RemplaMed</strong>
                 </p>
-                <p className="">
+                <p>
                     RemplaMed est fourni uniquement pour votre usage personnel.
                     Vous ne pouvez pas utiliser RemplaMed à des fins
                     commerciales, sauf si vous avez obtenu une autorisation
                     écrite de RemplaMed. Vous ne pouvez pas utiliser RemplaMed
                     pour enfreindre les lois ou règlements applicables.
                 </p>
-                <p className="">
+                <p>
                     <strong>{"2. Contenu généré par l'utilisateur"}</strong>
                 </p>
-                <p className="">
+                <p>
                     Vous êtes seul responsable du contenu que vous publiez sur
                     RemplaMed. Vous déclarez et garantissez que vous avez tous
                     les droits nécessaires pour publier un tel contenu et que ce
@@ -46,10 +46,10 @@ const ServicePolicy = () => {
                     autre manière ce contenu dans tous les formats et canaux de
                     distribution connus ou développés ultérieurement.
                 </p>
-                <p className="">
+                <p>
                     <strong>3. Propriété intellectuelle</strong>
                 </p>
-                <p className="">
+                <p>
                     {`L'application RemplaMed et tout le contenu et autres
                         matériaux disponibles via RemplaMed, y compris, mais
                         sans s'y limiter, les marques de commerce, logos,
@@ -62,10 +62,10 @@ const ServicePolicy = () => {
                         distribuer, vendre ou louer une partie de RemplaMed ou
                         du Contenu RemplaMed.`}
                 </p>
-                <p className="">
+                <p>
                     <strong>4. Limitation de responsabilité</strong>
                 </p>
-                <p className="">
+                <p>
                     RemplaMed ne sera pas responsable envers vous pour des
                     dommages indirects, accessoires, spéciaux, consécutifs ou
                     punitifs découlant de votre utilisation de RemplaMed ou du
@@ -74,28 +74,28 @@ const ServicePolicy = () => {
                     par vous, le cas échéant, pour accéder ou utiliser
                     RemplaMed.
                 </p>
-                <p className="">
+                <p>
                     <strong>5. Exclusion de garanties</strong>
                 </p>
-                <p className="">
+                <p>
                     {
                         "RemplaMed fournit RemplaMed et le Contenu RemplaMed tel quel et sans aucune garantie ou condition, expresse, implicite ou légale. RemplaMed décline expressément toute garantie implicite de qualité marchande, d'adéquation à un usage particulier, de non-contrefaçon et toute garantie découlant de la pratique commerciale ou de l'usage du commerce."
                     }
                 </p>
-                <p className="">
+                <p>
                     <strong>6. Loi applicable et règlement des litiges</strong>
                 </p>
-                <p className="">
+                <p>
                     {
                         "Ces Conditions d'utilisation seront régies par et interprétées conformément aux lois de la France, sans donner effet à aucun principe de conflit de lois. Tout litige découlant de ou lié à ces Conditions d'utilisation ou à votre utilisation de RemplaMed sera résolu exclusivement devant les tribunaux français."
                     }
                 </p>
-                <p className="">
+                <p>
                     <strong>
                         {"7. Modifications de ces Conditions d'utilisation"}
                     </strong>
                 </p>
-                <p className="">
+                <p>
                     {
                         "Nous pouvons mettre à jour ces Conditions d'utilisation de temps à autre. Toute modification sera communiquée par e-mail."
                     }
@@ -108,7 +108,7 @@ const ServicePolicy = () => {
                         "Si vous avez des questions, des préoccupations ou des demandes concernant vos informations personnelles ou cette Politique de confidentialité, veuillez nous contacter à l'adresse e-mail de contact fournie sur "
                     }
                     <Link href="/about/contact" className="underline">
-                        {"rempal-med.fr/about/contact"}
+                        {"rempla-med.fr/about/contact"}
                     </Link>
                     {"."}
                 </p>

@@ -140,8 +140,8 @@ const PrivacyPolicy = () => {
                     {
                         "Si vous avez des questions, des préoccupations ou des demandes concernant vos informations personnelles ou cette Politique de confidentialité, veuillez nous contacter à l'adresse e-mail de contact fournie sur "
                     }
-                    <Link href="/contact" className="underline">
-                        {"rempal-med.fr/contact"}
+                    <Link href="/about/contact" className="underline">
+                        {"rempal-med.fr/about/contact"}
                     </Link>
                     {"."}
                 </p>

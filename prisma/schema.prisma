@@ -83,21 +83,33 @@ enum Source {
   STETHONET
 }
 
+enum PaymentStatus {
+  open
+  canceled
+  pending
+  authorized
+  expired
+  failed
+  paid
+}
+
 model Post {
-  id              String    @id @default(cuid())
-  author          User      @relation(fields: [authorId], references: [id])
+  id              String         @id @default(cuid())
+  author          User           @relation(fields: [authorId], references: [id])
   authorId        String
-  published       Boolean   @default(false)
+  published       Boolean        @default(false)
   title           String
   postalCode      String
   city            String?
   latitude        Float?
   longitude       Float?
   message         String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime? @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?      @updatedAt
   availablityFrom DateTime
   availablityTo   DateTime?
-  views           Int       @default(0)
+  views           Int            @default(0)
   source          Source?
+  paymentId       String?
+  paymentStatus   PaymentStatus?
 }

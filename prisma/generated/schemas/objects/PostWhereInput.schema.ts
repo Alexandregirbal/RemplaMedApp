@@ -8,6 +8,8 @@ import { DateTimeNullableFilterObjectSchema } from "./DateTimeNullableFilter.sch
 import { IntFilterObjectSchema } from "./IntFilter.schema";
 import { EnumSourceNullableFilterObjectSchema } from "./EnumSourceNullableFilter.schema";
 import { SourceSchema } from "../enums/Source.schema";
+import { EnumPaymentStatusNullableFilterObjectSchema } from "./EnumPaymentStatusNullableFilter.schema";
+import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
 import { UserRelationFilterObjectSchema } from "./UserRelationFilter.schema";
 import { UserWhereInputObjectSchema } from "./UserWhereInput.schema";
 
@@ -82,6 +84,17 @@ const Schema: z.ZodType<Prisma.PostWhereInput> = z
             .union([
                 z.lazy(() => EnumSourceNullableFilterObjectSchema),
                 z.lazy(() => SourceSchema),
+            ])
+            .optional()
+            .nullable(),
+        paymentId: z
+            .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
+            .optional()
+            .nullable(),
+        paymentStatus: z
+            .union([
+                z.lazy(() => EnumPaymentStatusNullableFilterObjectSchema),
+                z.lazy(() => PaymentStatusSchema),
             ])
             .optional()
             .nullable(),

@@ -20,13 +20,13 @@ const Preview = () => {
         const func = async () => {
             dispatch(setIsLoading(true));
             const result = await axios.post("/api/posts/create", newPost);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            const postId = result.data.postId as string;
             dispatch(setIsLoading(false));
             if (result.status !== 200) {
                 alert("Une erreur est survenue");
             }
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access
-            void router.push(`/posts/${result.data.postId}`);
-            // void router.push("/posts/create/payment");
+            void router.push(`/posts/create/payment/${postId}`);
         };
         void func();
     };
@@ -37,7 +37,7 @@ const Preview = () => {
 
     return (
         <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-8 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
-            <h1 className="flex justify-center text-xl">
+            <h1 className="text-center text-xl">
                 {`Ceci est un aperçu de votre poste. Si il vous convient, cliquez sur "Suivant".`}
             </h1>
             <div className="h-5/6">

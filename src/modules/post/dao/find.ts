@@ -14,22 +14,22 @@ export const findOnePost = async (
         return null;
     }
 
-    try {
-        const post = await prisma.post.findUniqueOrThrow({
-            where: { id },
-            include: {
-                author: {
-                    select: {
-                        name: true,
-                    },
+    const post = await prisma.post.findFirst({
+        where: { id, published: true },
+        include: {
+            author: {
+                select: {
+                    name: true,
                 },
             },
-        });
+        },
+    });
 
-        return postToPostWithDatesStrings(post);
-    } catch (error) {
+    if (!post) {
         return null;
     }
+
+    return postToPostWithDatesStrings(post);
 };
 
 export const findManyPosts = async (
@@ -48,6 +48,7 @@ export const findManyPosts = async (
             createdAt: "desc",
         },
         where: {
+            published: true,
             createdAt: {
                 gte: MIN_DATE.toDate(),
             },
@@ -58,18 +59,24 @@ export const findManyPosts = async (
 };
 
 export const findPostsIds = async (): Promise<Array<Pick<Post, "id">>> => {
-    const postsIds = await prisma.post.findMany({ select: { id: true } });
+    const postsIds = await prisma.post.findMany({
+        where: { published: true },
+        select: { id: true },
+    });
     return postsIds;
 };
 
 export const getMetaData = async (): Promise<MetaData> => {
-    const totalOverallPosts = await prisma.post.count();
+    const totalOverallPosts = await prisma.post.count({
+        where: { published: true },
+    });
 
     const totalRecentPosts = await prisma.post.count({
         where: {
             createdAt: {
                 gte: MIN_DATE.toDate(),
             },
+            published: true,
         },
     });
 

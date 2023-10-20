@@ -1,5 +1,6 @@
 import { PaymentStatus } from "@mollie/api-client";
 import { getPaymentIntent } from "modules/payments/getPaymentIntent";
+import { setPublishedPost } from "modules/post/dao/update";
 import { updatePaymentStatus } from "modules/post/services/updatePaymentStatus";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/db";
@@ -25,14 +26,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     const { status } = payment;
     await updatePaymentStatus({ postId: post.id, status });
     if (status === PaymentStatus.paid) {
-        await prisma.post.update({
-            data: {
-                published: true,
-            },
-            where: {
-                id: post.id,
-            },
-        });
+        await setPublishedPost(post.id);
     }
 
     return res.status(200).json({ success: true });

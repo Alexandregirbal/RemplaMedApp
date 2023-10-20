@@ -27,8 +27,6 @@ const server = z.object({
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
     MOLLIE_API_KEY: z.string(),
-    MOLLIE_CLIENT_ID: z.string(),
-    MOLLIE_CLIENT_SECRET: z.string(),
     VERCEL_BRANCH_URL: z.string(),
     VERCEL_ENV: z.enum(["production", "preview", "development"]),
 });
@@ -60,8 +58,6 @@ const processEnv = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
-    MOLLIE_CLIENT_ID: process.env.MOLLIE_CLIENT_ID,
-    MOLLIE_CLIENT_SECRET: process.env.MOLLIE_CLIENT_SECRET,
     VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
     VERCEL_ENV: process.env.VERCEL_ENV,
 };

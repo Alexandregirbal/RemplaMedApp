@@ -15,7 +15,6 @@ type PostPageProps = {
 };
 
 export default function PostPage({ post }: PostPageProps) {
-    const headTitle = `RemplaMed | ${post.title}`;
     const session = useSession();
     useEffect(() => {
         void axios.put(`/api/posts/incrementViews`, { postId: post.id });
@@ -26,6 +25,8 @@ export default function PostPage({ post }: PostPageProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);
+
+    const headTitle = `RemplaMed | ${post.title}`;
     return (
         <>
             <Head>
@@ -47,7 +48,7 @@ export async function getStaticPaths() {
     const postsIds = await findPostsIds();
     return {
         paths: postsIds.map((postId) => ({ params: postId })),
-        fallback: "blocking",
+        fallback: false,
     };
 }
 

@@ -11,7 +11,7 @@ const server = z.object({
     POSTGRES_PRISMA_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
     POSTGRES_URL: z.string().url(),
-    NODE_ENV: z.enum(["development", "test", "staging", "production"]),
+    NODE_ENV: z.enum(["development", "test", "production"]),
     NEXTAUTH_SECRET:
         process.env.NODE_ENV === "production"
             ? z.string().min(1)
@@ -26,6 +26,9 @@ const server = z.object({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    MOLLIE_API_KEY: z.string(),
+    VERCEL_BRANCH_URL: z.string(),
+    VERCEL_ENV: z.enum(["production", "preview", "development"]),
 });
 
 /**
@@ -54,6 +57,9 @@ const processEnv = {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
+    VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
+    VERCEL_ENV: process.env.VERCEL_ENV,
 };
 
 // Don't touch the part below

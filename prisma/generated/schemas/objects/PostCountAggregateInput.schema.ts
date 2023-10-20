@@ -19,6 +19,8 @@ const Schema: z.ZodType<Prisma.PostCountAggregateInputType> = z
         availablityTo: z.literal(true).optional(),
         views: z.literal(true).optional(),
         source: z.literal(true).optional(),
+        paymentId: z.literal(true).optional(),
+        paymentStatus: z.literal(true).optional(),
         _all: z.literal(true).optional(),
     })
     .strict();

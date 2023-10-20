@@ -8,6 +8,8 @@ import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from "./Nullab
 import { IntFieldUpdateOperationsInputObjectSchema } from "./IntFieldUpdateOperationsInput.schema";
 import { SourceSchema } from "../enums/Source.schema";
 import { NullableEnumSourceFieldUpdateOperationsInputObjectSchema } from "./NullableEnumSourceFieldUpdateOperationsInput.schema";
+import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
+import { NullableEnumPaymentStatusFieldUpdateOperationsInputObjectSchema } from "./NullableEnumPaymentStatusFieldUpdateOperationsInput.schema";
 
 import type { Prisma } from "@prisma/client";
 
@@ -112,6 +114,25 @@ const Schema: z.ZodType<Prisma.PostUpdateManyMutationInput> = z
                 z.lazy(
                     () =>
                         NullableEnumSourceFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
+        paymentId: z
+            .union([
+                z.string(),
+                z.lazy(
+                    () => NullableStringFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional()
+            .nullable(),
+        paymentStatus: z
+            .union([
+                z.lazy(() => PaymentStatusSchema),
+                z.lazy(
+                    () =>
+                        NullableEnumPaymentStatusFieldUpdateOperationsInputObjectSchema
                 ),
             ])
             .optional()

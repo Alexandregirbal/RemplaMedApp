@@ -55,11 +55,14 @@ export default function Logged({ user }: LoggedProps) {
                 {dropdown && (
                     <ul className="absolute right-0 z-10 mt-2 flex flex-col justify-evenly gap-2 rounded-md border bg-background p-2 shadow-sm">
                         <li>
-                            <Link href="users/me">Mon profile</Link>
+                            <Link href="users/me">Mon profil</Link>
+                        </li>
+                        <li>
+                            <Link href="/about">À propos</Link>
                         </li>
                         <hr />
                         <li
-                            className="hover:cursor-pointer"
+                            className="text-tertiary hover:cursor-pointer"
                             onClick={handleSignout}
                         >
                             Déconnexion

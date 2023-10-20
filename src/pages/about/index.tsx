@@ -21,10 +21,19 @@ const AboutPage = () => {
             <hr />
             <p>
                 {
-                    "Vous trouverez les adresses email de contact sur la page suivante :"
+                    "Vous trouverez les adresses email de contact sur la page suivante: "
                 }
                 <Link href="/about/contact" className="underline">
                     {"rempla-med.fr/about/contact"}
+                </Link>
+            </p>
+            <hr />
+            <p>
+                {
+                    "Conditions, politique de confidentialité, tarifs et autres mentions légales, merci de vous réferer à la page suivante: "
+                }
+                <Link href="/policy" className="underline">
+                    {"rempla-med.fr/policy"}
                 </Link>
             </p>
         </div>

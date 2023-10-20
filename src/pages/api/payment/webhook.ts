@@ -5,7 +5,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/db";
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { id } = req.query;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { id } = req.body;
+
     if (!id || typeof id !== "string") {
         return res
             .status(400)

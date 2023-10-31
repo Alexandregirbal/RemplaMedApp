@@ -1,7 +1,7 @@
 const HIDE_ELEMENT = "*";
 
 /**
- *Private information such as phone number, email are hidden
+ * Private information such as phone number, email are hidden
  * @param content The message content that must be protectedd
  * @returns The message content with private informations hidden
  */
@@ -9,7 +9,7 @@ export const hidePrivateInformations = (content: string) => {
     if (!content) {
         return content;
     }
-    const phoneRegex = /(\+33|0|0033)([1-9])([0-9]{6})([0-9]{2})/g;
+    const phoneRegex = /(\+33|0|0033)([1-9])(.*(?:[0-9]{2}.*){3})([0-9]{2})/g;
     const phoneNumberMatches = phoneRegex.exec(content);
     let phoneReplacement = HIDE_ELEMENT.repeat(10);
 

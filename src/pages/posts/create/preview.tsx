@@ -48,16 +48,16 @@ const Preview = () => {
                     }}
                 />
             </div>
-            <div className="flex justify-evenly gap-8">
+            <div className="flex justify-evenly gap-8 text-base text-white">
                 <button
                     onClick={handlePreviousClick}
-                    className="w-full rounded-lg bg-red-900 px-5 py-2.5 text-center text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                    className="w-full rounded-lg bg-tertiary px-5 py-2.5  hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
                 >
                     Retour
                 </button>
                 <button
                     onClick={handleNextClick}
-                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-center text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-center  hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
                 >
                     Suivant
                 </button>

@@ -142,7 +142,7 @@ const PrivacyPolicy = () => {
                     {"."}
                 </p>
                 <hr />
-                <p className="pb-10">
+                <p className="pb-4">
                     {
                         "En utilisant l'application RemplaMed, vous acceptez les termes décrits dans cette Politique de Confidentialité."
                     }

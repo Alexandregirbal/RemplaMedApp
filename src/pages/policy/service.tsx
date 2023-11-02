@@ -103,7 +103,7 @@ const ServicePolicy = () => {
                 <p className="text-xl">
                     <strong>{"Contactez-nous"}</strong>
                 </p>
-                <p className="pb-10">
+                <p className="pb-4">
                     {
                         "Si vous avez des questions, des préoccupations ou des demandes concernant vos informations personnelles ou cette Politique de confidentialité, veuillez nous contacter à l'adresse e-mail de contact fournie sur "
                     }

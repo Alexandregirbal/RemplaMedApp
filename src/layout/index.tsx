@@ -1,10 +1,10 @@
+import Loading from "modules/ui/loading";
 import Head from "next/head";
-import Footer from "./footer";
-import Header from "./header";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUIState, setIsMobile } from "store/slices/ui/slice";
-import Loading from "modules/ui/loading";
-import { useEffect } from "react";
+import Footer from "./footer";
+import Header from "./header";
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -27,7 +27,9 @@ const Layout = ({ children }: LayoutProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <main className="h-[calc(100%-10.8rem)]">{children}</main>
+            <main className="h-[calc(100%-10.8rem)] overflow-y-auto">
+                {children}
+            </main>
             {isLoading && <Loading />}
             <Footer />
         </>

@@ -44,7 +44,7 @@ const Header: NextPage = () => {
                     {metadata.totalRecentPosts > 0 && (
                         <span
                             id="posts-number"
-                            className="flex justify-center text-xl"
+                            className="text-l flex justify-center"
                         >
                             {`${metadata.totalRecentPosts} annonces récentes`}
                         </span>

@@ -24,7 +24,7 @@ const Home: NextPage = () => {
                     <MapComponent />
                 </div>
                 {selectedPosts.length > 0 && (
-                    <div className="absolute bottom-0 left-0 right-0 z-20 flex h-1/2 flex-row gap-4 overflow-x-scroll bg-opac p-4">
+                    <div className="absolute bottom-0 left-0 right-0 z-20 flex h-1/2 flex-row gap-4 overflow-y-hidden overflow-x-scroll bg-opac p-4">
                         {selectedPosts.map((post) => (
                             <Link
                                 id={`${postIdPrefix}${post.id}`}

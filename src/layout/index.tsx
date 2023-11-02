@@ -27,7 +27,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <main className="h-[calc(100%-10.8rem)] overflow-y-auto">
+            <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
                 {children}
             </main>
             {isLoading && <Loading />}

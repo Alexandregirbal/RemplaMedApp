@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState, type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPostsState, setNewPost } from "store/slices/posts/slice";
+import {
+    resetNewPost,
+    selectPostsState,
+    setNewPost,
+} from "store/slices/posts/slice";
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
@@ -26,6 +30,14 @@ const CreatePost = () => {
     ) => {
         event.preventDefault();
         void push("/posts/create/preview");
+    };
+
+    const handleResetCreatePostForm: FormEventHandler<HTMLFormElement> = (
+        event
+    ) => {
+        event.preventDefault();
+        dispatch(resetNewPost());
+        setCitiesGeocodes([]);
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +64,7 @@ const CreatePost = () => {
             .then((response) => {
                 setIsPostalCodeValid(response.length > 0);
                 setCitiesGeocodes(response);
+                dispatch(setNewPost({ ...newPost, ...response[0] }));
             })
             .catch(() => {
                 setIsPostalCodeValid(false);
@@ -59,6 +72,7 @@ const CreatePost = () => {
             .finally(() => {
                 setIsPostalCodeLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedPostalCode]);
 
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,6 +113,7 @@ const CreatePost = () => {
     return (
         <form
             onSubmit={handleSubmitCreatePostForm}
+            onReset={handleResetCreatePostForm}
             className="row md:px-30 flex h-full grow flex-col gap-2 px-8 pb-4 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
         >
             <div>

@@ -53,10 +53,14 @@ const PostComponent = ({
 
     return (
         <div
-            className={`flex max-h-full max-w-full flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
+            className={`flex max-h-full w-full flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
-                <div className="truncate text-xl font-bold">{post.title}</div>
+                <div
+                    className={`${isMini ? "truncate" : ""} text-xl font-bold`}
+                >
+                    {post.title}
+                </div>
                 {post.city && post.postalCode && (
                     <div>{`${post.postalCode} ${post.city}`}</div>
                 )}
@@ -81,12 +85,12 @@ const PostComponent = ({
                     </span>
                 )}
             </p>
-            <div className="h-full p-4 text-sm text-paragraph">
+            <div className="h-full w-full overflow-y-auto p-2 text-sm text-paragraph">
                 <pre
                     className={
                         isMini
-                            ? "line-clamp-5 overflow-hidden whitespace-normal"
-                            : "overflow-y-auto overflow-x-hidden whitespace-pre-wrap"
+                            ? "line-clamp-4 overflow-hidden "
+                            : "h-full whitespace-pre-wrap"
                     }
                 >
                     {postMessage}
@@ -98,13 +102,15 @@ const PostComponent = ({
                     connectez-vous pour y accéder.
                 </div>
             )}
-            {isAuthor && post.views !== undefined && (
-                <div className="text-sm text-red-700">
-                    {post.views} vue{post.views > 1 ? "s" : ""}
-                </div>
-            )}
-            <div className="flex flex-row-reverse gap-1 text-sm">
-                Posté le {dayjs(post.createdAt).format("D MMMM YYYY")}
+            <div className="flex flex-row-reverse justify-between gap-1 text-sm">
+                <span>
+                    Posté le {dayjs(post.createdAt).format("D MMMM YYYY")}
+                </span>
+                {isAuthor && post.views !== undefined && (
+                    <span className="text-sm text-red-700">
+                        {post.views} vue{post.views > 1 ? "s" : ""}
+                    </span>
+                )}
             </div>
         </div>
     );

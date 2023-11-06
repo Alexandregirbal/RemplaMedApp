@@ -185,7 +185,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                             name="city"
                             id="cities"
                             className="block rounded-lg border border-gray-300 p-1.5 text-gray-900 focus:border-cta focus:ring-cta "
-                            value={citiesGeocodes[0]?.city ?? ""}
+                            value={newPost.city ?? ""}
                             onChange={handleCityChange}
                         >
                             {citiesGeocodes.map((geocode) => (

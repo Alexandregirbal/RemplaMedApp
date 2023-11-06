@@ -36,11 +36,11 @@ const Preview = () => {
     };
 
     return (
-        <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-8 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
+        <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-4 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
             <h1 className="text-center text-xl">
-                {`Ceci est un aperçu de votre poste. Si il vous convient, cliquez sur "Suivant".`}
+                {`Prévisualisation de votre post`}
             </h1>
-            <div className="h-5/6">
+            <div className="h-4/6 w-full">
                 <PostComponent
                     post={{
                         ...newPost,

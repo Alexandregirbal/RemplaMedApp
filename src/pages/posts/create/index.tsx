@@ -114,7 +114,7 @@ const CreatePost = () => {
         <form
             onSubmit={handleSubmitCreatePostForm}
             onReset={handleResetCreatePostForm}
-            className="row md:px-30 flex h-full grow flex-col gap-2 px-8 pb-4 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
+            className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
         >
             <div>
                 <label htmlFor="title" className="mb-2 block ">

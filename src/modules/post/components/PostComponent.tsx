@@ -53,7 +53,7 @@ const PostComponent = ({
 
     return (
         <div
-            className={`flex max-h-full w-full flex-col rounded-lg border border-primary bg-background p-2 shadow-xl transition`}
+            className={`flex max-h-full w-full flex-col rounded-lg border border-primary bg-background p-2 pb-1 shadow-xl transition`}
         >
             <div className=" border-b border-b-primary p-1 text-center ">
                 <div
@@ -65,7 +65,7 @@ const PostComponent = ({
                     <div>{`${post.postalCode} ${post.city}`}</div>
                 )}
             </div>
-            <p>
+            <p className="text-sm">
                 {post.availablityFrom && (
                     <span className="">
                         A partir du{" "}

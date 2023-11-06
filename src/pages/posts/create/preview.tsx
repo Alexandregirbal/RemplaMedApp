@@ -36,7 +36,7 @@ const Preview = () => {
     };
 
     return (
-        <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-4 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
+        <div className="md:px-30 flex h-full grow flex-col justify-between p-6 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
             <h1 className="text-center text-xl">
                 {`Prévisualisation de votre post`}
             </h1>

@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState, type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPostsState, setNewPost } from "store/slices/posts/slice";
+import {
+    resetNewPost,
+    selectPostsState,
+    setNewPost,
+} from "store/slices/posts/slice";
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
@@ -26,6 +30,14 @@ const CreatePost = () => {
     ) => {
         event.preventDefault();
         void push("/posts/create/preview");
+    };
+
+    const handleResetCreatePostForm: FormEventHandler<HTMLFormElement> = (
+        event
+    ) => {
+        event.preventDefault();
+        dispatch(resetNewPost());
+        setCitiesGeocodes([]);
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +64,7 @@ const CreatePost = () => {
             .then((response) => {
                 setIsPostalCodeValid(response.length > 0);
                 setCitiesGeocodes(response);
+                dispatch(setNewPost({ ...newPost, ...response[0] }));
             })
             .catch(() => {
                 setIsPostalCodeValid(false);
@@ -59,6 +72,7 @@ const CreatePost = () => {
             .finally(() => {
                 setIsPostalCodeLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedPostalCode]);
 
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,7 +113,8 @@ const CreatePost = () => {
     return (
         <form
             onSubmit={handleSubmitCreatePostForm}
-            className="row md:px-30 flex h-full grow flex-col gap-6 px-8 pb-4 text-lg sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
+            onReset={handleResetCreatePostForm}
+            className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
         >
             <div>
                 <label htmlFor="title" className="mb-2 block ">
@@ -110,7 +125,7 @@ const CreatePost = () => {
                     id="title"
                     value={newPost.title}
                     onChange={handleTitleChange}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 focus:border-blue-500 focus:ring-blue-500"
+                    className="block w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
                     placeholder="Cherche remplacement sur Montpellier en Juin"
                     required
                 />
@@ -125,7 +140,7 @@ const CreatePost = () => {
                     placeholder={`Bonjour,
 Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 8 jours par mois à partir de Juin...`}
                     onChange={handleMessageChange}
-                    className="h-full w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-lg focus:border-blue-500 focus:ring-blue-500 "
+                    className="text-s h-full w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
                     required
                 />
             </div>
@@ -143,9 +158,9 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                         placeholder="34000"
                         value={newPost.postalCode}
                         onChange={handlePostalCodeChange}
-                        className={`block w-1/3 rounded-lg border border-gray-300 bg-gray-50 p-2.5 ${
+                        className={`block w-1/3 rounded-lg border border-gray-300  p-1.5 ${
                             isPostalCodeValid
-                                ? "focus:border-blue-500 focus:ring-blue-500"
+                                ? "focus:border-cta focus:ring-cta"
                                 : "border-red-500 ring-red-500 focus:border-red-500 focus:ring-red-500"
                         }`}
                         required
@@ -169,11 +184,10 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                         <select
                             name="city"
                             id="cities"
-                            className="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            className="block rounded-lg border border-gray-300 p-1.5 text-gray-900 focus:border-cta focus:ring-cta "
                             value={newPost.city ?? ""}
                             onChange={handleCityChange}
                         >
-                            <option value=""></option>
                             {citiesGeocodes.map((geocode) => (
                                 <option
                                     key={geocode.city}
@@ -194,7 +208,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                         A partir du
                     </label>
                     <DatePicker
-                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
+                        className="block w-32 rounded-lg border border-gray-300  p-1.5 text-center focus:border-cta focus:ring-cta"
                         selected={dayjs(newPost.availablityFrom).toDate()}
                         onChange={handleFromChange}
                         dateFormat={"dd/MM/yyyy"}
@@ -206,7 +220,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     </label>
 
                     <DatePicker
-                        className="block w-24 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
+                        className="block w-32 rounded-lg border border-gray-300  p-1.5 text-center focus:border-cta focus:ring-cta"
                         selected={
                             newPost.availablityTo
                                 ? dayjs(newPost.availablityTo).toDate()
@@ -217,17 +231,17 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     />
                 </div>
             </div>
-            <div className="flex justify-evenly gap-8">
+            <div className="flex justify-evenly gap-8 text-center text-white">
                 <button
                     type="reset"
-                    className="w-full rounded-lg bg-red-900 px-5 py-2.5 text-center text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                    className="w-full rounded-lg bg-tertiary px-5 py-2.5 text-base hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
                 >
                     Annuler
                 </button>
                 <button
                     disabled={!isSubmitable}
                     type="submit"
-                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-center text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-gray-400 sm:w-auto"
+                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-base  hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-gray-400 sm:w-auto"
                 >
                     Suivant
                 </button>

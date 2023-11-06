@@ -42,7 +42,7 @@ const Payment = () => {
                 <h1 className="text-center text-2xl font-bold">
                     Page de paiement
                 </h1>
-                <div>Merci de régler 5.90 € pour publier votre poste.</div>
+                <div>{"Merci de régler 5.90 € pour publier votre post."}</div>
                 <div>{`Vous serez redirigé vers la page de paiement en cliquant sur le bouton "Payer"`}</div>
             </div>
             <div className="flex justify-evenly gap-8">

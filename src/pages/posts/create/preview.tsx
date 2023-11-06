@@ -36,11 +36,11 @@ const Preview = () => {
     };
 
     return (
-        <div className="md:px-30 flex h-full flex-col gap-8 px-8 pt-8 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
+        <div className="md:px-30 flex h-full grow flex-col justify-between p-6 sm:px-20 lg:px-40 xl:px-52 2xl:px-60">
             <h1 className="text-center text-xl">
-                {`Ceci est un aperçu de votre poste. Si il vous convient, cliquez sur "Suivant".`}
+                {`Prévisualisation de votre post`}
             </h1>
-            <div className="h-5/6">
+            <div className="h-4/6 w-full">
                 <PostComponent
                     post={{
                         ...newPost,
@@ -48,16 +48,16 @@ const Preview = () => {
                     }}
                 />
             </div>
-            <div className="flex justify-evenly gap-8">
+            <div className="flex justify-evenly gap-8 text-base text-white">
                 <button
                     onClick={handlePreviousClick}
-                    className="w-full rounded-lg bg-red-900 px-5 py-2.5 text-center text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                    className="w-full rounded-lg bg-tertiary px-5 py-2.5  hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
                 >
                     Retour
                 </button>
                 <button
                     onClick={handleNextClick}
-                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-center text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-center  hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
                 >
                     Suivant
                 </button>

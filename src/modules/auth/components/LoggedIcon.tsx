@@ -2,9 +2,9 @@
 
 import UserIcon from "modules/user/components/userIcon";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import type { UserSession } from "../types/user";
-import Link from "next/link";
 
 type LoggedProps = {
     user: UserSession;
@@ -55,7 +55,7 @@ export default function Logged({ user }: LoggedProps) {
                 {dropdown && (
                     <ul className="absolute right-0 z-10 mt-2 flex flex-col justify-evenly gap-2 rounded-md border bg-background p-2 shadow-sm">
                         <li>
-                            <Link href="users/me">Mon profil</Link>
+                            <Link href="/users/me">Mon profil</Link>
                         </li>
                         <li>
                             <Link href="/about">À propos</Link>

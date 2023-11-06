@@ -24,7 +24,7 @@ const Header: NextPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="h-42 flex flex-col p-2">
+        <div className="flex h-36 flex-col p-2">
             <nav id="navbar" className="flex justify-between ">
                 <div className="flex w-1/5 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>

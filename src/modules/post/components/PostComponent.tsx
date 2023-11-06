@@ -46,9 +46,9 @@ const PostComponent = ({
             setPostMessage(post.message);
         }
 
-        if (isMini && post.message.length > maxMessageLength) {
-            setPostMessage(`${post.message.slice(0, maxMessageLength)} ...`);
-        }
+        // if (isMini && post.message.length > maxMessageLength) {
+        //     setPostMessage(`${post.message.slice(0, maxMessageLength)} ...`);
+        // }
     }, [post.message, isPrivate, isMini, maxMessageLength]);
 
     return (
@@ -81,13 +81,17 @@ const PostComponent = ({
                     </span>
                 )}
             </p>
-            <pre
-                className={`h-full ${
-                    isMini ? "max-h-40" : ""
-                } overflow-y-auto overflow-x-hidden whitespace-pre-wrap p-4 text-paragraph`}
-            >
-                {postMessage}
-            </pre>
+            <div className="h-full p-4 text-sm text-paragraph">
+                <pre
+                    className={
+                        isMini
+                            ? "line-clamp-5 overflow-hidden whitespace-normal"
+                            : "overflow-y-auto overflow-x-hidden whitespace-pre-wrap"
+                    }
+                >
+                    {postMessage}
+                </pre>
+            </div>
             {isPrivate && (
                 <div className="text-sm text-red-700">
                     Les informations privées ont été masquées. Inscrivez-vous ou

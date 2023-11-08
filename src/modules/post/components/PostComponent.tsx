@@ -89,7 +89,7 @@ const PostComponent = ({
                 <pre
                     className={
                         isMini
-                            ? "line-clamp-4 overflow-hidden "
+                            ? "line-clamp-4 overflow-hidden whitespace-normal"
                             : "h-full whitespace-pre-wrap"
                     }
                 >

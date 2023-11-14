@@ -37,10 +37,10 @@ const Header: NextPage = () => {
                     </Link>
                 </div>
                 <div id="headline" className="flex flex-col items-center gap-1">
-                    <div className="text-3xl">
+                    <Link href={"/"} className="text-3xl">
                         <span>Rempla</span>
                         <span className="text-cta">Med</span>
-                    </div>
+                    </Link>
                     {metadata.totalRecentPosts > 0 && (
                         <span
                             id="posts-number"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
@@ -53,6 +54,9 @@ export const useMap = (params: {
             zoom: 5,
             bearing: 0,
             pitch: 0,
+            projection: {
+                name: "mercator",
+            },
         });
         const handleMapLoad = (map: mapboxgl.Map) => {
             map.addSource(MAPBOX_IDS.posts, {
@@ -204,7 +208,16 @@ export const useMap = (params: {
 
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));
         mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
-        mapboxClient.addControl(new mapboxgl.GeolocateControl(), "top-left");
+        const geolocateControl = new mapboxgl.GeolocateControl();
+        geolocateControl.on("geolocate", (e: any) => {
+            if (!e || !e.coords) return;
+            mapboxClient.flyTo({
+                center: [e.coords.longitude, e.coords.latitude],
+                zoom: 10,
+            });
+        });
+
+        mapboxClient.addControl(geolocateControl, "top-left");
 
         setMap(mapboxClient);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import axios from "axios";
 import PostComponent from "modules/post/components/PostComponent";
 import { useSession } from "next-auth/react";
@@ -17,18 +18,26 @@ const Preview = () => {
     }
 
     const handleNextClick = () => {
-        const func = async () => {
+        const asyncFunction = async () => {
             dispatch(setIsLoading(true));
             const result = await axios.post("/api/posts/create", newPost);
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-            const postId = result.data.postId as string;
-            dispatch(setIsLoading(false));
             if (result.status !== 200) {
-                alert("Une erreur est survenue");
+                alert("Une erreur est survenue (P1)");
             }
-            void router.push(`/posts/create/payment/${postId}`);
+            const postId = result.data.postId as string;
+
+            const paymentUrlResponse = await axios.get(
+                `/api/payment?product=post&postId=${postId}`
+            );
+            const paymentUrl = paymentUrlResponse.data.paymentUrl as string;
+            if (!paymentUrl) {
+                alert("Une erreur est survenue (P2)");
+            }
+
+            dispatch(setIsLoading(false));
+            void router.push(paymentUrl);
         };
-        void func();
+        void asyncFunction();
     };
 
     const handlePreviousClick = () => {
@@ -48,6 +57,9 @@ const Preview = () => {
                     }}
                 />
             </div>
+            <div>
+                <span>{`Publication d'un post: 5.90€`}</span>
+            </div>
             <div className="flex justify-evenly gap-8 text-base text-white">
                 <button
                     onClick={handlePreviousClick}
@@ -59,7 +71,7 @@ const Preview = () => {
                     onClick={handleNextClick}
                     className="w-full rounded-lg bg-cta px-5 py-2.5 text-center  hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
                 >
-                    Suivant
+                    Payer et publier
                 </button>
             </div>
         </div>

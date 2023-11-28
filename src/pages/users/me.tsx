@@ -92,9 +92,32 @@ const UserMePage = () => {
             <hr />
             <h1 className="text-2xl">Mes annonces</h1>
             {posts.map((post) => (
-                <Link id={post.id} key={post.id} href={`/posts/${post.id}`}>
-                    <PostComponent post={post} isMini />
-                </Link>
+                <>
+                    <div
+                        key={post.id}
+                        className="flex w-full justify-between gap-4"
+                    >
+                        <Link
+                            id={post.id}
+                            key={post.id}
+                            href={`/posts/${post.id}`}
+                            className="w-1/2"
+                        >
+                            <PostComponent post={post} isMini />
+                        </Link>
+                        <ul className="w-1/2 list-inside list-disc text-sm">
+                            <li>{post.published ? "Publié" : "Non publié"}</li>
+                            <li>
+                                {post.paymentStatus === "paid"
+                                    ? "Payé"
+                                    : `Paiement: ${
+                                          post.paymentStatus ?? "inconnu"
+                                      }`}
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                </>
             ))}
         </div>
     );

@@ -1,8 +1,6 @@
 import axios from "axios";
-import PostComponent from "modules/post/components/PostComponent";
 import type { PostWithDatesStrings } from "modules/post/types/post";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "store/slices/ui/slice";
@@ -53,7 +51,7 @@ const UserMePage = () => {
 
     return (
         <div
-            className={`flex h-full w-full flex-col gap-4 overflow-y-scroll p-2 px-4 pt-10 sm:px-20 md:px-40 lg:px-60 xl:px-80 2xl:px-96 `}
+            className={`flex h-full w-full flex-col gap-4 overflow-y-scroll p-2 px-4 sm:px-20 md:px-40 lg:px-60 xl:px-80 2xl:px-96 `}
         >
             <h1 className="text-2xl">Mon profil</h1>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -89,36 +87,6 @@ const UserMePage = () => {
                     </div>
                 )}
             </form>
-            <hr />
-            <h1 className="text-2xl">Mes annonces</h1>
-            {posts.map((post) => (
-                <>
-                    <div
-                        key={post.id}
-                        className="flex w-full justify-between gap-4"
-                    >
-                        <Link
-                            id={post.id}
-                            key={post.id}
-                            href={`/posts/${post.id}`}
-                            className="w-1/2"
-                        >
-                            <PostComponent post={post} isMini />
-                        </Link>
-                        <ul className="w-1/2 list-inside list-disc text-sm">
-                            <li>{post.published ? "Publié" : "Non publié"}</li>
-                            <li>
-                                {post.paymentStatus === "paid"
-                                    ? "Payé"
-                                    : `Paiement: ${
-                                          post.paymentStatus ?? "inconnu"
-                                      }`}
-                            </li>
-                        </ul>
-                    </div>
-                    <hr />
-                </>
-            ))}
         </div>
     );
 };

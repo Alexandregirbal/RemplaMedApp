@@ -58,6 +58,9 @@ export default function Logged({ user }: LoggedProps) {
                             <Link href="/users/me">Mon profil</Link>
                         </li>
                         <li>
+                            <Link href="/users/myPosts">Mes posts</Link>
+                        </li>
+                        <li>
                             <Link href="/about">À propos</Link>
                         </li>
                         <hr />

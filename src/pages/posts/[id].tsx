@@ -36,7 +36,7 @@ export default function PostPage({ post }: PostPageProps) {
             </Head>
             <div
                 id={`post_${post.id}`}
-                className="h-full py-10 px-4 sm:px-16 md:px-32 lg:px-60"
+                className="h-full px-4 py-10 sm:px-16 md:px-32 lg:px-60"
             >
                 <PostComponent post={post} />
             </div>
@@ -54,6 +54,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: { params: PostPageParams }) {
     const post = await findOnePost(params.id);
+    if (!post) return { notFound: true, revalidate: false };
+
     return {
         props: {
             post,

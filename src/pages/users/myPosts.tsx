@@ -5,10 +5,12 @@ import type { PostWithDatesStrings } from "modules/post/types/post";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { setIsLoading } from "store/slices/ui/slice";
 
 const MyPostsPage = () => {
     const session = useSession();
+    const dispatch = useDispatch();
     const [posts, setPosts] = useState<PostWithDatesStrings[]>([]);
 
     const fetchPosts = async () => {
@@ -33,14 +35,14 @@ const MyPostsPage = () => {
         }
         console.log(post);
 
-        setIsLoading(true);
+        dispatch(setIsLoading(true));
         const response = await axios.put(`/api/posts/togglePublished`, {
             postId: post.id,
         });
         if (response.status !== 200) return console.error(response);
 
         await fetchPosts();
-        setIsLoading(false);
+        dispatch(setIsLoading(false));
     };
 
     if (session.status !== "authenticated") return null;
@@ -69,21 +71,21 @@ const MyPostsPage = () => {
                     <ul className="w-1/2 list-inside list-disc text-sm">
                         <li className="flex py-2">
                             <label className="relative inline-flex cursor-pointer items-center">
-                                {post.paymentStatus === PaymentStatus.paid && (
-                                    <>
-                                        <input
-                                            type="checkbox"
-                                            value={post.published ? "1" : "0"}
-                                            className="peer sr-only"
-                                            onClick={() =>
-                                                void handleTogglePostPublishedState(
-                                                    post
-                                                )
-                                            }
-                                        />
-                                        <div className=" peer h-5 w-9 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-background after:transition-all after:content-[''] peer-checked:bg-cta peer-checked:after:translate-x-full peer-checked:after:border-background peer-focus:outline-none  rtl:peer-checked:after:-translate-x-full "></div>
-                                    </>
-                                )}
+                                <input
+                                    type="checkbox"
+                                    disabled={
+                                        post.paymentStatus !==
+                                        PaymentStatus.paid
+                                    }
+                                    checked={post.published}
+                                    onChange={() =>
+                                        void handleTogglePostPublishedState(
+                                            post
+                                        )
+                                    }
+                                    className="peer sr-only"
+                                />
+                                <div className=" peer h-5 w-9 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-background after:transition-all after:content-[''] peer-checked:bg-cta peer-checked:after:translate-x-full peer-checked:after:border-background peer-focus:outline-none  rtl:peer-checked:after:-translate-x-full "></div>
                                 <span className="ms-3 text-sm font-medium ">
                                     {post.published ? "Publié" : "Non publié"}
                                 </span>

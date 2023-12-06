@@ -16,11 +16,11 @@ export const incrementPostViews = async (postId: string) => {
 
 export const setPublishedPost = async (postId: string) => {
     return await prisma.post.update({
-        data: {
-            published: true,
-        },
         where: {
             id: postId,
+        },
+        data: {
+            published: true,
         },
     });
 };

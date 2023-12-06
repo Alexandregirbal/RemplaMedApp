@@ -2,6 +2,7 @@ import { Tooltip } from "flowbite-react";
 import Logged from "modules/auth/components/LoggedIcon";
 import Login from "modules/auth/components/LoginButton";
 import { getMetaData } from "modules/post/services/getMetadata";
+import Button from "modules/ui/button";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -37,10 +38,10 @@ const Header: NextPage = () => {
                     </Link>
                 </div>
                 <div id="headline" className="flex flex-col items-center gap-1">
-                    <div className="text-3xl">
+                    <Link href={"/"} className="text-3xl">
                         <span>Rempla</span>
                         <span className="text-cta">Med</span>
-                    </div>
+                    </Link>
                     {metadata.totalRecentPosts > 0 && (
                         <span
                             id="posts-number"
@@ -70,15 +71,15 @@ const Header: NextPage = () => {
                         href={session ? "/posts/create" : "/"}
                         className={`flex items-center justify-center gap-2`}
                     >
-                        <button
-                            className={`h-8 rounded-lg bg-cta px-6 text-white ${
-                                session
-                                    ? " bg-cta "
-                                    : " bg-gray-500 hover:cursor-default"
-                            }`}
+                        <Button
+                            className={
+                                !session
+                                    ? " bg-gray-500 hover:cursor-default"
+                                    : ""
+                            }
                         >
-                            Publier
-                        </button>
+                            {"Publier une annonce"}
+                        </Button>
                     </Link>
                 </Tooltip>
             </div>

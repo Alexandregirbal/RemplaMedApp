@@ -8,6 +8,10 @@ import { prisma } from "server/db";
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { id } = req.body;
+    console.log(
+        `~~~~~ LOG by Girbal | file: webhook.ts:11 | handlePost | id: `,
+        id
+    );
 
     if (!id || typeof id !== "string") {
         return res
@@ -16,15 +20,25 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const post = await prisma.post.findFirst({ where: { paymentId: id } });
+
     if (!post) {
         return res.status(400).json({
             message: "Payment id does not have any corresponding post",
         });
     }
+    console.log(
+        `~~~~~ LOG by Girbal | file: webhook.ts:23 | handlePost | post: `,
+        post
+    );
 
     const payment = await getPaymentIntent({ id });
+    console.log(
+        `~~~~~ LOG by Girbal | file: webhook.ts:35 | handlePost | payment: `,
+        payment
+    );
+
     const { status } = payment;
-    await updatePaymentStatus({ postId: post.id, status });
+    void updatePaymentStatus({ postId: post.id, status });
     if (status === PaymentStatus.paid) {
         await setPublishedPost(post.id);
     }

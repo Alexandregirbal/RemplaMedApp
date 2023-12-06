@@ -85,11 +85,11 @@ const PostComponent = ({
                     </span>
                 )}
             </p>
-            <div className="h-full w-full overflow-y-auto p-2 text-sm text-paragraph">
+            <div className="h-full w-full overflow-y-auto p-2  text-paragraph">
                 <pre
                     className={
                         isMini
-                            ? "line-clamp-4 overflow-hidden whitespace-normal"
+                            ? "line-clamp-4 overflow-hidden whitespace-normal text-sm"
                             : "h-full whitespace-pre-wrap"
                     }
                 >
@@ -102,12 +102,14 @@ const PostComponent = ({
                     connectez-vous pour y accéder.
                 </div>
             )}
-            <div className="flex flex-row-reverse justify-between gap-1 text-sm">
-                <span>
-                    Posté le {dayjs(post.createdAt).format("D MMMM YYYY")}
-                </span>
+            <div
+                className={`flex flex-row-reverse justify-between gap-1  ${
+                    isMini ? "text-xs" : "text-sm"
+                }`}
+            >
+                <span>Créé le {dayjs(post.createdAt).format("D MMMM")}</span>
                 {isAuthor && post.views !== undefined && (
-                    <span className="text-sm text-red-700">
+                    <span className="text-tertiary">
                         {post.views} vue{post.views > 1 ? "s" : ""}
                     </span>
                 )}

@@ -8,6 +8,13 @@ body,
     @apply text-primary;
     font-family: "Maven Pro", arial;
     height: 100%;
+    font-size: 16px;
+}
+
+@media (max-width: 350px) {
+    html {
+        font-size: 14px;
+    }
 }
 
 pre {

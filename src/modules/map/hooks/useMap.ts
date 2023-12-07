@@ -33,6 +33,17 @@ export const useMap = (params: {
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const getMapLocationData = () => {
+        if (!map) return;
+        const location = map.getCenter();
+        const zoom = map.getZoom();
+        return {
+            longitude: location.lng,
+            latitude: location.lat,
+            zoom,
+        };
+    };
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             () => {
@@ -58,6 +69,7 @@ export const useMap = (params: {
                 name: "mercator",
             },
         });
+
         const handleMapLoad = (map: mapboxgl.Map) => {
             map.addSource(MAPBOX_IDS.posts, {
                 type: "geojson",
@@ -231,5 +243,5 @@ export const useMap = (params: {
         mapSource.setData(data);
     }, [data]);
 
-    return { isGeolocationAvailable };
+    return { isGeolocationAvailable, getMapLocationData };
 };

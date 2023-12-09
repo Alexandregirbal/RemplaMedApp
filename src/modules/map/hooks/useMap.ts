@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
+import { debounce } from "lodash";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { parseQueryString } from "modules/utils/parseQueryString";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
@@ -47,17 +49,26 @@ export const useMap = (params: {
 
         if (!mapContainer.current) return;
 
+        const queryObject = parseQueryString(router.asPath.replace("/?", ""));
+        const longitude = Number(queryObject.longitude);
+        const latitude = Number(queryObject.latitude);
+        const zoom = Number(queryObject.zoom);
+
         const mapboxClient = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
-            center: [2.4338675388986273, 46.77177190772532], // Bruère-Allichamps
-            zoom: 5,
+            center: [
+                longitude || 2.4338675388986273,
+                latitude || 46.77177190772532,
+            ], // Bruère-Allichamps used as default
+            zoom: zoom || 5,
             bearing: 0,
             pitch: 0,
             projection: {
                 name: "mercator",
             },
         });
+
         const handleMapLoad = (map: mapboxgl.Map) => {
             map.addSource(MAPBOX_IDS.posts, {
                 type: "geojson",
@@ -204,6 +215,26 @@ export const useMap = (params: {
             map.on("click", () => {
                 dispatch(setSelectedPosts({ postsIds: [] }));
             });
+
+            map.on(
+                "move",
+                debounce(async () => {
+                    const location = map.getCenter();
+                    const zoom = map.getZoom();
+                    const locationData = {
+                        longitude: location.lng,
+                        latitude: location.lat,
+                        zoom,
+                    };
+                    // TODO: fix Warning about rendering in different component
+                    await router.replace({
+                        query: {
+                            ...router.query,
+                            ...locationData,
+                        },
+                    });
+                }, 300) as () => void
+            );
         };
 
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));

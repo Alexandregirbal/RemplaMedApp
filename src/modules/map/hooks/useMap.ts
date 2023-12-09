@@ -5,7 +5,6 @@ import { debounce } from "lodash";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { parseQueryString } from "modules/utils/parseQueryString";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
@@ -35,7 +34,6 @@ export const useMap = (params: {
 
     const dispatch = useDispatch();
     const router = useRouter();
-    const searchParams = useSearchParams();
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -228,7 +226,7 @@ export const useMap = (params: {
                         latitude: location.lat,
                         zoom,
                     };
-
+                    // TODO: fix Warning about rendering in different component
                     await router.replace({
                         query: {
                             ...router.query,

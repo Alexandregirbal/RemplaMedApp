@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
+import { debounce } from "lodash";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
@@ -32,17 +34,7 @@ export const useMap = (params: {
 
     const dispatch = useDispatch();
     const router = useRouter();
-
-    const getMapLocationData = () => {
-        if (!map) return;
-        const location = map.getCenter();
-        const zoom = map.getZoom();
-        return {
-            longitude: location.lng,
-            latitude: location.lat,
-            zoom,
-        };
-    };
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -58,11 +50,17 @@ export const useMap = (params: {
 
         if (!mapContainer.current) return;
 
+        const longitude = Number(searchParams.get("longitude"));
+        const latitude = Number(searchParams.get("latitude"));
+        const zoom = Number(searchParams.get("zoom"));
         const mapboxClient = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
-            center: [2.4338675388986273, 46.77177190772532], // Bruère-Allichamps
-            zoom: 5,
+            center: [
+                longitude || 2.4338675388986273,
+                latitude || 46.77177190772532,
+            ], // Bruère-Allichamps used as default
+            zoom: zoom || 5,
             bearing: 0,
             pitch: 0,
             projection: {
@@ -216,6 +214,27 @@ export const useMap = (params: {
             map.on("click", () => {
                 dispatch(setSelectedPosts({ postsIds: [] }));
             });
+
+            map.on(
+                "move",
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                debounce(async () => {
+                    const location = map.getCenter();
+                    const zoom = map.getZoom();
+                    const locationData = {
+                        longitude: location.lng,
+                        latitude: location.lat,
+                        zoom,
+                    };
+
+                    await router.replace({
+                        query: {
+                            ...router.query,
+                            ...locationData,
+                        },
+                    });
+                }, 500) as () => void
+            );
         };
 
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));
@@ -243,5 +262,5 @@ export const useMap = (params: {
         mapSource.setData(data);
     }, [data]);
 
-    return { isGeolocationAvailable, getMapLocationData };
+    return { isGeolocationAvailable };
 };

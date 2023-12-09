@@ -15,11 +15,10 @@ const MapComponent = () => {
         "pk.eyJ1IjoiYWxleGFuZHJlZ2lyYmFsIiwiYSI6ImNsaHc2cHBmNjBndDkzZXF3dGM2ODh1c3YifQ.AhMdlbtUvHC2ucOOwRwsYw";
     const mapContainer = useRef<HTMLInputElement>(null);
 
-    const { isGeolocationAvailable, getMapLocationData } = useMap({
+    const { isGeolocationAvailable } = useMap({
         mapContainer,
         data: postsToDisplay,
     });
-    console.log(getMapLocationData());
 
     useEffect(() => {
         if (filteredPosts.length > 0) {

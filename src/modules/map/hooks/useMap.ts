@@ -4,6 +4,7 @@ import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import { debounce } from "lodash";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { parseQueryString } from "modules/utils/parseQueryString";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
@@ -50,9 +51,11 @@ export const useMap = (params: {
 
         if (!mapContainer.current) return;
 
-        const longitude = Number(searchParams.get("longitude"));
-        const latitude = Number(searchParams.get("latitude"));
-        const zoom = Number(searchParams.get("zoom"));
+        const queryObject = parseQueryString(router.asPath.replace("/?", ""));
+        const longitude = Number(queryObject.longitude);
+        const latitude = Number(queryObject.latitude);
+        const zoom = Number(queryObject.zoom);
+
         const mapboxClient = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v12",
@@ -217,7 +220,6 @@ export const useMap = (params: {
 
             map.on(
                 "move",
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 debounce(async () => {
                     const location = map.getCenter();
                     const zoom = map.getZoom();
@@ -233,7 +235,7 @@ export const useMap = (params: {
                             ...locationData,
                         },
                     });
-                }, 500) as () => void
+                }, 300) as () => void
             );
         };
 

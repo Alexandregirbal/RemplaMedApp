@@ -223,8 +223,8 @@ export const useMap = (params: {
                     const location = map.getCenter();
                     const zoom = map.getZoom();
                     const locationData = {
-                        longitude: location.lng,
-                        latitude: location.lat,
+                        longitude: location.lng.toFixed(4),
+                        latitude: location.lat.toFixed(4),
                         zoom,
                     };
                     // TODO: fix Warning about rendering in different component

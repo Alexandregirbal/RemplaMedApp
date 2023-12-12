@@ -153,7 +153,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     className="flex flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
                 >
                     <input
-                        type="text"
+                        type="number"
                         id="postalCode"
                         placeholder="34000"
                         value={newPost.postalCode}

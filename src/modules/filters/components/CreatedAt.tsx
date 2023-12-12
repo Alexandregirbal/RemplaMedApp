@@ -25,12 +25,14 @@ const CreatedAt = () => {
     };
 
     return (
-        <div className="flex items-center gap-2 text-sm">
-            <label htmlFor="createdAtFilter">Filtrer par date de poste:</label>
+        <div className="flex items-center gap-2 ">
+            <label htmlFor="createdAtFilter" className="w-1/2">
+                Filtrer par date de poste:
+            </label>
             <select
                 name="createdAtFilter"
                 id="created-at"
-                className="block w-2/5 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+                className="block w-1/2 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
                 value={createdAt.value}
                 onChange={handleChange}
             >

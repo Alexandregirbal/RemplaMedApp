@@ -69,14 +69,16 @@ const DatesFilter = () => {
                     key={key}
                     className="flex cursor-pointer items-center gap-2"
                 >
-                    <label>{label}</label>
-                    <DatePicker
-                        className="block w-32 rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
-                        selected={date ? dayjs(date).toDate() : null}
-                        minDate={min ? dayjs(min).toDate() : null}
-                        onChange={handleDateChange}
-                        dateFormat={"dd/MM/yyyy"}
-                    />
+                    <label className="w-1/2 whitespace-normal">{label}</label>
+                    <div className="w-1/2">
+                        <DatePicker
+                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
+                            selected={date ? dayjs(date).toDate() : null}
+                            minDate={min ? dayjs(min).toDate() : null}
+                            onChange={handleDateChange}
+                            dateFormat={"dd/MM/yyyy"}
+                        />
+                    </div>
                 </div>
             ))}
         </div>

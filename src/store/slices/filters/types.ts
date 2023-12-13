@@ -7,4 +7,5 @@ export type FiltersState = {
         value: number;
         label: string;
     };
+    notViewed: boolean;
 };

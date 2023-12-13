@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     isCreatedAtFilterSet,
     isDatesFilterSet,
+    isNotViewedFilterSet,
 } from "store/slices/filters/isSet";
 import {
     resetCreatedAt,
@@ -9,6 +10,7 @@ import {
     selectFiltersState,
     setCreatedAt,
     setDates,
+    setNotViewed,
 } from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
 import {
@@ -27,7 +29,7 @@ type Filter = {
 export const useFilters = () => {
     const dispatch = useDispatch();
     const { data } = useSelector(selectPostsState);
-    const { dates, createdAt } = useSelector(selectFiltersState);
+    const { dates, createdAt, notViewed } = useSelector(selectFiltersState);
 
     /**
      * Adds a filter to the **filters store**
@@ -55,12 +57,17 @@ export const useFilters = () => {
                 );
                 break;
 
+            case "notViewed":
+                filterValue = filter.value as FiltersState["notViewed"];
+                dispatch(setNotViewed(filterValue));
+                break;
+
             default:
                 throw new Error(`Filter name not found.`);
         }
 
         let postsData = data;
-        for (const iteratingFilterName of ["createdAt", "dates"]) {
+        for (const iteratingFilterName of ["createdAt", "dates", "notViewed"]) {
             if (
                 isCreatedAtFilterSet(createdAt) ||
                 iteratingFilterName === "createdAt"
@@ -79,6 +86,25 @@ export const useFilters = () => {
                     posts: postsData,
                     datesFilter: filterValue,
                 });
+            }
+
+            if (
+                isNotViewedFilterSet(notViewed) ||
+                iteratingFilterName === "notViewed"
+            ) {
+                const filterValue = (
+                    filter.name === "notViewed" ? filter.value : notViewed
+                ) as FiltersState["notViewed"];
+                if (filterValue) {
+                    console.log("filtering by not viewed");
+
+                    const userViewedPostsIds: string[] = [
+                        "ext_2a435185299b012f3e35",
+                    ];
+                    postsData = postsData.filter(
+                        (post) => !userViewedPostsIds.includes(post.id)
+                    );
+                }
             }
         }
 

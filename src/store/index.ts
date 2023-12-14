@@ -7,6 +7,7 @@ import { createWrapper } from "next-redux-wrapper";
 import { filtersSlice } from "./slices/filters/slice";
 import { postsSlice } from "./slices/posts/slice";
 import { uiSlice } from "./slices/ui/slice";
+import { userSlice } from "./slices/user/slice";
 
 const makeStore = () =>
     configureStore({
@@ -14,6 +15,7 @@ const makeStore = () =>
             [filtersSlice.name]: filtersSlice.reducer,
             [postsSlice.name]: postsSlice.reducer,
             [uiSlice.name]: uiSlice.reducer,
+            [userSlice.name]: userSlice.reducer,
         },
         devTools: true,
     });

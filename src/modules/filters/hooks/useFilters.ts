@@ -18,6 +18,7 @@ import {
     selectPostsState,
     setFilteredPosts,
 } from "store/slices/posts/slice";
+import { selectUserState } from "store/slices/user/slice";
 import { filterByCreatedAt } from "../services/filterByCreatedAt";
 import { filterByDateFromDateTo } from "../services/filterByDateFromDateTo";
 
@@ -29,6 +30,7 @@ type Filter = {
 export const useFilters = () => {
     const dispatch = useDispatch();
     const { data } = useSelector(selectPostsState);
+    const { postsViewed } = useSelector(selectUserState);
     const { dates, createdAt, notViewed } = useSelector(selectFiltersState);
 
     /**
@@ -97,12 +99,8 @@ export const useFilters = () => {
                 ) as FiltersState["notViewed"];
                 if (filterValue) {
                     console.log("filtering by not viewed");
-
-                    const userViewedPostsIds: string[] = [
-                        "ext_2a435185299b012f3e35",
-                    ];
                     postsData = postsData.filter(
-                        (post) => !userViewedPostsIds.includes(post.id)
+                        (post) => !postsViewed.includes(post.id)
                     );
                 }
             }

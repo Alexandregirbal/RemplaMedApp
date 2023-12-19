@@ -2,6 +2,12 @@ import type { GetServerSidePropsContext } from "next";
 import { getServerSession, type DefaultSession } from "next-auth";
 import authOptions from "./options";
 
+declare module "next-auth/jwt" {
+    interface JWT {
+        postsViewed: string[];
+    }
+}
+
 /**
  * Module augmentation for `next-auth` types.
  * Allows us to add custom properties to the `session` object and keep type
@@ -13,15 +19,13 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
             id: string;
-            // ...other properties
-            // role: UserRole;
+            postsViewed: string[];
         } & DefaultSession["user"];
     }
 
-    // interface User {
-    //   // ...other properties
-    //   // role: UserRole;
-    // }
+    interface User {
+        postsViewed: string[];
+    }
 }
 
 /**

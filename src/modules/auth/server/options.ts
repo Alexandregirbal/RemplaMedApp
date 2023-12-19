@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type NextAuthOptions } from "next-auth";
 import { prisma } from "server/db";
@@ -15,19 +17,32 @@ const authOptions: NextAuthOptions = {
     providers: [credentialsProvider, googleProvider],
     adapter: PrismaAdapter(prisma),
     callbacks: {
+        jwt({ token, trigger, user, session }) {
+            switch (trigger) {
+                case "update":
+                    if ("name" in session) token.name = session.name;
+                    return token;
+
+                case "signIn":
+                case "signUp":
+                    if (user && "postsViewed" in user) {
+                        const postsViewed = new Set(user.postsViewed);
+                        token.postsViewed = Array.from(postsViewed);
+                    }
+                    return token;
+
+                default:
+                    return token;
+            }
+        },
         session({ session, token }) {
             if (token?.sub) {
                 session.user.id = token.sub;
             }
-            return session;
-        },
-        jwt({ token, trigger, session }) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (trigger === "update" && session?.name) {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                token.name = session.name;
+            if (token.postsViewed) {
+                session.user.postsViewed = token.postsViewed;
             }
-            return token;
+            return session;
         },
         signIn({ user }) {
             if (user) {

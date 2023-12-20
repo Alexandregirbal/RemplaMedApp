@@ -11,7 +11,7 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setIsLoading(state, action: { payload: UserState["id"] }) {
+        setUserId(state, action: { payload: UserState["id"] }) {
             state.id = action.payload;
         },
         setPostsViewed(state, action: { payload: UserState["postsViewed"] }) {
@@ -27,7 +27,7 @@ export const userSlice = createSlice({
     },
 });
 
-export const { addViewedPost, resetUser, setIsLoading, setPostsViewed } =
+export const { addViewedPost, resetUser, setUserId, setPostsViewed } =
     userSlice.actions;
 
 export const selectUserState = (state: AppState) => state.user;

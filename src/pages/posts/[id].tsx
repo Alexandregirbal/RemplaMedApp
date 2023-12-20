@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addViewedPost } from "store/slices/user/slice";
 
 type PostPageParams = {
     id: string;
@@ -19,6 +21,7 @@ type PostPageProps = {
 export default function PostPage({ post }: PostPageProps) {
     const session = useSession();
     const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         void axios.put(`/api/posts/incrementViews`, { postId: post.id });
@@ -27,6 +30,7 @@ export default function PostPage({ post }: PostPageProps) {
                 postId: post.id,
             });
         }
+        dispatch(addViewedPost(post.id));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);
 

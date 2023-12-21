@@ -3,15 +3,29 @@ import MapComponent from "modules/map";
 import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectPostsState, setPosts } from "store/slices/posts/slice";
+import { setPostsViewed, setUserId } from "store/slices/user/slice";
 
 const postIdPrefix = "home_";
 
 const Home: NextPage = () => {
     const { selectedPosts } = useSelector(selectPostsState);
+
+    const { data: session } = useSession();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (session?.user) {
+            dispatch(setPostsViewed(session.user.postsViewed));
+            dispatch(setUserId(session.user.id));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session]);
 
     return (
         <>

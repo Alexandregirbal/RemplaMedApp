@@ -1,7 +1,8 @@
 import ModalComponent from "modules/ui/modal";
+import { useFilters } from "../hooks/useFilters";
 import CreatedAt from "./CreatedAt";
 import DatesFilter from "./Dates";
-import { useFilters } from "../hooks/useFilters";
+import ViewedFilter from "./Viewed";
 
 type FiltersModalProps = {
     isOpened: boolean;
@@ -21,6 +22,7 @@ const FiltersModal = ({ isOpened, onClose }: FiltersModalProps) => {
             onClose={onClose}
         >
             <div className="flex flex-col gap-4 ">
+                <ViewedFilter />
                 <CreatedAt />
                 <DatesFilter />
                 <div className=" mt-4 flex justify-center">

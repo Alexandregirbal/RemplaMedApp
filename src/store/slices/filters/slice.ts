@@ -11,6 +11,7 @@ const initialState: FiltersState = {
         value: 0,
         label: "Aucun filtre",
     },
+    notViewed: false,
 };
 
 export const filtersSlice = createSlice({
@@ -29,12 +30,24 @@ export const filtersSlice = createSlice({
         resetCreatedAt(state) {
             state.createdAt = initialState.createdAt;
         },
+        setNotViewed(state, action: { payload: FiltersState["notViewed"] }) {
+            state.notViewed = action.payload;
+        },
+        resetNotViewed(state) {
+            state.notViewed = initialState.notViewed;
+        },
     },
     // add extraReducers for server init only
 });
 
-export const { setDates, setCreatedAt, resetCreatedAt, resetDates } =
-    filtersSlice.actions;
+export const {
+    setDates,
+    setCreatedAt,
+    resetCreatedAt,
+    resetDates,
+    setNotViewed,
+    resetNotViewed,
+} = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;
 

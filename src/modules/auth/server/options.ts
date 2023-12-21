@@ -21,6 +21,14 @@ const authOptions: NextAuthOptions = {
             switch (trigger) {
                 case "update":
                     if ("name" in session) token.name = session.name;
+                    if ("newPostViewed" in session) {
+                        token.postsViewed = Array.from(
+                            new Set([
+                                ...token.postsViewed,
+                                session.newPostViewed,
+                            ])
+                        );
+                    }
                     return token;
 
                 case "signIn":

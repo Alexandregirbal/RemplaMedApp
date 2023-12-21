@@ -98,7 +98,6 @@ export const useFilters = () => {
                     filter.name === "notViewed" ? filter.value : notViewed
                 ) as FiltersState["notViewed"];
                 if (filterValue) {
-                    console.log("filtering by not viewed");
                     postsData = postsData.filter(
                         (post) => !postsViewed.includes(post.id)
                     );

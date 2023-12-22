@@ -1,5 +1,6 @@
 import { debounce, mean } from "lodash";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setIsLoading, setToaster } from "store/slices/ui/slice";
 
@@ -11,6 +12,7 @@ export type LocationData = {
 
 const PostalCodeFinder = () => {
     const dispatch = useDispatch();
+    const postalCodeFinderInputRef = useRef<HTMLInputElement>(null);
 
     const handlePostalCodeChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -30,6 +32,7 @@ const PostalCodeFinder = () => {
                     );
                     return;
                 }
+                postalCodeFinderInputRef.current?.blur();
                 const latitude = mean(geocodeData.map((data) => data.latitude));
                 const longitude = mean(
                     geocodeData.map((data) => data.longitude)
@@ -52,6 +55,7 @@ const PostalCodeFinder = () => {
 
     return (
         <input
+            ref={postalCodeFinderInputRef}
             type="number"
             name="postalCode"
             id="postalCodeFinder"

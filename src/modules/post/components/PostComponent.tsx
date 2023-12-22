@@ -53,19 +53,15 @@ const PostComponent = ({
 
     return (
         <div
-            className={`flex max-h-full w-full flex-col rounded-lg border border-primary bg-background p-2 pb-1 shadow-xl transition`}
+            className={`flex max-h-full w-full flex-col gap-2 rounded-lg border border-primary bg-background py-2 shadow-xl transition`}
         >
-            <div className=" border-b border-b-primary p-1 text-center ">
-                <div
-                    className={`${isMini ? "truncate" : ""} text-xl font-bold`}
-                >
-                    {post.title}
+            <div className=" border-b border-b-primary px-2 pb-2 text-center text-xl font-bold ">
+                <div className={isMini ? "truncate" : ""}>
+                    {post.title} {post.postalCode}
                 </div>
-                {post.city && post.postalCode && (
-                    <div>{`${post.postalCode} ${post.city}`}</div>
-                )}
+                {post.city && <div>{post.city}</div>}
             </div>
-            <p className="text-sm">
+            <p className="px-2 text-sm">
                 {post.availablityFrom && (
                     <span className="">
                         A partir du{" "}
@@ -85,7 +81,7 @@ const PostComponent = ({
                     </span>
                 )}
             </p>
-            <div className="h-full w-full overflow-y-auto p-2  text-paragraph">
+            <div className="h-full w-full overflow-y-auto px-4  text-paragraph">
                 <pre
                     className={
                         isMini
@@ -97,13 +93,13 @@ const PostComponent = ({
                 </pre>
             </div>
             {isPrivate && (
-                <div className="text-sm text-red-700">
+                <div className="px-2 text-sm text-tertiary">
                     Les informations privées ont été masquées. Inscrivez-vous ou
                     connectez-vous pour y accéder.
                 </div>
             )}
             <div
-                className={`flex flex-row-reverse justify-between gap-1  ${
+                className={`flex flex-row-reverse justify-between gap-1 px-2 ${
                     isMini ? "text-xs" : "text-sm"
                 }`}
             >

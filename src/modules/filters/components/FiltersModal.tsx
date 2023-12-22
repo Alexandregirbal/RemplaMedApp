@@ -25,12 +25,19 @@ const FiltersModal = ({ isOpened, onClose }: FiltersModalProps) => {
                 <ViewedFilter />
                 <CreatedAt />
                 <DatesFilter />
-                <div className=" mt-4 flex justify-center">
+                <div className=" mt-4 flex justify-around">
                     <button
                         className=" rounded-lg bg-tertiary px-4 py-2.5 text-center font-medium text-white "
                         onClick={handeResetFilters}
                     >
-                        Supprimer tous les filtres
+                        Réinitialiser
+                    </button>
+
+                    <button
+                        className=" rounded-lg bg-cta px-4 py-2.5 text-center font-medium text-white "
+                        onClick={onClose}
+                    >
+                        Valider
                     </button>
                 </div>
             </div>

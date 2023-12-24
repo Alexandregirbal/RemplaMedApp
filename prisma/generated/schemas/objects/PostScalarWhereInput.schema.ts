@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringFilterObjectSchema } from "./StringFilter.schema";
 import { BoolFilterObjectSchema } from "./BoolFilter.schema";
+import { EnumPostIntentFilterObjectSchema } from "./EnumPostIntentFilter.schema";
+import { PostIntentSchema } from "../enums/PostIntent.schema";
 import { StringNullableFilterObjectSchema } from "./StringNullableFilter.schema";
 import { FloatNullableFilterObjectSchema } from "./FloatNullableFilter.schema";
 import { DateTimeFilterObjectSchema } from "./DateTimeFilter.schema";
@@ -39,6 +41,12 @@ const Schema: z.ZodType<Prisma.PostScalarWhereInput> = z
             .optional(),
         published: z
             .union([z.lazy(() => BoolFilterObjectSchema), z.boolean()])
+            .optional(),
+        intent: z
+            .union([
+                z.lazy(() => EnumPostIntentFilterObjectSchema),
+                z.lazy(() => PostIntentSchema),
+            ])
             .optional(),
         title: z
             .union([z.lazy(() => StringFilterObjectSchema), z.string()])

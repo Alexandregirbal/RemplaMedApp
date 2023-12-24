@@ -4,6 +4,7 @@ export const PostScalarFieldEnumSchema = z.enum([
     "id",
     "authorId",
     "published",
+    "intent",
     "title",
     "postalCode",
     "city",

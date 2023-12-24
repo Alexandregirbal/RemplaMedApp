@@ -7,6 +7,7 @@ const Schema: z.ZodType<Prisma.PostCountAggregateInputType> = z
         id: z.literal(true).optional(),
         authorId: z.literal(true).optional(),
         published: z.literal(true).optional(),
+        intent: z.literal(true).optional(),
         title: z.literal(true).optional(),
         postalCode: z.literal(true).optional(),
         city: z.literal(true).optional(),

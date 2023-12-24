@@ -13,6 +13,7 @@ const Schema: z.ZodType<Prisma.PostOrderByWithAggregationInput> = z
         id: z.lazy(() => SortOrderSchema).optional(),
         authorId: z.lazy(() => SortOrderSchema).optional(),
         published: z.lazy(() => SortOrderSchema).optional(),
+        intent: z.lazy(() => SortOrderSchema).optional(),
         title: z.lazy(() => SortOrderSchema).optional(),
         postalCode: z.lazy(() => SortOrderSchema).optional(),
         city: z.lazy(() => SortOrderSchema).optional(),

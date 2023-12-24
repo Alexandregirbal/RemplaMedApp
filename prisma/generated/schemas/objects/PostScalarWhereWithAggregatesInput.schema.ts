@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringWithAggregatesFilterObjectSchema } from "./StringWithAggregatesFilter.schema";
 import { BoolWithAggregatesFilterObjectSchema } from "./BoolWithAggregatesFilter.schema";
+import { EnumPostIntentWithAggregatesFilterObjectSchema } from "./EnumPostIntentWithAggregatesFilter.schema";
+import { PostIntentSchema } from "../enums/PostIntent.schema";
 import { StringNullableWithAggregatesFilterObjectSchema } from "./StringNullableWithAggregatesFilter.schema";
 import { FloatNullableWithAggregatesFilterObjectSchema } from "./FloatNullableWithAggregatesFilter.schema";
 import { DateTimeWithAggregatesFilterObjectSchema } from "./DateTimeWithAggregatesFilter.schema";
@@ -51,6 +53,12 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
             .union([
                 z.lazy(() => BoolWithAggregatesFilterObjectSchema),
                 z.boolean(),
+            ])
+            .optional(),
+        intent: z
+            .union([
+                z.lazy(() => EnumPostIntentWithAggregatesFilterObjectSchema),
+                z.lazy(() => PostIntentSchema),
             ])
             .optional(),
         title: z

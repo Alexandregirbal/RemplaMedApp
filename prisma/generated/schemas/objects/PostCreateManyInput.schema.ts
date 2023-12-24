@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PostIntentSchema } from "../enums/PostIntent.schema";
 import { SourceSchema } from "../enums/Source.schema";
 import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
 
@@ -9,6 +10,7 @@ const Schema: z.ZodType<Prisma.PostCreateManyInput> = z
         id: z.string().optional(),
         authorId: z.string(),
         published: z.boolean().optional(),
+        intent: z.lazy(() => PostIntentSchema).optional(),
         title: z.string(),
         postalCode: z.string(),
         city: z.string().optional().nullable(),

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { PostIntent } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
 import { sortByDate, sortByDistance } from "modules/filters/services/sortBy";
 import type { Coordinates } from "modules/filters/types/distance";
@@ -17,7 +18,7 @@ const initialState: PostsState = {
     selectedPosts: [],
     filteredPosts: [],
     newPost: {
-        title: "",
+        intent: PostIntent.remplacement_offer,
         message: "",
         postalCode: "",
         city: "",

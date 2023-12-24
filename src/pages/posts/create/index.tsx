@@ -1,11 +1,13 @@
 "use client";
+import { PostIntent } from "@prisma/client";
 import dayjs from "dayjs";
 import { Spinner } from "flowbite-react";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
 import type { GeocodeData } from "modules/geocode/types";
+import { isPostIntent } from "modules/post/types/post";
 import useDebounce from "modules/utils/hooks/useDebounce";
 import { useRouter } from "next/router";
-import { useEffect, useState, type FormEventHandler } from "react";
+import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +20,7 @@ const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
     const dispatch = useDispatch();
     const debouncedPostalCode = useDebounce(newPost.postalCode, 350);
+    const messageRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPostalCodeLoading, setIsPostalCodeLoading] = useState(false);
     const [isPostalCodeValid, setIsPostalCodeValid] = useState(true);
@@ -40,8 +43,14 @@ const CreatePost = () => {
         setCitiesGeocodes([]);
     };
 
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setNewPost({ ...newPost, title: event.target.value }));
+    const handlePostIntentChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const newIntent = event.target.value;
+        if (!isPostIntent(newIntent)) return;
+
+        dispatch(setNewPost({ ...newPost, intent: newIntent }));
+        messageRef.current?.focus();
     };
 
     const handleMessageChange = (
@@ -58,7 +67,7 @@ const CreatePost = () => {
     };
 
     useEffect(() => {
-        if (!debouncedPostalCode) return;
+        if (!debouncedPostalCode || debouncedPostalCode.length !== 5) return;
         setIsPostalCodeLoading(true);
         getGeocodeDataFromPostalCode(debouncedPostalCode)
             .then((response) => {
@@ -105,7 +114,7 @@ const CreatePost = () => {
     const isSubmitable =
         isPostalCodeValid &&
         !isPostalCodeLoading &&
-        newPost.title &&
+        newPost.intent &&
         newPost.message &&
         newPost.postalCode &&
         newPost.city;
@@ -117,25 +126,36 @@ const CreatePost = () => {
             className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
         >
             <div>
-                <label htmlFor="title" className="mb-2 block ">
-                    Titre
+                <label htmlFor="postIntent" className="mb-2 block text-lg ">
+                    Intention de post
                 </label>
-                <input
-                    type="text"
-                    id="title"
-                    value={newPost.title}
-                    onChange={handleTitleChange}
+                <select
+                    name="intent"
+                    id="postIntent"
                     className="block w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
-                    placeholder="Cherche remplacement sur Montpellier en Juin"
-                    required
-                />
+                    onChange={handlePostIntentChange}
+                >
+                    <option value={PostIntent.remplacement_offer}>
+                        {"Cherche remplaçant(e)"}
+                    </option>
+                    <option value={PostIntent.remplacement_search}>
+                        {"Cherche remplacement"}
+                    </option>
+                    <option value={PostIntent.partnership}>
+                        {"Cherche collaboration"}
+                    </option>
+                    <option value={PostIntent.transaction}>
+                        {"Cession de cabinet"}
+                    </option>
+                </select>
             </div>
             <div className="flex grow flex-col">
-                <label htmlFor="message" className="mb-2 block ">
+                <label htmlFor="message" className="mb-2 block text-lg">
                     Message
                 </label>
                 <textarea
                     id="message"
+                    ref={messageRef}
                     value={newPost.message}
                     placeholder={`Bonjour,
 Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 8 jours par mois à partir de Juin...`}
@@ -145,12 +165,12 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                 />
             </div>
             <div>
-                <label htmlFor="postalCode" className="mb-2 block ">
+                <label htmlFor="postalCode" className="mb-2 block text-lg">
                     Code postal
                 </label>
                 <div
                     id="postalCode-container"
-                    className="flex flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
+                    className=" flex w-full flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
                 >
                     <input
                         type="number"
@@ -158,7 +178,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                         placeholder="34000"
                         value={newPost.postalCode}
                         onChange={handlePostalCodeChange}
-                        className={`block w-1/3 rounded-lg border border-gray-300  p-1.5 ${
+                        className={`block w-1/3 min-w-[8rem] rounded-lg border border-gray-300  p-1.5 ${
                             isPostalCodeValid
                                 ? "focus:border-cta focus:ring-cta"
                                 : "border-red-500 ring-red-500 focus:border-red-500 focus:ring-red-500"
@@ -204,7 +224,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
             </div>
             <div className="flex items-start gap-4">
                 <div className="mb-6">
-                    <label htmlFor="from" className="mb-2 block ">
+                    <label htmlFor="from" className="mb-2 block text-lg">
                         A partir du
                     </label>
                     <DatePicker
@@ -215,7 +235,7 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                     />
                 </div>
                 <div className="mb-6">
-                    <label htmlFor="to" className="mb-2 block ">
+                    <label htmlFor="to" className="mb-2 block text-lg">
                         {"Jusqu'au"}
                     </label>
 

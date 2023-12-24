@@ -92,8 +92,8 @@ enum PaymentStatus {
 }
 
 enum PostIntent {
-  remplacement_offer
-  remplacement_search
+  replacementOffer
+  replacementSearch
   partnership
   transaction
   other
@@ -104,7 +104,7 @@ model Post {
   author          User           @relation(fields: [authorId], references: [id])
   authorId        String
   published       Boolean        @default(false)
-  intent          PostIntent     @default(remplacement_offer)
+  intent          PostIntent     @default(replacementOffer)
   title           String
   postalCode      String
   city            String?

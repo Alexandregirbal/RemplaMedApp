@@ -18,7 +18,7 @@ const initialState: PostsState = {
     selectedPosts: [],
     filteredPosts: [],
     newPost: {
-        intent: PostIntent.remplacement_offer,
+        intent: PostIntent.replacementOffer,
         message: "",
         postalCode: "",
         city: "",

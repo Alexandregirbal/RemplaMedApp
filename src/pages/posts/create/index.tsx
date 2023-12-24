@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { Spinner } from "flowbite-react";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
 import type { GeocodeData } from "modules/geocode/types";
+import { getPostIntentLabel } from "modules/post/services/postIntentLabels";
 import { isPostIntent } from "modules/post/types/post";
 import useDebounce from "modules/utils/hooks/useDebounce";
 import { useRouter } from "next/router";
@@ -135,18 +136,11 @@ const CreatePost = () => {
                     className="block w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
                     onChange={handlePostIntentChange}
                 >
-                    <option value={PostIntent.remplacement_offer}>
-                        {"Cherche remplaçant(e)"}
-                    </option>
-                    <option value={PostIntent.remplacement_search}>
-                        {"Cherche remplacement"}
-                    </option>
-                    <option value={PostIntent.partnership}>
-                        {"Cherche collaboration"}
-                    </option>
-                    <option value={PostIntent.transaction}>
-                        {"Cession de cabinet"}
-                    </option>
+                    {Object.values(PostIntent).map((intent) => (
+                        <option key={intent} value={intent}>
+                            {getPostIntentLabel(intent)}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="flex grow flex-col">

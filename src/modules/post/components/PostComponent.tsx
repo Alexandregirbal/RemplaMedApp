@@ -1,7 +1,9 @@
+import { PostIntent } from "@prisma/client";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
+import { getPostIntentLabel } from "../services/postIntentLabels";
 import { type PostWithAuthorName } from "../types/post";
 
 require("dayjs/locale/fr");
@@ -23,8 +25,8 @@ const PostComponent = ({
     const [isPrivate, setIsPrivate] = useState(false);
     const [isAuthor, setIsAuthor] = useState(false);
     const [postMessage, setPostMessage] = useState(post.message);
-    const timeDiffMonths = post.availablityTo
-        ? dayjs(post.availablityTo).diff(post.availablityFrom, "month")
+    const timeDiffWeeks = post.availablityTo
+        ? dayjs(post.availablityTo).diff(post.availablityFrom, "week")
         : 0;
 
     useEffect(() => {
@@ -57,28 +59,34 @@ const PostComponent = ({
         >
             <div className=" border-b border-b-primary px-2 pb-2 text-center text-xl font-bold ">
                 <div className={isMini ? "truncate" : ""}>
-                    {post.title} {post.postalCode}
+                    {getPostIntentLabel(
+                        post.intent ?? PostIntent.replacementOffer
+                    )}{" "}
+                    {post.postalCode}
                 </div>
                 {post.city && <div>{post.city}</div>}
             </div>
             <p className="px-2 text-sm">
                 {post.availablityFrom && (
-                    <span className="">
+                    <p>
                         A partir du{" "}
                         <span className="font-bold">
                             {dayjs(post.availablityFrom).format("DD MMM YYYY")}
                         </span>
-                    </span>
+                    </p>
                 )}
                 {post.availablityTo && (
-                    <span className="">
-                        {" "}
-                        {"jusqu'au"}{" "}
+                    <p>
+                        {"Jusqu'au"}{" "}
                         <span className="font-bold">
                             {dayjs(post.availablityTo).format("DD MMM YYYY")}
                         </span>
-                        {timeDiffMonths ? ` (${timeDiffMonths} mois)` : ""}
-                    </span>
+                        {timeDiffWeeks
+                            ? ` (${timeDiffWeeks} semaine${
+                                  timeDiffWeeks > 1 ? "s" : ""
+                              })`
+                            : ""}
+                    </p>
                 )}
             </p>
             <div className="h-full w-full overflow-y-auto px-4  text-paragraph">

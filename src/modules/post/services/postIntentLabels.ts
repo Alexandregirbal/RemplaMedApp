@@ -11,7 +11,7 @@ export const getPostIntentLabel = (postIntent: PostIntent): string => {
         case PostIntent.transaction:
             return "Cession de cabinet";
         case PostIntent.other:
-            return "Autre";
+            return "Autre demande";
         default:
             throw new Error("Invalid post intent");
     }

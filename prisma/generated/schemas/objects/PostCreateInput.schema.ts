@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PostIntentSchema } from "../enums/PostIntent.schema";
 import { SourceSchema } from "../enums/Source.schema";
 import { PaymentStatusSchema } from "../enums/PaymentStatus.schema";
 import { UserCreateNestedOneWithoutPostsInputObjectSchema } from "./UserCreateNestedOneWithoutPostsInput.schema";
@@ -9,7 +10,8 @@ const Schema: z.ZodType<Prisma.PostCreateInput> = z
     .object({
         id: z.string().optional(),
         published: z.boolean().optional(),
-        title: z.string(),
+        intent: z.lazy(() => PostIntentSchema).optional(),
+        title: z.string().optional().nullable(),
         postalCode: z.string(),
         city: z.string().optional().nullable(),
         latitude: z.number().optional().nullable(),

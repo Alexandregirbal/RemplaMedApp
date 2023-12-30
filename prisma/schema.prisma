@@ -1,10 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
+// uncomment and run "npx prisma generate" to generate zod schemas
 // generator zod {
 //   provider = "prisma-zod-generator"
 // }
@@ -93,12 +91,21 @@ enum PaymentStatus {
   paid
 }
 
+enum PostIntent {
+  replacementOffer
+  replacementSearch
+  partnership
+  transaction
+  other
+}
+
 model Post {
   id              String         @id @default(cuid())
   author          User           @relation(fields: [authorId], references: [id])
   authorId        String
   published       Boolean        @default(false)
-  title           String
+  intent          PostIntent     @default(replacementOffer)
+  title           String?
   postalCode      String
   city            String?
   latitude        Float?

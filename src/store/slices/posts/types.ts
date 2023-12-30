@@ -8,7 +8,7 @@ export type PostsState = {
     filteredPosts: Array<PostWithAuthorName>;
     newPost: Pick<
         PostWithAuthorName,
-        | "title"
+        | "intent"
         | "message"
         | "postalCode"
         | "city"

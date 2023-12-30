@@ -12,41 +12,58 @@ const initialState: FiltersState = {
         label: "Aucun filtre",
     },
     notViewed: false,
+    intent: null,
 };
 
 export const filtersSlice = createSlice({
     name: "filters",
     initialState,
     reducers: {
+        resetFiltersSlice(state) {
+            state.dates = initialState.dates;
+            state.createdAt = initialState.createdAt;
+            state.notViewed = initialState.notViewed;
+            state.intent = initialState.intent;
+            // ADD new filters here
+        },
         setDates(state, action: { payload: FiltersState["dates"] }) {
             state.dates = action.payload;
-        },
-        resetDates(state) {
-            state.dates = initialState.dates;
         },
         setCreatedAt(state, action: { payload: FiltersState["createdAt"] }) {
             state.createdAt = action.payload;
         },
-        resetCreatedAt(state) {
-            state.createdAt = initialState.createdAt;
-        },
         setNotViewed(state, action: { payload: FiltersState["notViewed"] }) {
             state.notViewed = action.payload;
         },
-        resetNotViewed(state) {
-            state.notViewed = initialState.notViewed;
+        setIntent(state, action: { payload: FiltersState["intent"] }) {
+            state.intent = action.payload;
         },
+        isCreatedAtFilterSet(state) {
+            state.createdAt.value !== 0;
+        },
+        isDatesFilterSet(state) {
+            state.dates.from !== null && state.dates.to !== null;
+        },
+        isNotViewedFilterSet(state) {
+            !!state.notViewed;
+        },
+        isIntentFilterSet(state) {
+            !!state.intent;
+        },
+        // Add extraReducers for server init only
     },
-    // add extraReducers for server init only
 });
 
 export const {
+    resetFiltersSlice,
     setDates,
     setCreatedAt,
-    resetCreatedAt,
-    resetDates,
     setNotViewed,
-    resetNotViewed,
+    setIntent,
+    isCreatedAtFilterSet,
+    isDatesFilterSet,
+    isNotViewedFilterSet,
+    isIntentFilterSet,
 } = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;

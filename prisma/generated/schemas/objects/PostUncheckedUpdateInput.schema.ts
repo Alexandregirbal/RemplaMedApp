@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { StringFieldUpdateOperationsInputObjectSchema } from "./StringFieldUpdateOperationsInput.schema";
 import { BoolFieldUpdateOperationsInputObjectSchema } from "./BoolFieldUpdateOperationsInput.schema";
+import { PostIntentSchema } from "../enums/PostIntent.schema";
+import { EnumPostIntentFieldUpdateOperationsInputObjectSchema } from "./EnumPostIntentFieldUpdateOperationsInput.schema";
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from "./NullableStringFieldUpdateOperationsInput.schema";
 import { NullableFloatFieldUpdateOperationsInputObjectSchema } from "./NullableFloatFieldUpdateOperationsInput.schema";
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from "./DateTimeFieldUpdateOperationsInput.schema";
@@ -33,12 +35,23 @@ const Schema: z.ZodType<Prisma.PostUncheckedUpdateInput> = z
                 z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema),
             ])
             .optional(),
+        intent: z
+            .union([
+                z.lazy(() => PostIntentSchema),
+                z.lazy(
+                    () => EnumPostIntentFieldUpdateOperationsInputObjectSchema
+                ),
+            ])
+            .optional(),
         title: z
             .union([
                 z.string(),
-                z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                z.lazy(
+                    () => NullableStringFieldUpdateOperationsInputObjectSchema
+                ),
             ])
-            .optional(),
+            .optional()
+            .nullable(),
         postalCode: z
             .union([
                 z.string(),

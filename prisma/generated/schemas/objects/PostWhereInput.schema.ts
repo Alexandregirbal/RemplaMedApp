@@ -51,8 +51,9 @@ const Schema: z.ZodType<Prisma.PostWhereInput> = z
             ])
             .optional(),
         title: z
-            .union([z.lazy(() => StringFilterObjectSchema), z.string()])
-            .optional(),
+            .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
+            .optional()
+            .nullable(),
         postalCode: z
             .union([z.lazy(() => StringFilterObjectSchema), z.string()])
             .optional(),

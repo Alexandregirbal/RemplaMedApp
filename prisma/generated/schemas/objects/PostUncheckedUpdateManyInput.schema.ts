@@ -46,9 +46,12 @@ const Schema: z.ZodType<Prisma.PostUncheckedUpdateManyInput> = z
         title: z
             .union([
                 z.string(),
-                z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                z.lazy(
+                    () => NullableStringFieldUpdateOperationsInputObjectSchema
+                ),
             ])
-            .optional(),
+            .optional()
+            .nullable(),
         postalCode: z
             .union([
                 z.string(),

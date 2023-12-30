@@ -63,10 +63,11 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
             .optional(),
         title: z
             .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
+                z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
                 z.string(),
             ])
-            .optional(),
+            .optional()
+            .nullable(),
         postalCode: z
             .union([
                 z.lazy(() => StringWithAggregatesFilterObjectSchema),

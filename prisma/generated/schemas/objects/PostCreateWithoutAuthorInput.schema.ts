@@ -10,7 +10,7 @@ const Schema: z.ZodType<Prisma.PostCreateWithoutAuthorInput> = z
         id: z.string().optional(),
         published: z.boolean().optional(),
         intent: z.lazy(() => PostIntentSchema).optional(),
-        title: z.string(),
+        title: z.string().optional().nullable(),
         postalCode: z.string(),
         city: z.string().optional().nullable(),
         latitude: z.number().optional().nullable(),

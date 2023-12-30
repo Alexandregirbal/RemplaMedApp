@@ -107,7 +107,7 @@ export const useFilters = () => {
 
             if (isIntentFilterSet() || iteratingFilterName === "intent") {
                 const filterValue = (
-                    filter.name === "intent" ? filter.value : null
+                    filter.name === "intent" ? filter.value : intent
                 ) as FiltersState["intent"];
                 if (filterValue) {
                     postsData = postsData.filter(

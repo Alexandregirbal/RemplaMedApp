@@ -1,23 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
+
 import {
     isCreatedAtFilterSet,
     isDatesFilterSet,
+    isIntentFilterSet,
     isNotViewedFilterSet,
-} from "store/slices/filters/isSet";
-import {
-    resetCreatedAt,
-    resetDates,
+    resetFiltersSlice,
     selectFiltersState,
     setCreatedAt,
     setDates,
+    setIntent,
     setNotViewed,
 } from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
-import {
-    resetFilteredPosts,
-    selectPostsState,
-    setFilteredPosts,
-} from "store/slices/posts/slice";
+import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
 import { selectUserState } from "store/slices/user/slice";
 import { filterByCreatedAt } from "../services/filterByCreatedAt";
 import { filterByDateFromDateTo } from "../services/filterByDateFromDateTo";
@@ -31,7 +27,8 @@ export const useFilters = () => {
     const dispatch = useDispatch();
     const { data } = useSelector(selectPostsState);
     const { postsViewed } = useSelector(selectUserState);
-    const { dates, createdAt, notViewed } = useSelector(selectFiltersState);
+    const { dates, createdAt, notViewed, intent } =
+        useSelector(selectFiltersState);
 
     /**
      * Adds a filter to the **filters store**
@@ -64,23 +61,30 @@ export const useFilters = () => {
                 dispatch(setNotViewed(filterValue));
                 break;
 
+            case "intent":
+                filterValue = filter.value as FiltersState["intent"];
+                dispatch(setIntent(filterValue));
+                break;
+
             default:
                 throw new Error(`Filter name not found.`);
         }
 
         let postsData = data;
-        for (const iteratingFilterName of ["createdAt", "dates", "notViewed"]) {
-            if (
-                isCreatedAtFilterSet(createdAt) ||
-                iteratingFilterName === "createdAt"
-            ) {
+        for (const iteratingFilterName of [
+            "createdAt",
+            "dates",
+            "notViewed",
+            "intent",
+        ]) {
+            if (isCreatedAtFilterSet() || iteratingFilterName === "createdAt") {
                 const filterValue = (
                     filter.name === "createdAt" ? filter.value : createdAt
                 ) as FiltersState["createdAt"];
                 postsData = filterByCreatedAt(postsData, filterValue.value);
             }
 
-            if (isDatesFilterSet(dates) || iteratingFilterName === "dates") {
+            if (isDatesFilterSet() || iteratingFilterName === "dates") {
                 const filterValue = (
                     filter.name === "dates" ? filter.value : dates
                 ) as FiltersState["dates"];
@@ -90,10 +94,7 @@ export const useFilters = () => {
                 });
             }
 
-            if (
-                isNotViewedFilterSet(notViewed) ||
-                iteratingFilterName === "notViewed"
-            ) {
+            if (isNotViewedFilterSet() || iteratingFilterName === "notViewed") {
                 const filterValue = (
                     filter.name === "notViewed" ? filter.value : notViewed
                 ) as FiltersState["notViewed"];
@@ -103,6 +104,19 @@ export const useFilters = () => {
                     );
                 }
             }
+
+            if (isIntentFilterSet() || iteratingFilterName === "intent") {
+                const filterValue = (
+                    filter.name === "intent" ? filter.value : null
+                ) as FiltersState["intent"];
+                if (filterValue) {
+                    postsData = postsData.filter(
+                        (post) => post.intent === filterValue
+                    );
+                }
+            }
+
+            // ADD new filters here
         }
 
         dispatch(setFilteredPosts(postsData));
@@ -113,9 +127,7 @@ export const useFilters = () => {
      * Resets the filters on the **filters store** to an empty array
      */
     const resetFilters = (): void => {
-        dispatch(resetCreatedAt());
-        dispatch(resetDates());
-        dispatch(resetFilteredPosts());
+        dispatch(resetFiltersSlice());
     };
 
     return {

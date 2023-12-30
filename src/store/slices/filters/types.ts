@@ -1,3 +1,5 @@
+import type { PostIntent } from "@prisma/client";
+
 export type FiltersState = {
     dates: {
         from: string | null;
@@ -8,4 +10,5 @@ export type FiltersState = {
         label: string;
     };
     notViewed: boolean;
+    intent: PostIntent | null;
 };

@@ -66,7 +66,7 @@ const PostComponent = ({
                 </div>
                 {post.city && <div>{post.city}</div>}
             </div>
-            <p className="px-2 text-sm">
+            <div className="px-2 text-sm">
                 {post.availablityFrom && (
                     <p>
                         A partir du{" "}
@@ -88,7 +88,7 @@ const PostComponent = ({
                             : ""}
                     </p>
                 )}
-            </p>
+            </div>
             <div className="h-full w-full overflow-y-auto px-4  text-paragraph">
                 <pre
                     className={

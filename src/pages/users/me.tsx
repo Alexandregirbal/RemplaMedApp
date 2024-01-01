@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { PostWithDatesStrings } from "modules/post/types/post";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,7 +8,6 @@ const UserMePage = () => {
     const session = useSession();
     const dispatch = useDispatch();
 
-    const [posts, setPosts] = useState<PostWithDatesStrings[]>([]);
     const [name, setName] = useState<string>("");
 
     const isSubmitable = session.data?.user?.name !== name && name !== "";
@@ -19,15 +17,6 @@ const UserMePage = () => {
         if (session.data?.user.name) {
             setName(session.data?.user.name);
         }
-
-        const fetchPosts = async () => {
-            const response = await fetch("/api/users/posts");
-            const data = (await response.json()) as PostWithDatesStrings[];
-
-            setPosts(data);
-        };
-
-        void fetchPosts();
     }, [session]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

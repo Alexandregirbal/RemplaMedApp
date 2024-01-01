@@ -4,7 +4,7 @@ import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import { debounce } from "lodash";
 import mapboxgl, { type FlyToOptions, type GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { LocationData } from "modules/filters/components/PostalCodeFinder";
+import { type LocationData } from "modules/filters/components/PostalCodeFinder";
 import { parseQueryString } from "modules/utils/parseQueryString";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
@@ -241,6 +241,7 @@ export const useMap = (params: {
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));
         mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
         const geolocateControl = new mapboxgl.GeolocateControl();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         geolocateControl.on("geolocate", (e: any) => {
             if (!e || !e.coords) return;
             mapboxClient.flyTo({

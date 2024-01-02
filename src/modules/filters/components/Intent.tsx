@@ -11,6 +11,10 @@ const IntentFilter = () => {
 
     const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
         const postIntent = event.target.value;
+        if (postIntent === "") {
+            upsertFilter({ name: "intent", value: null });
+            return;
+        }
         if (!isPostIntent(postIntent)) {
             console.error("Invalid post intent");
             return;
@@ -29,6 +33,7 @@ const IntentFilter = () => {
                 className="block w-1/2 rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
                 onChange={handleChange}
             >
+                <option value="">{"Aucun filtre"}</option>
                 {Object.values(PostIntent).map((intent) => (
                     <option key={intent} value={intent}>
                         {getPostIntentLabel(intent)}

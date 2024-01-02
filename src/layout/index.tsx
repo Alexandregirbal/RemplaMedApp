@@ -30,7 +30,7 @@ const Layout = ({ children }: LayoutProps) => {
             <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
                 {children}
             </main>
-            {isLoading && <Loading />}
+            {isLoading && <Loading size="xl" />}
             <Footer />
         </>
     );

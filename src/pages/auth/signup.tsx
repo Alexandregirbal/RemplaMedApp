@@ -4,11 +4,12 @@ import { type NextPage } from "next";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import { useState, type FormEventHandler } from "react";
-import { useDispatch } from "react-redux";
-import { setIsLoading } from "store/slices/ui/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUIState, setIsLoading } from "store/slices/ui/slice";
 
 const SignupPage: NextPage = () => {
     const dispatch = useDispatch();
+    const { isLoading } = useSelector(selectUIState);
 
     const [email, setEmail] = useState("");
     const [userAlreadyExists, setUserAlreadyExists] = useState(false);
@@ -229,7 +230,7 @@ const SignupPage: NextPage = () => {
                             <button
                                 type="submit"
                                 className="w-full rounded-lg bg-cta px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary disabled:bg-gray-400"
-                                disabled={!isFormSubmittable}
+                                disabled={!isFormSubmittable || isLoading}
                             >
                                 {"Créer mon compte"}
                             </button>

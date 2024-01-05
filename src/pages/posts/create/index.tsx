@@ -27,7 +27,7 @@ const CreatePost = () => {
     const [isPostalCodeValid, setIsPostalCodeValid] = useState(true);
     const [citiesGeocodes, setCitiesGeocodes] = useState<GeocodeData[]>([]);
 
-    const { push } = useRouter();
+    const { push, back } = useRouter();
 
     const handleSubmitCreatePostForm: FormEventHandler<HTMLFormElement> = (
         event
@@ -42,6 +42,7 @@ const CreatePost = () => {
         event.preventDefault();
         dispatch(resetNewPost());
         setCitiesGeocodes([]);
+        back();
     };
 
     const handlePostIntentChange = (

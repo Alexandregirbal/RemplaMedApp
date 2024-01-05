@@ -65,18 +65,18 @@ export async function getStaticPaths() {
     const postsIds = await findPostsIds();
     return {
         paths: postsIds.map((postId) => ({ params: postId })),
-        fallback: false,
+        fallback: "blocking",
     };
 }
 
 export async function getStaticProps({ params }: { params: PostPageParams }) {
     const post = await findOnePost(params.id);
-    if (!post) return { notFound: true, revalidate: false };
+    if (!post) return { notFound: true, revalidate: 1 };
 
     return {
         props: {
             post,
         },
-        revalidate: 60,
+        revalidate: false,
     };
 }

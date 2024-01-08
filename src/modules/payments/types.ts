@@ -6,6 +6,8 @@ export enum Currency {
 }
 
 export type PaymentMetadata = {
+    userId: string;
+    userEmail: string;
     postId: string;
     domain: string;
     origin: "desktop" | "mobile";

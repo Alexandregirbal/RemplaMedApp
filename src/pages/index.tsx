@@ -9,7 +9,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "store";
 import { selectPostsState, setPosts } from "store/slices/posts/slice";
-import { setPostsViewed, setUserId } from "store/slices/user/slice";
+import {
+    setPostsViewed,
+    setUserEmail,
+    setUserId,
+} from "store/slices/user/slice";
 
 const postIdPrefix = "home_";
 
@@ -21,8 +25,9 @@ const Home: NextPage = () => {
 
     useEffect(() => {
         if (session?.user) {
-            dispatch(setPostsViewed(session.user.postsViewed));
+            dispatch(setPostsViewed(session.user.postsViewed ?? []));
             dispatch(setUserId(session.user.id));
+            dispatch(setUserEmail(session.user.email));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);

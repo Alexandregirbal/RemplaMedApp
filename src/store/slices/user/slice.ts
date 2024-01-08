@@ -4,6 +4,7 @@ import type { UserState } from "./types";
 
 const initialState: UserState = {
     id: null,
+    email: null,
     postsViewed: [],
 };
 
@@ -20,15 +21,24 @@ export const userSlice = createSlice({
         addViewedPost(state, action: { payload: UserState["postsViewed"][0] }) {
             state.postsViewed.push(action.payload);
         },
+        setUserEmail(state, action: { payload: UserState["email"] }) {
+            state.email = action.payload;
+        },
         resetUser(state) {
             state.id = null;
+            state.email = null;
             state.postsViewed = [];
         },
     },
 });
 
-export const { addViewedPost, resetUser, setUserId, setPostsViewed } =
-    userSlice.actions;
+export const {
+    addViewedPost,
+    resetUser,
+    setUserId,
+    setPostsViewed,
+    setUserEmail,
+} = userSlice.actions;
 
 export const selectUserState = (state: AppState) => state.user;
 

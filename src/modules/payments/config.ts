@@ -12,3 +12,7 @@ export const getMollieClient = () => {
 
     return mollieClient;
 };
+
+export const getMollieBearerToken = () => {
+    return `Bearer ${env.MOLLIE_API_KEY}`;
+};

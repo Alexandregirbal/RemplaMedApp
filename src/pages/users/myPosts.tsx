@@ -1,5 +1,9 @@
-import { PaymentStatus } from "@mollie/api-client";
+import { PaymentStatus } from "@prisma/client";
 import axios from "axios";
+import {
+    getPaymentColor,
+    getPaymentStatusString,
+} from "modules/payments/utils";
 import PostComponent from "modules/post/components/PostComponent";
 import type { PostWithDatesStrings } from "modules/post/types/post";
 import { useSession } from "next-auth/react";
@@ -91,11 +95,8 @@ const MyPostsPage = () => {
                                 </span>
                             </label>
                         </li>
-
-                        <li>
-                            {post.paymentStatus === PaymentStatus.paid
-                                ? "Payé"
-                                : `Paiement: ${post.paymentStatus ?? "aucun"}`}
+                        <li className={getPaymentColor(post.paymentStatus)}>
+                            {getPaymentStatusString(post.paymentStatus)}
                         </li>
                     </ul>
                 </div>

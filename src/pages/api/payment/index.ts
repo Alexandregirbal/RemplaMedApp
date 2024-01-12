@@ -46,6 +46,7 @@ const handleGet = async ({
                 origin: isMobile(req) ? "mobile" : "desktop",
             },
             redirectUrl: `${domainUrl}/users/myPosts`,
+            cancelUrl: `${domainUrl}`,
             webhookUrl: `${domainUrl}/api/payment/webhook`,
         },
     });

@@ -7,7 +7,7 @@ export const getPayment = async ({
 }) => {
     const paymentIntent = await createPaymentIntent(paymentIntentParams);
 
-    const molliePaymentUrl = paymentIntent.getCheckoutUrl();
+    const molliePaymentUrl = paymentIntent._links.checkout?.href;
     if (!molliePaymentUrl) throw new Error("Payment url is not defined."); // Undefined for recurring payments
     const paymentId = paymentIntent.id;
 

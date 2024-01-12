@@ -1,4 +1,4 @@
-import type { Payment } from "@mollie/api-client";
+import type { PaymentData } from "@mollie/api-client/dist/types/src/data/payments/data";
 
 export enum Currency {
     EUR = "EUR",
@@ -19,7 +19,8 @@ export type CreatePaymentIntent = (params: {
     webhookUrl: string;
     redirectUrl: string;
     metadata: PaymentMetadata;
+    cancelUrl: string;
     currency?: Currency;
-}) => Promise<Payment>;
+}) => Promise<PaymentData>;
 
-export type GetPaymentIntent = (params: { id: string }) => Promise<Payment>;
+export type GetPaymentIntent = (params: { id: string }) => Promise<PaymentData>;

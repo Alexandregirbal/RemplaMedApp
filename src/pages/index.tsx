@@ -4,6 +4,7 @@ import PostComponent from "modules/post/components/PostComponent";
 import { findManyPosts } from "modules/post/dao/find";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +35,14 @@ const Home: NextPage = () => {
 
     return (
         <>
+            <Head>
+                <title>RemplaMed</title>
+                <meta
+                    name="description"
+                    content="Remplacement infirmiers facile autour de chez vous."
+                    key="description"
+                />
+            </Head>
             <Filters />
             <div
                 id="posts"

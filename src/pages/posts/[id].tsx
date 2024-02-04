@@ -9,6 +9,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setIsLoading } from "store/slices/ui/slice";
 import { addViewedPost, selectUserState } from "store/slices/user/slice";
 
 type PostPageParams = {
@@ -26,6 +27,8 @@ export default function PostPage({ post }: PostPageProps) {
     const { postsViewed } = useSelector(selectUserState);
 
     useEffect(() => {
+        dispatch(setIsLoading(false));
+
         void axios.put(`/api/posts/incrementViews`, { postId: post.id });
 
         if (session.status === "authenticated") {

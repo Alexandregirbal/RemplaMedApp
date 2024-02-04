@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedPosts } from "store/slices/posts/slice";
+import { setIsLoading } from "store/slices/ui/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../../tailwind.config.cjs";
 import { getNewZoomedValue } from "../utils/zoom";
@@ -131,7 +132,7 @@ export const useMap = (params: {
                 filter: ["!", ["has", "point_count"]],
                 paint: {
                     "circle-color": fullConfig.theme?.colors?.cta,
-                    "circle-radius": 8,
+                    "circle-radius": 10,
                     "circle-stroke-width": 1,
                     "circle-stroke-color": "#fff",
                 },
@@ -142,6 +143,7 @@ export const useMap = (params: {
                 const feature = e.features[0];
                 if (!feature) return;
                 const postId = feature.properties?.id as string;
+                dispatch(setIsLoading(true));
                 void router.push(`/posts/${postId}`);
             });
 

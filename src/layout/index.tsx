@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import Loading from "modules/ui/loading";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -23,11 +24,16 @@ const Layout = ({ children }: LayoutProps) => {
         <>
             <Head>
                 <title>RemplaMed</title>
-                <meta name="description" content="Find a replacement" />
+                <meta
+                    name="description"
+                    content="Remplacement infirmiers facile autour de chez vous."
+                    key="desc"
+                />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
             <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
+                <Analytics />
                 {children}
             </main>
             {isLoading && <Loading size="xl" />}

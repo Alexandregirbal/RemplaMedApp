@@ -23,11 +23,11 @@ const Layout = ({ children }: LayoutProps) => {
     return (
         <>
             <Head>
-                <title>RemplaMed</title>
+                <title key="title">RemplaMed</title>
                 <meta
                     name="description"
+                    key="description"
                     content="Remplacement infirmiers facile autour de chez vous."
-                    key="desc"
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

@@ -25,6 +25,8 @@ const server = z.object({
     MOLLIE_API_KEY: z.string(),
     VERCEL_BRANCH_URL: z.string(),
     VERCEL_ENV: z.enum(["production", "preview", "development"]),
+    EMAIL_USER: z.string().email(),
+    EMAIL_PASSWORD: z.string(),
 });
 
 /**
@@ -52,6 +54,8 @@ const processEnv = {
     MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
     VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
     VERCEL_ENV: process.env.VERCEL_ENV,
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
 };
 
 // Don't touch the part below

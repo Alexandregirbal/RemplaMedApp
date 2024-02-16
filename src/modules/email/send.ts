@@ -13,7 +13,7 @@ export const sendEmail = (params: SendEmailParams) => {
     const mailOptions: MailOptions = {
         from: "alexandre@rempla-med.fr",
         to: email,
-        subject: `[${env.NODE_ENV}] ${subject}`,
+        subject: `[${env.VERCEL_ENV}] ${subject}`,
         ...rest,
     };
     transporter.sendMail(mailOptions, (error) => {

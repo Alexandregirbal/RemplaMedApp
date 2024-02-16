@@ -5,9 +5,9 @@ import { z } from "zod";
  * This way you can ensure the app isn't built with invalid env vars.
  */
 const server = z.object({
+    NODE_ENV: z.enum(["development", "test", "production"]),
     POSTGRES_URL_NON_POOLING: z.string(),
     POSTGRES_PRISMA_URL: z.string().url(),
-    NODE_ENV: z.enum(["development", "test", "production"]),
     NEXTAUTH_SECRET:
         process.env.NODE_ENV === "production"
             ? z.string().min(1)

@@ -50,6 +50,13 @@ export const filtersSlice = createSlice({
         isIntentFilterSet(state) {
             !!state.intent;
         },
+        isAnyFilterSet(state) {
+            state.createdAt.value !== 0 ||
+                state.dates.from !== null ||
+                state.dates.to !== null ||
+                !!state.notViewed ||
+                !!state.intent;
+        },
         // Add extraReducers for server init only
     },
 });
@@ -64,6 +71,7 @@ export const {
     isDatesFilterSet,
     isNotViewedFilterSet,
     isIntentFilterSet,
+    isAnyFilterSet,
 } = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;

@@ -2,6 +2,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { isAnyFilterSet } from "store/slices/filters/slice";
 import { selectPostsState } from "store/slices/posts/slice";
 import GeolocationFallback from "./components/fallback";
 import { useMap } from "./hooks/useMap";
@@ -21,7 +22,7 @@ const MapComponent = () => {
     });
 
     useEffect(() => {
-        if (filteredPosts.length > 0) {
+        if (isAnyFilterSet()) {
             setPostsToDisplay(postsToGeoJSON(filteredPosts));
         } else {
             setPostsToDisplay(postsToGeoJSON(posts));

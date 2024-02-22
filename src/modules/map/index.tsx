@@ -2,7 +2,8 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { isAnyFilterSet } from "store/slices/filters/slice";
+import { selectFiltersState } from "store/slices/filters/slice";
+import { isAnyFilterSet } from "store/slices/filters/utils";
 import { selectPostsState } from "store/slices/posts/slice";
 import GeolocationFallback from "./components/fallback";
 import { useMap } from "./hooks/useMap";
@@ -10,6 +11,7 @@ import { postsToGeoJSON } from "./utils/geojson";
 
 const MapComponent = () => {
     const { data: posts, filteredPosts } = useSelector(selectPostsState);
+    const filters = useSelector(selectFiltersState);
     const [postsToDisplay, setPostsToDisplay] = useState(postsToGeoJSON(posts));
 
     mapboxgl.accessToken =
@@ -22,12 +24,12 @@ const MapComponent = () => {
     });
 
     useEffect(() => {
-        if (isAnyFilterSet()) {
+        if (isAnyFilterSet(filters)) {
             setPostsToDisplay(postsToGeoJSON(filteredPosts));
         } else {
             setPostsToDisplay(postsToGeoJSON(posts));
         }
-    }, [posts, filteredPosts]);
+    }, [posts, filteredPosts, filters]);
 
     return (
         <>

@@ -1,9 +1,9 @@
 import type { Post, Prisma } from "@prisma/client";
+import dayjs from "dayjs";
 import { prisma } from "server/db";
 import { postToPostWithDatesStrings } from "../services/postWithDatesStrings";
 import { type MetaData } from "../types/metadata";
-import type { PostWithDatesStrings, PostWithAuthorName } from "../types/post";
-import dayjs from "dayjs";
+import type { PostWithAuthorName, PostWithDatesStrings } from "../types/post";
 
 const MIN_DATE = dayjs().subtract(3, "month");
 
@@ -58,12 +58,14 @@ export const findManyPosts = async (
     return posts.map((post) => postToPostWithDatesStrings(post));
 };
 
-export const findPostsIds = async (): Promise<Array<Pick<Post, "id">>> => {
-    const postsIds = await prisma.post.findMany({
+export const findPostsIds = async (): Promise<
+    Array<Pick<Post, "id" | "createdAt">>
+> => {
+    const posts = await prisma.post.findMany({
         where: { published: true },
-        select: { id: true },
+        select: { id: true, createdAt: true },
     });
-    return postsIds;
+    return posts;
 };
 
 export const getMetaData = async (): Promise<MetaData> => {

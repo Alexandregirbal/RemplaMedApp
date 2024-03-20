@@ -22,7 +22,6 @@
         "@prisma/client": "^4.9.0",
         "@reduxjs/toolkit": "^1.9.5",
         "@types/lodash.debounce": "^4.0.9",
-        "@vercel/analytics": "^1.1.2",
         "axios": "^1.4.0",
         "babel-plugin-superjson-next": "^0.4.5",
         "bcrypt": "^5.1.0",

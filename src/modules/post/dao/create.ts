@@ -1,9 +1,17 @@
-import type { Prisma } from "@prisma/client";
-import { prisma } from "server/db";
+import { PostModel } from "server/database/models/post/model";
+import { postDataZod } from "server/database/models/post/types";
+import mongooseConnect from "server/database/mongoose";
+import type { z } from "zod";
 
-export const createOnePost = async (post: Prisma.PostUncheckedCreateInput) => {
-    const newPost = await prisma.post.create({
-        data: post,
+export const createPostInputZod = postDataZod.strict();
+
+type CreatePostInput = z.infer<typeof createPostInputZod>;
+
+export const createOnePost = async (post: CreatePostInput) => {
+    await mongooseConnect();
+
+    const newPost = await PostModel.create({
+        ...post,
     });
 
     return newPost;

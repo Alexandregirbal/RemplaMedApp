@@ -1,4 +1,4 @@
-import { type Post } from "@prisma/client";
+import type { Post } from "server/database/models/post/types";
 import type { PostDateFields } from "../types/post";
 
 export const postToPostWithDatesStrings = <T extends Post>(
@@ -6,9 +6,9 @@ export const postToPostWithDatesStrings = <T extends Post>(
 ): T & PostDateFields => {
     return {
         ...post,
-        createdAt: post.createdAt.toISOString(),
-        updatedAt: post.updatedAt?.toISOString(),
-        availablityFrom: post.availablityFrom?.toISOString(),
-        availablityTo: post.availablityTo?.toISOString(),
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        availablityFrom: post.availablityFrom,
+        availablityTo: post.availablityTo,
     };
 };

@@ -1,21 +1,22 @@
-import type { UserDescription } from "@prisma/client";
-import { prisma } from "server/db";
+import { UserModel } from "server/database/models/user/model";
+import mongooseConnect from "server/database/mongoose";
 
 export const addPostViewed = async (params: {
     postId: string;
     userId: string;
 }) => {
     const { postId, userId } = params;
-    return await prisma.user.update({
-        where: {
+    await mongooseConnect();
+    return await UserModel.updateOne(
+        {
             id: userId,
         },
-        data: {
-            postsViewed: {
-                push: postId,
+        {
+            $push: {
+                postsViewed: postId,
             },
-        },
-    });
+        }
+    );
 };
 
 export const updateProfile = async (params: {
@@ -24,15 +25,16 @@ export const updateProfile = async (params: {
     phoneNumber?: string;
     description?: UserDescription;
 }) => {
-    const { userId, name, description, phoneNumber } = params;
-    return await prisma.user.update({
-        where: {
+    const { userId, name } = params;
+    await mongooseConnect();
+    return await UserModel.updateOne(
+        {
             id: userId,
         },
-        data: {
-            ...(name ? { name } : {}),
-            ...(phoneNumber ? { phoneNumber: phoneNumber } : {}),
-            ...(description ? { description: description } : {}),
-        },
-    });
+        {
+            $set: {
+                name,
+            },
+        }
+    );
 };

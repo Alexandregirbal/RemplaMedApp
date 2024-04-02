@@ -3,13 +3,12 @@ import { createOneUser } from "modules/user/dao/create";
 import { findOneUser } from "modules/user/dao/find";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { UserDescriptionSchema } from "../../../../prisma/generated/schemas";
 
 const addPostViewedPutBodySchema = z.object({
     email: z.string().email(),
     name: z.string().min(2),
     password: z.string().min(6),
-    description: UserDescriptionSchema,
+    description: z.string(),
     phoneNumber: z.string().min(10).optional(),
 });
 

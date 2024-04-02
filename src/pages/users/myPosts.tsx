@@ -1,4 +1,3 @@
-import { PaymentStatus } from "@prisma/client";
 import axios from "axios";
 import {
     getPaymentColor,
@@ -10,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { PaymentStatus } from "server/database/models/post/types";
 import { setIsLoading } from "store/slices/ui/slice";
 
 const MyPostsPage = () => {
@@ -41,7 +41,7 @@ const MyPostsPage = () => {
 
         dispatch(setIsLoading(true));
         const response = await axios.put(`/api/posts/togglePublished`, {
-            postId: post.id,
+            postId: post._id,
         });
         if (response.status !== 200) return console.error(response);
 
@@ -61,13 +61,13 @@ const MyPostsPage = () => {
             <h1 className="text-2xl">Mes annonces</h1>
             {posts.slice(0, 10).map((post) => (
                 <div
-                    key={post.id}
+                    key={post._id}
                     className="flex w-full justify-between gap-4"
                 >
                     <Link
-                        id={post.id}
-                        key={post.id}
-                        href={`/posts/${post.id}`}
+                        id={post._id}
+                        key={post._id}
+                        href={`/posts/${post._id}`}
                         className="w-1/2"
                     >
                         <PostComponent post={post} isMini />

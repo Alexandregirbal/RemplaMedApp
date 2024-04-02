@@ -1,13 +1,13 @@
 import { type MetaData } from "modules/post/types/metadata";
-import { type PostWithAuthorName } from "modules/post/types/post";
+import type { Post } from "server/database/models/post/types";
 
 export type PostsState = {
-    data: PostWithAuthorName[];
+    data: Post[];
     metadata: MetaData;
-    selectedPosts: Array<PostWithAuthorName>;
-    filteredPosts: Array<PostWithAuthorName>;
+    selectedPosts: Array<Post>;
+    filteredPosts: Array<Post>;
     newPost: Pick<
-        PostWithAuthorName,
+        Post,
         | "intent"
         | "message"
         | "postalCode"

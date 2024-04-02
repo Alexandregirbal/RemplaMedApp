@@ -13,7 +13,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(401).json({ message: "Authentication required" });
     }
 
-    const userId = session.user.id;
+    const userId = session.user._id;
 
     const parsedBody = addPostViewedPutBodySchema.safeParse(req.body);
     if (!parsedBody.success) {

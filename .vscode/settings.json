@@ -2,9 +2,6 @@
     "editor.formatOnSave": true,
     // select format on save wiht prettier
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[prisma]": {
-        "editor.defaultFormatter": "Prisma.prisma"
-    },
     "jest.jestCommandLine": "jest",
     "jest.rootPath": "./"
 }

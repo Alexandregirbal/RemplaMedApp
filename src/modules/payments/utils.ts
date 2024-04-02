@@ -1,6 +1,8 @@
-import { PaymentStatus } from "@prisma/client";
+import { PaymentStatus } from "server/database/models/post/types";
 
-export const getPaymentStatusString = (paymentStatus: PaymentStatus | null) => {
+export const getPaymentStatusString = (
+    paymentStatus?: PaymentStatus | null
+) => {
     switch (paymentStatus) {
         case PaymentStatus.paid:
             return "Facture payée";
@@ -19,7 +21,7 @@ export const getPaymentStatusString = (paymentStatus: PaymentStatus | null) => {
     }
 };
 
-export const getPaymentColor = (paymentStatus: PaymentStatus | null) => {
+export const getPaymentColor = (paymentStatus?: PaymentStatus | null) => {
     switch (paymentStatus) {
         case PaymentStatus.paid:
             return "text-green-500";

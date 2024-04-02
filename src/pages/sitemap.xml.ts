@@ -1,12 +1,12 @@
-import type { Post } from "@prisma/client";
 import { findPostsIds } from "modules/post/dao/find";
 import type { GetServerSideProps } from "next";
+import type { Post } from "server/database/models/post/types";
 import { getDomainUrl } from "server/domain";
 
 // See result on localhost: http://localhost:3000/sitemap.xml
 // See result on production: https://www.rempla-med.fr/sitemap.xml
 
-const generateSiteMap = (posts: Array<Pick<Post, "id" | "createdAt">>) => {
+const generateSiteMap = (posts: Array<Pick<Post, "_id" | "createdAt">>) => {
     const domainUrl = getDomainUrl();
     return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -26,8 +26,8 @@ const generateSiteMap = (posts: Array<Pick<Post, "id" | "createdAt">>) => {
          .map((post) => {
              return `
        <url>
-           <loc>${`${domainUrl}/posts/${post.id}`}</loc>
-           <lastmod>${post.createdAt.toISOString()}</lastmod>
+           <loc>${`${domainUrl}/posts/${post._id}`}</loc>
+           <lastmod>${post.createdAt}</lastmod>
            <priority>0.5</priority>
        </url>
      `;

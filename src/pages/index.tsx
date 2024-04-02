@@ -26,7 +26,7 @@ const Home: NextPage = () => {
     useEffect(() => {
         if (session?.user) {
             dispatch(setPostsViewed(session.user.postsViewed ?? []));
-            dispatch(setUserId(session.user.id));
+            dispatch(setUserId(session.user._id));
             dispatch(setUserEmail(session.user.email));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,9 +46,9 @@ const Home: NextPage = () => {
                     <div className="absolute bottom-0 left-0 right-0 z-20 flex flex-row gap-4 overflow-y-hidden overflow-x-scroll bg-opac p-4">
                         {selectedPosts.map((post) => (
                             <Link
-                                id={`${postIdPrefix}${post.id}`}
-                                key={post.id}
-                                href={`/posts/${post.id}`}
+                                id={`${postIdPrefix}${post._id}`}
+                                key={post._id}
+                                href={`/posts/${post._id}`}
                                 className="flex w-80 items-center justify-center"
                             >
                                 <PostComponent post={post} isMini />

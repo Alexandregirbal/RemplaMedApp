@@ -6,8 +6,7 @@ import { z } from "zod";
  */
 const server = z.object({
     NODE_ENV: z.enum(["development", "test", "production"]),
-    POSTGRES_URL_NON_POOLING: z.string(),
-    POSTGRES_PRISMA_URL: z.string().url(),
+    MONGODB_URL: z.string().url(),
     NEXTAUTH_SECRET:
         process.env.NODE_ENV === "production"
             ? z.string().min(1)
@@ -45,8 +44,7 @@ const client = z.object({
  */
 const processEnv = {
     NODE_ENV: process.env.NODE_ENV,
-    POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
-    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
+    MONGODB_URL: process.env.MONGODB_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

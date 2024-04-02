@@ -1,8 +1,7 @@
 import authOptions from "modules/auth/server/options";
-import { createOnePost } from "modules/post/dao/create";
+import { createOnePost, createPostInputZod } from "modules/post/dao/create";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { PostUncheckedCreateInputObjectSchema } from "../../../../prisma/generated/schemas";
 
 const handleCreationForm = async (
     req: NextApiRequest,
@@ -13,8 +12,8 @@ const handleCreationForm = async (
         return res.status(401).json({ message: "Authentication required" });
     }
 
-    const parsedPost = PostUncheckedCreateInputObjectSchema.safeParse({
-        authorId: session.user.id,
+    const parsedPost = createPostInputZod.safeParse({
+        authorId: session.user._id,
         ...req.body,
     });
 
@@ -29,7 +28,7 @@ const handleCreationForm = async (
     const { data } = parsedPost;
     const post = await createOnePost(data);
 
-    res.status(200).json({ message: "success", postId: post.id });
+    res.status(200).json({ message: "success", postId: post._id });
 };
 
 export default async function handler(

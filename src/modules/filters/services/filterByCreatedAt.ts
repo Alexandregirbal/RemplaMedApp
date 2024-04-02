@@ -1,10 +1,7 @@
 import dayjs from "dayjs";
-import type { PostWithAuthorName } from "modules/post/types/post";
+import type { Post } from "server/database/models/post/types";
 
-export const filterByCreatedAt = (
-    posts: PostWithAuthorName[],
-    createdAt: number
-) => {
+export const filterByCreatedAt = (posts: Post[], createdAt: number) => {
     if (createdAt <= 0) return posts;
 
     return posts.filter((post) =>

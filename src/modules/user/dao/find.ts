@@ -1,5 +1,6 @@
-import type { User } from "@prisma/client";
-import { prisma } from "../../../server/db";
+import { UserModel } from "server/database/models/user/model";
+import type { User } from "server/database/models/user/types";
+import mongooseConnect from "server/database/mongoose";
 
 export const findOneUser = async (
     email: string | undefined
@@ -9,9 +10,10 @@ export const findOneUser = async (
     }
 
     try {
-        const user = await prisma.user.findFirstOrThrow({
+        await mongooseConnect();
+        const user = await UserModel.findOne({
             where: { email },
-        });
+        }).lean();
 
         return user;
     } catch (error) {

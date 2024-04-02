@@ -21,7 +21,7 @@ const DatesFilter = () => {
             posts: data,
             datesFilter: newDatesFilter,
         });
-        const filteredPostsIds = newPosts.map((post) => post.id);
+        const filteredPostsIds = newPosts.map((post) => post._id);
         upsertFilter({
             name: "dates",
             value: newDatesFilter,

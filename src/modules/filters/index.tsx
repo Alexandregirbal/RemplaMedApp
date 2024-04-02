@@ -14,7 +14,13 @@ const Filters = () => {
     return (
         <>
             <div className="flex h-16 items-center justify-around gap-2 border-t-2 border-gray-300 px-4 shadow-2xl">
-                <FiltersIcon onClick={openFiltersModal} />
+                <div
+                    className="flex gap-2 text-cta hover:cursor-pointer"
+                    onClick={openFiltersModal}
+                >
+                    <FiltersIcon />
+                    Filtrer
+                </div>
                 <PostalCodeFinder />
             </div>
             <FiltersModal

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { UserDescription } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -9,22 +12,33 @@ const UserMePage = () => {
     const dispatch = useDispatch();
 
     const [name, setName] = useState<string>("");
-
-    const isSubmitable = session.data?.user?.name !== name && name !== "";
+    const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
     useEffect(() => {
         if (session.status !== "authenticated") return;
-        if (session.data?.user.name) {
-            setName(session.data?.user.name);
-        }
-    }, [session]);
+        dispatch(setIsLoading(true));
+        axios
+            .get(`/api/users/profile`)
+            .then((result) => {
+                setName(result.data.data.name ?? "");
+                setPhoneNumber(result.data.data.phoneNumber ?? "");
+                setDescription(result.data.data.description ?? "");
+            })
+
+            .finally(() => {
+                dispatch(setIsLoading(false));
+            });
+    }, [dispatch, session]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        dispatch(setIsLoading(false));
+        dispatch(setIsLoading(true));
         void axios
             .put("/api/users/profile", {
                 name,
+                phoneNumber,
+                description,
             })
             .then(() => {
                 void session.update({ name });
@@ -51,30 +65,62 @@ const UserMePage = () => {
                         id="email"
                         type="email"
                         value={user.email ?? ""}
-                        className="w-1/2 rounded-md border border-gray-300 p-1 text-gray-500"
+                        className="w-full rounded-md border border-gray-300 p-1 text-gray-500"
                     />
                 </div>
                 <div className="flex flex-row items-center gap-4">
-                    <label htmlFor="name">{"Nom d'utilisateur"}</label>
+                    <label htmlFor="name" className="whitespace-nowrap">
+                        {"Nom d'utilisateur"}
+                    </label>
                     <input
                         id="name"
                         type="text"
                         value={name}
                         onChange={(event) => setName(event.target.value)}
-                        className="w-1/2 rounded-md border border-gray-300 p-1"
+                        className="w-full rounded-md border border-cta p-1"
                     />
                 </div>
+                <div className="flex flex-row items-center gap-4">
+                    <label htmlFor="phoneNumber" className="whitespace-nowrap">
+                        {"Numéro de téléphone"}
+                    </label>
+                    <input
+                        id="phoneNumber"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(event) => setPhoneNumber(event.target.value)}
+                        className="w-full rounded-md border border-cta p-1"
+                    />
+                </div>
+                <div className="flex flex-row items-center gap-4">
+                    <label htmlFor="description">{"Situation"}</label>
+                    <select
+                        id="description"
+                        name="description"
+                        className="w-full rounded-md border border-cta p-1"
+                        value={description}
+                        onChange={(event) => setDescription(event.target.value)}
+                    >
+                        <option value="">Choisissez une option</option>
+                        <option value={UserDescription.OWNER}>Titulaire</option>
+                        <option value={UserDescription.REPLACER}>
+                            Remplaçant
+                        </option>
+                        <option value={UserDescription.STUDENT}>
+                            En étude
+                        </option>
+                        <option value={UserDescription.OTHER}>Autre</option>
+                    </select>
+                </div>
 
-                {isSubmitable && (
-                    <div className="flex justify-center">
-                        <button
-                            role="submit"
-                            className="w-52 rounded-lg bg-cta px-5 py-2 text-center font-medium text-white focus:outline-none focus:ring-2 focus:ring-primary "
-                        >
-                            Modifier
-                        </button>
-                    </div>
-                )}
+                <div className="mt-4 flex justify-center ">
+                    <button
+                        role="submit"
+                        className="w-52 rounded-lg bg-cta px-5 py-2 text-center font-medium text-white focus:outline-none focus:ring-2 focus:ring-primary "
+                    >
+                        {"Modifier"}
+                    </button>
+                </div>
             </form>
         </div>
     );

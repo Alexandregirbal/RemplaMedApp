@@ -10,6 +10,7 @@ const addPostViewedPutBodySchema = z.object({
     name: z.string().min(2),
     password: z.string().min(6),
     description: UserDescriptionSchema,
+    phoneNumber: z.string().min(10).optional(),
 });
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {

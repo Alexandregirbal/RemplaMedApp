@@ -58,6 +58,7 @@ model User {
   name          String?
   email         String?          @unique
   password      String?
+  phoneNumber   String?
   emailVerified DateTime?
   image         String?
   description   UserDescription?

@@ -8,8 +8,9 @@ export const createOneUser = async (params: {
     password: string;
     name: string;
     description: z.infer<typeof UserDescriptionSchema>;
+    phoneNumber?: string;
 }) => {
-    const { email, password, name, description } = params;
+    const { email, password, name, description, phoneNumber } = params;
     const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({
         data: {
@@ -17,6 +18,7 @@ export const createOneUser = async (params: {
             password: hashedPassword,
             name,
             description,
+            phoneNumber,
         },
     });
 

@@ -18,3 +18,29 @@ export const findOneUser = async (
         return null;
     }
 };
+
+export const findUserById = async ({
+    userId,
+}: {
+    userId: string;
+}): Promise<Pick<
+    User,
+    "id" | "email" | "name" | "phoneNumber" | "description"
+> | null> => {
+    try {
+        const user = await prisma.user.findFirstOrThrow({
+            where: { id: userId },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                phoneNumber: true,
+                description: true,
+            },
+        });
+
+        return user;
+    } catch (error) {
+        return null;
+    }
+};

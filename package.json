@@ -19,6 +19,7 @@
     "dependencies": {
         "@mollie/api-client": "^3.7.0",
         "@next-auth/prisma-adapter": "^1.0.5",
+        "@next/third-parties": "^14.1.4",
         "@prisma/client": "^4.9.0",
         "@reduxjs/toolkit": "^1.9.5",
         "@types/lodash.debounce": "^4.0.9",

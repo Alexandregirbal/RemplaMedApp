@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Loading from "modules/ui/loading";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -30,6 +31,7 @@ const Layout = ({ children }: LayoutProps) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <GoogleAnalytics gaId="AW-16518733052" />
             <Header />
             <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
                 {children}

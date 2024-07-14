@@ -3,6 +3,7 @@ import type { FilterQuery } from "mongoose";
 import { PostModel } from "server/database/models/post/model";
 import type { Post } from "server/database/models/post/types";
 import mongooseConnect from "server/database/mongoose";
+import { parseObjectToSerialize } from "server/database/parseMongoObject";
 import { type MetaData } from "../types/metadata";
 
 const MIN_DATE = dayjs().subtract(3, "month");
@@ -16,13 +17,11 @@ export const findOnePost = async (
 
     await mongooseConnect();
 
-    const post = await PostModel.findOne({ _id: id, published: true });
+    const post = await PostModel.findOne({ _id: id, published: true }).lean();
     return post;
 };
 
-export const findManyPosts = async (
-    params: FilterQuery<Post>
-): Promise<Array<Post>> => {
+export const findManyPosts = async (params: FilterQuery<Post>) => {
     await mongooseConnect();
 
     const posts = await PostModel.find(
@@ -33,17 +32,18 @@ export const findManyPosts = async (
             },
             ...params,
         },
+        undefined,
         {
             sort: {
                 createdAt: -1,
             },
         }
-    );
-    return posts;
+    ).lean();
+    return posts.map(parseObjectToSerialize);
 };
 
 export const findPostsIds = async (): Promise<
-    Array<Pick<Post, "_id" | "createdAt">>
+    Array<{ _id: string; createdAt: Date }>
 > => {
     await mongooseConnect();
 
@@ -51,7 +51,8 @@ export const findPostsIds = async (): Promise<
         {
             published: true,
         },
-        { _id: true, createdAt: true }
+        { _id: true, createdAt: true },
+        { sort: { createdAt: -1 } }
     ).lean();
     return posts.map((post) => {
         return { _id: post._id.toString(), createdAt: post.createdAt };
@@ -68,7 +69,7 @@ export const getMetaData = async (): Promise<MetaData> => {
     const totalRecentPosts = await PostModel.countDocuments({
         published: true,
         createdAt: {
-            gte: MIN_DATE.toDate(),
+            $gte: MIN_DATE.toDate(),
         },
     });
 

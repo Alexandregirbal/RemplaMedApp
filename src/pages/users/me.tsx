@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { UserDescription } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { UserDescription } from "server/database/models/user/types";
 import { setIsLoading } from "store/slices/ui/slice";
 
 const UserMePage = () => {

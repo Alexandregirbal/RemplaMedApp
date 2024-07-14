@@ -10,9 +10,7 @@ type CreatePostInput = z.infer<typeof createPostInputZod>;
 export const createOnePost = async (post: CreatePostInput) => {
     await mongooseConnect();
 
-    const newPost = await PostModel.create({
-        ...post,
-    });
+    const newPost = await PostModel.create(post);
 
     return newPost;
 };

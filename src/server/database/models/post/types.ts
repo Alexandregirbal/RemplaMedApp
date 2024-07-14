@@ -1,4 +1,4 @@
-import { baseMongooseObjectZod } from "server/database/types";
+import type { BaseMongooseObject } from "server/database/types";
 import { z } from "zod";
 
 export enum PostSource {
@@ -48,6 +48,4 @@ export const postDataZod = z.object({
 
 export type PostData = z.infer<typeof postDataZod>;
 
-const postZod = baseMongooseObjectZod.merge(postDataZod);
-
-export type Post = z.infer<typeof postZod>;
+export type Post = PostData & BaseMongooseObject;

@@ -32,7 +32,7 @@ const handleGet = async ({
     }
 
     const domainUrl = getDomainUrl();
-    const { id: userId, email: userEmail } = user;
+    const { _id: userId, email: userEmail } = user;
     const { paymentUrl, paymentId } = await getPayment({
         paymentIntentParams: {
             amount: 5.9,

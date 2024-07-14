@@ -1,7 +1,7 @@
-import { baseMongooseObjectZod } from "server/database/types";
+import type { BaseMongooseObject } from "server/database/types";
 import { z } from "zod";
 
-enum UserDescription {
+export enum UserDescription {
     OWNER = "OWNER",
     REPLACER = "REPLACER",
     STUDENT = "STUDENT",
@@ -15,6 +15,7 @@ export const userDataZod = z.object({
     emailVerified: z.date().optional(),
     image: z.string().optional(),
     description: z.nativeEnum(UserDescription),
+    phoneNumber: z.string().optional(),
     accounts: z.array(z.string()).optional(),
     sessions: z.array(z.string()).optional(),
     posts: z.array(z.string()).optional(),
@@ -24,6 +25,4 @@ export const userDataZod = z.object({
 
 export type UserData = z.infer<typeof userDataZod>;
 
-const userZod = baseMongooseObjectZod.merge(userDataZod);
-
-export type User = z.infer<typeof userZod>;
+export type User = UserData & BaseMongooseObject;

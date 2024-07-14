@@ -9,17 +9,20 @@ export const createOneUser = async (params: {
     description: string;
     phoneNumber?: string;
 }) => {
-    const { email, password, name, description, phoneNumber } = params;
-    const hashedPassword = await hashPassword(password);
-    const user = await UserModel.create({
-        data: {
+    try {
+        await mongooseConnect();
+        const { email, password, name, description, phoneNumber } = params;
+        const hashedPassword = await hashPassword(password);
+        const user = await UserModel.create({
             email: email.toLowerCase(),
             password: hashedPassword,
             name,
             description,
             phoneNumber,
-        },
-    });
+        });
 
-    return user;
+        return user;
+    } catch (error) {
+        return null;
+    }
 };

@@ -1,3 +1,4 @@
+import type { Types } from "mongoose";
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession, type DefaultSession } from "next-auth";
 import authOptions from "./options";
@@ -26,7 +27,7 @@ declare module "next-auth" {
 
     interface User {
         id?: string; // Make id optional to use _id from MongoDB
-        _id: string;
+        _id: string | Types.ObjectId;
         postsViewed: string[];
     }
 }

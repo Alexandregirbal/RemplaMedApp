@@ -53,7 +53,6 @@ const Preview = () => {
                 <PostComponent
                     post={{
                         ...newPost,
-                        author: { name: author.name ?? "vous" },
                     }}
                 />
             </div>

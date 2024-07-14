@@ -34,7 +34,7 @@ const PostComponent = ({
         } else {
             setIsPrivate(false);
         }
-        if (data?.user?.id === post.authorId) {
+        if (data?.user?._id === post.authorId) {
             setIsAuthor(true);
         }
     }, [post.message, post.authorId, status, data]);

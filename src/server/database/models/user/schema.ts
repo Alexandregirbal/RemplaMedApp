@@ -10,6 +10,7 @@ export const userSchema = new Schema<User>(
         emailVerified: { type: Date, required: false },
         image: { type: String, required: false },
         description: { type: String, required: true },
+        phoneNumber: { type: String, required: false },
         accounts: { type: [String], required: false },
         sessions: { type: [String], required: false },
         posts: { type: [String], required: false },

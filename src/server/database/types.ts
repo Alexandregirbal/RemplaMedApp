@@ -1,7 +1,7 @@
-import { z } from "zod";
+import type { Types } from "mongoose";
 
-export const baseMongooseObjectZod = z.object({
-    _id: z.string(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-});
+export type BaseMongooseObject = {
+    _id: string | Types.ObjectId;
+    createdAt: Date;
+    updatedAt: Date;
+};

@@ -12,7 +12,7 @@ export const findOneUser = async (
     try {
         await mongooseConnect();
         const user = await UserModel.findOne({
-            where: { email },
+            email,
         }).lean();
 
         return user;
@@ -21,25 +21,21 @@ export const findOneUser = async (
     }
 };
 
-export const findUserById = async ({
-    userId,
-}: {
-    userId: string;
-}): Promise<Pick<
-    User,
-    "id" | "email" | "name" | "phoneNumber" | "description"
-> | null> => {
+export const findUserById = async ({ userId }: { userId: string }) => {
     try {
-        const user = await prisma.user.findFirstOrThrow({
-            where: { id: userId },
-            select: {
+        await mongooseConnect();
+        const user = await UserModel.findOne(
+            {
+                _id: userId,
+            },
+            {
                 id: true,
                 email: true,
                 name: true,
                 phoneNumber: true,
                 description: true,
-            },
-        });
+            }
+        ).lean();
 
         return user;
     } catch (error) {

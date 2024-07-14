@@ -3,7 +3,7 @@ import { type AppState } from "store";
 import type { UserState } from "./types";
 
 const initialState: UserState = {
-    id: null,
+    _id: null,
     email: null,
     postsViewed: [],
 };
@@ -12,8 +12,8 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUserId(state, action: { payload: UserState["id"] }) {
-            state.id = action.payload;
+        setUserId(state, action: { payload: UserState["_id"] }) {
+            state._id = action.payload;
         },
         setPostsViewed(state, action: { payload: UserState["postsViewed"] }) {
             state.postsViewed = action.payload;
@@ -25,7 +25,7 @@ export const userSlice = createSlice({
             state.email = action.payload;
         },
         resetUser(state) {
-            state.id = null;
+            state._id = null;
             state.email = null;
             state.postsViewed = [];
         },

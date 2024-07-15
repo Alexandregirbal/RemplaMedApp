@@ -1,7 +1,8 @@
 import authOptions from "modules/auth/server/options";
-import { createOnePost, createPostInputZod } from "modules/post/dao/create";
+import { createOnePost } from "modules/post/dao/create";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
+import { postDataZod } from "server/database/models/post/types";
 
 const handleCreationForm = async (
     req: NextApiRequest,
@@ -12,7 +13,7 @@ const handleCreationForm = async (
         return res.status(401).json({ message: "Authentication required" });
     }
 
-    const parsedPost = createPostInputZod.safeParse({
+    const parsedPost = postDataZod.safeParse({
         authorId: session.user._id,
         ...req.body,
     });
@@ -20,8 +21,8 @@ const handleCreationForm = async (
     if (!parsedPost.success) {
         console.error(parsedPost.error.format());
         return res.status(400).json({
-            code: "000-000",
-            data: "Form data is unvalid",
+            code: "posts-creation-form-invalid",
+            message: "Post content does not match validation schema",
             errors: parsedPost.error,
         });
     }

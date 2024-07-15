@@ -12,7 +12,7 @@ const UserMePage = () => {
     const dispatch = useDispatch();
 
     const [name, setName] = useState<string>("");
-    const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
     const [description, setDescription] = useState<string>("");
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const UserMePage = () => {
             .get(`/api/users/profile`)
             .then((result) => {
                 setName(result.data.data.name ?? "");
-                setPhoneNumber(result.data.data.phoneNumber ?? "");
+                setPhoneNumber(result.data.data.phoneNumber);
                 setDescription(result.data.data.description ?? "");
             })
 
@@ -34,12 +34,14 @@ const UserMePage = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(setIsLoading(true));
+
         void axios
             .put("/api/users/profile", {
                 name,
                 phoneNumber,
                 description,
             })
+
             .then(() => {
                 void session.update({ name });
             })

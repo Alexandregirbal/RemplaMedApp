@@ -31,9 +31,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const result = await updateProfile({
         userId,
-        name: parsedBody.data.name,
-        phoneNumber: parsedBody.data.phoneNumber,
-        description: parsedBody.data.description,
+        ...parsedBody.data,
     });
     if (!result) {
         return res.status(400).json({

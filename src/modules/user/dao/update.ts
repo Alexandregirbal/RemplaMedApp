@@ -30,7 +30,7 @@ export const updateProfile = async (params: {
     await mongooseConnect();
     return await UserModel.updateOne(
         {
-            id: userId,
+            _id: userId,
         },
         {
             $set: {

@@ -20,7 +20,7 @@ const authOptions: NextAuthOptions = {
                     if ("newPostViewed" in session) {
                         token.postsViewed = Array.from(
                             new Set([
-                                ...token.postsViewed,
+                                ...(token.postsViewed ?? []),
                                 session.newPostViewed,
                             ])
                         );

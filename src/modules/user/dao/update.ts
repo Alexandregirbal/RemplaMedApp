@@ -10,7 +10,7 @@ export const addPostViewed = async (params: {
     await mongooseConnect();
     return await UserModel.updateOne(
         {
-            id: userId,
+            _id: userId,
         },
         {
             $push: {

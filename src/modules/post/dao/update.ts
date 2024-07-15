@@ -42,7 +42,7 @@ export const togglePublished = async (postId: string) => {
     }
     const newPost = await PostModel.updateOne(
         {
-            id: postId,
+            _id: postId,
         },
         {
             $set: {

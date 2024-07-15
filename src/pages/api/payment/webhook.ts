@@ -25,9 +25,9 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     const payment = await getPaymentIntent({ id: paymentId });
 
     const { status } = payment;
-    void updatePaymentStatus({ postId: post._id, status });
+    void updatePaymentStatus({ postId: post._id.toString(), status });
     if (status === PaymentStatus.paid) {
-        await setPublishedPost(post._id);
+        await setPublishedPost(post._id.toString());
     }
 
     return res.status(200).json({ success: true });

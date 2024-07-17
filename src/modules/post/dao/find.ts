@@ -88,6 +88,7 @@ export const findUserPosts = async (
         {
             authorId: userId,
         },
+        undefined,
         {
             sort: { createdAt: -1 },
         }

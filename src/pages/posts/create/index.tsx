@@ -1,16 +1,15 @@
 "use client";
-import { PostIntent } from "@prisma/client";
 import dayjs from "dayjs";
 import { Spinner } from "flowbite-react";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
 import type { GeocodeData } from "modules/geocode/types";
 import { getPostIntentLabel } from "modules/post/services/postIntentLabels";
-import { isPostIntent } from "modules/post/types/post";
 import useDebounce from "modules/utils/hooks/useDebounce";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
+import { PostIntent, isPostIntent } from "server/database/models/post/types";
 import {
     resetNewPost,
     selectPostsState,

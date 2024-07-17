@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { UserDescription } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { UserDescription } from "server/database/models/user/types";
 import { setIsLoading } from "store/slices/ui/slice";
 
 const UserMePage = () => {
@@ -12,7 +12,7 @@ const UserMePage = () => {
     const dispatch = useDispatch();
 
     const [name, setName] = useState<string>("");
-    const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [phoneNumber, setPhoneNumber] = useState<string | undefined>();
     const [description, setDescription] = useState<string>("");
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const UserMePage = () => {
             .get(`/api/users/profile`)
             .then((result) => {
                 setName(result.data.data.name ?? "");
-                setPhoneNumber(result.data.data.phoneNumber ?? "");
+                setPhoneNumber(result.data.data.phoneNumber);
                 setDescription(result.data.data.description ?? "");
             })
 
@@ -34,12 +34,14 @@ const UserMePage = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(setIsLoading(true));
+
         void axios
             .put("/api/users/profile", {
                 name,
                 phoneNumber,
                 description,
             })
+
             .then(() => {
                 void session.update({ name });
             })

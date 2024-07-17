@@ -28,7 +28,7 @@ const SignupPage: NextPage = () => {
                 email,
                 name,
                 description,
-                phoneNumber,
+                phoneNumber: phoneNumber || undefined,
                 password,
             })
             .then((response) => {

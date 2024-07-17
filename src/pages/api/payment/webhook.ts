@@ -1,21 +1,20 @@
 import { PaymentStatus } from "@mollie/api-client";
 import { getPaymentIntent } from "modules/payments/getPaymentIntent";
-import { setPublishedPost } from "modules/post/dao/update";
-import { updatePaymentStatus } from "modules/post/services/updatePaymentStatus";
+import { findPostByPaymentId } from "modules/post/dao/find";
+import { setPublishedPost, updatePaymentStatus } from "modules/post/dao/update";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "server/db";
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { id } = req.body;
+    const { id: paymentId } = req.body;
 
-    if (!id || typeof id !== "string") {
+    if (!paymentId || typeof paymentId !== "string") {
         return res
             .status(400)
             .json({ message: "A valid payment id is required" });
     }
 
-    const post = await prisma.post.findFirst({ where: { paymentId: id } });
+    const post = await findPostByPaymentId(paymentId);
 
     if (!post) {
         return res.status(400).json({
@@ -23,12 +22,12 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const payment = await getPaymentIntent({ id });
+    const payment = await getPaymentIntent({ id: paymentId });
 
     const { status } = payment;
-    void updatePaymentStatus({ postId: post.id, status });
+    void updatePaymentStatus({ postId: post._id.toString(), status });
     if (status === PaymentStatus.paid) {
-        await setPublishedPost(post.id);
+        await setPublishedPost(post._id.toString());
     }
 
     return res.status(200).json({ success: true });

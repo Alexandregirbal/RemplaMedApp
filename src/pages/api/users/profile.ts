@@ -1,8 +1,8 @@
-import { UserDescription } from "@prisma/client";
 import { getServerAuthSession } from "modules/auth/server";
 import { findUserById } from "modules/user/dao/find";
 import { updateProfile } from "modules/user/dao/update";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { UserDescription } from "server/database/models/user/types";
 import { z } from "zod";
 
 const updateBodySchema = z.object({
@@ -17,7 +17,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(401).json({ message: "Authentication required" });
     }
 
-    const userId = session.user.id;
+    const userId = session.user._id;
 
     const parsedBody = updateBodySchema.safeParse(req.body);
     if (!parsedBody.success) {
@@ -31,9 +31,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const result = await updateProfile({
         userId,
-        name: parsedBody.data.name,
-        phoneNumber: parsedBody.data.phoneNumber,
-        description: parsedBody.data.description,
+        ...parsedBody.data,
     });
     if (!result) {
         return res.status(400).json({
@@ -50,7 +48,7 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(401).json({ message: "Authentication required" });
     }
 
-    const userId = session.user.id;
+    const userId = session.user._id;
 
     const user = await findUserById({ userId });
     if (!user) {

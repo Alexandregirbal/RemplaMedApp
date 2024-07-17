@@ -1,9 +1,8 @@
 "use client";
 
-import { PostIntent } from "@prisma/client";
 import { getPostIntentLabel } from "modules/post/services/postIntentLabels";
-import { isPostIntent } from "modules/post/types/post";
 import { type ChangeEventHandler } from "react";
+import { PostIntent, isPostIntent } from "server/database/models/post/types";
 import { useFilters } from "../hooks/useFilters";
 
 const IntentFilter = () => {

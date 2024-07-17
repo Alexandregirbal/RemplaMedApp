@@ -15,7 +15,6 @@ If you are not familiar with the different technologies used in this project, pl
 
 -   [Next.js](https://nextjs.org)
 -   [NextAuth.js](https://next-auth.js.org)
--   [Prisma](https://prisma.io)
 -   [Tailwind CSS](https://tailwindcss.com)
 -   [tRPC](https://trpc.io)
 
@@ -36,11 +35,6 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
     ```
 -   Create a `.env` file by copy/pasting the `.env.example` file and replace the values.
 
--   Init the database:
-    ```bash
-    npx prisma migrate dev --name init
-    ```
-
 ## How to I start developing?
 
 -   Start docker services
@@ -55,15 +49,3 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## Hox to add/modify a DB model?
 
 -   Add your model
--   Format the prisma schema file
-    ```bash
-    prisma format
-    ```
--   Push the changes to the Database
-    ```bash
-    prisma db push
-    ```
--   Generate the Prisma Client (for types)
-    ```bash
-    prisma generate
-    ```

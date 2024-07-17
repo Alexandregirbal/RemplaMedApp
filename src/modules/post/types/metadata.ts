@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-export type MetaData = {
-    totalOverallPosts: number;
-    totalRecentPosts: number;
-};
+import { z } from "zod";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isMetaData = (data: any): data is MetaData => {
-    return (
-        typeof data.totalOverallPosts === "number" &&
-        typeof data.totalRecentPosts === "number"
-    );
-};
+const metadataZod = z.object({
+    totalOverallPosts: z.number(),
+    totalRecentPosts: z.number(),
+});
+
+export type MetaData = z.infer<typeof metadataZod>;
+
+export const isMetaData = (data: unknown): data is MetaData =>
+    metadataZod.safeParse(data).success;

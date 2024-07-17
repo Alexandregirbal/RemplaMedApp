@@ -1,5 +1,6 @@
-import type { User } from "@prisma/client";
-import { prisma } from "../../../server/db";
+import { UserModel } from "server/database/models/user/model";
+import type { User } from "server/database/models/user/types";
+import mongooseConnect from "server/database/mongoose";
 
 export const findOneUser = async (
     email: string | undefined
@@ -9,9 +10,10 @@ export const findOneUser = async (
     }
 
     try {
-        const user = await prisma.user.findFirstOrThrow({
-            where: { email },
-        });
+        await mongooseConnect();
+        const user = await UserModel.findOne({
+            email,
+        }).lean();
 
         return user;
     } catch (error) {
@@ -19,25 +21,21 @@ export const findOneUser = async (
     }
 };
 
-export const findUserById = async ({
-    userId,
-}: {
-    userId: string;
-}): Promise<Pick<
-    User,
-    "id" | "email" | "name" | "phoneNumber" | "description"
-> | null> => {
+export const findUserById = async ({ userId }: { userId: string }) => {
     try {
-        const user = await prisma.user.findFirstOrThrow({
-            where: { id: userId },
-            select: {
+        await mongooseConnect();
+        const user = await UserModel.findOne(
+            {
+                _id: userId,
+            },
+            {
                 id: true,
                 email: true,
                 name: true,
                 phoneNumber: true,
                 description: true,
-            },
-        });
+            }
+        ).lean();
 
         return user;
     } catch (error) {

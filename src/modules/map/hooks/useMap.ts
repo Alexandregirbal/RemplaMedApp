@@ -9,6 +9,7 @@ import { parseQueryString } from "modules/utils/parseQueryString";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
+import type { Post } from "server/database/models/post/types";
 import { setSelectedPosts } from "store/slices/posts/slice";
 import { setIsLoading } from "store/slices/ui/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
@@ -142,7 +143,7 @@ export const useMap = (params: {
                 if (!e || !e.features || e.features.length < 0) return;
                 const feature = e.features[0];
                 if (!feature) return;
-                const postId = feature.properties?.id as string;
+                const postId = (feature.properties as Post)?._id.toString();
                 dispatch(setIsLoading(true));
                 void router.push(`/posts/${postId}`);
             });
@@ -189,8 +190,8 @@ export const useMap = (params: {
                     0,
                     (error, features) => {
                         if (!error) {
-                            const postsIds = features.map(
-                                (feature) => feature.properties?.id as string
+                            const postsIds = features.map((feature) =>
+                                (feature.properties as Post)._id.toString()
                             );
                             dispatch(setSelectedPosts({ postsIds }));
                             return;

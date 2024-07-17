@@ -1,4 +1,4 @@
-import { PostIntent } from "@prisma/client";
+import { PostIntent } from "server/database/models/post/types";
 
 export const getPostIntentLabel = (postIntent: PostIntent): string => {
     switch (postIntent) {

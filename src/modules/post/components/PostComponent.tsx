@@ -1,16 +1,15 @@
-import { PostIntent } from "@prisma/client";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { PostIntent, type Post } from "server/database/models/post/types";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
 import { getPostIntentLabel } from "../services/postIntentLabels";
-import { type PostWithAuthorName } from "../types/post";
 
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 
 type PostProps = {
-    post: Partial<PostWithAuthorName>;
+    post: Partial<Post>;
     isMini?: boolean;
     maxMessageLength?: number;
 };
@@ -35,7 +34,7 @@ const PostComponent = ({
         } else {
             setIsPrivate(false);
         }
-        if (data?.user?.id === post.authorId) {
+        if (data?.user?._id === post.authorId) {
             setIsAuthor(true);
         }
     }, [post.message, post.authorId, status, data]);

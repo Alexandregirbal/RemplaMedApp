@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Types, type FilterQuery } from "mongoose";
+import { type FilterQuery } from "mongoose";
 import { PostModel } from "server/database/models/post/model";
 import type { Post } from "server/database/models/post/types";
 import mongooseConnect from "server/database/mongoose";
@@ -82,14 +82,13 @@ export const findUserPosts = async (
 
     const posts = await PostModel.find(
         {
-            authorId: new Types.ObjectId(userId),
+            authorId: userId,
         },
         undefined,
         {
             sort: { createdAt: -1 },
         }
-    );
-    console.log(`~~~~~ Girbalog | posts: `, userId, posts);
+    ).lean();
 
     return posts;
 };
@@ -103,6 +102,6 @@ export const findPostByPaymentId = async (
 
     await mongooseConnect();
 
-    const post = await PostModel.findOne({ paymentId });
+    const post = await PostModel.findOne({ paymentId }).lean();
     return post;
 };

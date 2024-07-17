@@ -26,8 +26,8 @@ const generateSiteMap = (posts: Array<Pick<Post, "_id" | "createdAt">>) => {
          .map((post) => {
              return `
        <url>
-           <loc>${`${domainUrl}/posts/${post._id}`}</loc>
-           <lastmod>${post.createdAt}</lastmod>
+           <loc>${`${domainUrl}/posts/${post._id.toString()}`}</loc>
+           <lastmod>${post.createdAt.toISOString()}</lastmod>
            <priority>0.5</priority>
        </url>
      `;

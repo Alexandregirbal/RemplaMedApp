@@ -108,7 +108,7 @@ export const useFilters = () => {
                 ) as FiltersState["notViewed"];
                 if (filterValue) {
                     postsData = postsData.filter(
-                        (post) => !postsViewed.includes(post._id)
+                        (post) => !postsViewed.includes(post._id.toString())
                     );
                 }
             }

@@ -1,4 +1,5 @@
-import type { BaseMongooseObject } from "server/database/types";
+import { Types } from "mongoose";
+import { baseMongoObject } from "server/database/types";
 import { z } from "zod";
 
 export enum PostSource {
@@ -29,7 +30,7 @@ export const isPostIntent = (value: string): value is PostIntent => {
 };
 
 export const postDataZod = z.object({
-    authorId: z.string(),
+    authorId: z.instanceof(Types.ObjectId),
     published: z.boolean().default(false),
     intent: z.nativeEnum(PostIntent),
     postalCode: z.string(),
@@ -48,4 +49,6 @@ export const postDataZod = z.object({
 
 export type PostData = z.infer<typeof postDataZod>;
 
-export type Post = PostData & BaseMongooseObject;
+const postZod = postDataZod.merge(baseMongoObject);
+
+export type Post = z.infer<typeof postZod>;

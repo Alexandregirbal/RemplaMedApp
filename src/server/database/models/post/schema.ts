@@ -4,7 +4,7 @@ import type { Post } from "./types";
 
 export const postSchema = new Schema<Post>(
     {
-        authorId: { type: String, required: true },
+        authorId: { type: Schema.Types.ObjectId, required: true },
         published: { type: Boolean, required: true, default: false },
         intent: { type: String, required: true },
         title: { type: String, required: false },

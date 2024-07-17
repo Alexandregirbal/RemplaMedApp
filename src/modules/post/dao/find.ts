@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import type { FilterQuery } from "mongoose";
+import { Types, type FilterQuery } from "mongoose";
 import { PostModel } from "server/database/models/post/model";
 import type { Post } from "server/database/models/post/types";
 import mongooseConnect from "server/database/mongoose";
@@ -42,9 +42,7 @@ export const findManyPosts = async (params: FilterQuery<Post>) => {
     return posts.map(parseObjectToSerialize);
 };
 
-export const findPostsIds = async (): Promise<
-    Array<{ _id: string; createdAt: Date }>
-> => {
+export const findPostsIds = async () => {
     await mongooseConnect();
 
     const posts = await PostModel.find(
@@ -54,9 +52,7 @@ export const findPostsIds = async (): Promise<
         { _id: true, createdAt: true },
         { sort: { createdAt: -1 } }
     ).lean();
-    return posts.map((post) => {
-        return { _id: post._id.toString(), createdAt: post.createdAt };
-    });
+    return posts;
 };
 
 export const getMetaData = async (): Promise<MetaData> => {
@@ -86,13 +82,14 @@ export const findUserPosts = async (
 
     const posts = await PostModel.find(
         {
-            authorId: userId,
+            authorId: new Types.ObjectId(userId),
         },
         undefined,
         {
             sort: { createdAt: -1 },
         }
     );
+    console.log(`~~~~~ Girbalog | posts: `, userId, posts);
 
     return posts;
 };

@@ -1,7 +1,8 @@
-import type { Types } from "mongoose";
+import { Types } from "mongoose";
+import { z } from "zod";
 
-export type BaseMongooseObject = {
-    _id: string | Types.ObjectId;
-    createdAt: Date;
-    updatedAt: Date;
-};
+export const baseMongoObject = z.object({
+    _id: z.instanceof(Types.ObjectId),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+});

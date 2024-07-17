@@ -83,7 +83,7 @@ export async function getStaticPaths() {
     const postsIds = await findPostsIds();
     return {
         paths: postsIds.map((postId) => ({
-            params: { id: postId._id },
+            params: { id: postId._id.toString() },
         })),
         fallback: "blocking",
     };

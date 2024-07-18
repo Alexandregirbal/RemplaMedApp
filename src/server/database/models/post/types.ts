@@ -30,7 +30,7 @@ export const isPostIntent = (value: string): value is PostIntent => {
 };
 
 export const postDataZod = z.object({
-    authorId: z.instanceof(Types.ObjectId),
+    authorId: z.instanceof(Types.ObjectId).or(z.string()),
     published: z.boolean().default(false),
     intent: z.nativeEnum(PostIntent),
     postalCode: z.string(),

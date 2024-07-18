@@ -1,6 +1,6 @@
+import mongooseConnect from "server/database/config/mongoose";
 import { UserModel } from "server/database/models/user/model";
 import type { UserDescription } from "server/database/models/user/types";
-import mongooseConnect from "server/database/mongoose";
 
 export const addPostViewed = async (params: {
     postId: string;

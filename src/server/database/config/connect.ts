@@ -1,6 +1,6 @@
 import type { Connection } from "mongoose";
 import mongoose from "mongoose";
-import { env } from "../../env.mjs";
+import { env } from "../../../env.mjs";
 
 const createMongooseConnection = async (): Promise<mongoose.Connection> => {
     const options = {

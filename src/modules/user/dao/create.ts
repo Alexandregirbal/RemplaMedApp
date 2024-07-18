@@ -1,5 +1,5 @@
+import mongooseConnect from "server/database/config/mongoose";
 import { UserModel } from "server/database/models/user/model";
-import mongooseConnect from "server/database/mongoose";
 import { hashPassword } from "../services/password";
 
 export const createOneUser = async (params: {

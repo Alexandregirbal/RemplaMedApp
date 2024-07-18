@@ -11,10 +11,17 @@ export const parseObjectToSerialize = <T extends Record<string, unknown>>(
         if (value instanceof Types.ObjectId) {
             // @ts-ignore
             newObject[key] = value.toString();
+            continue;
         }
         if (value instanceof Date) {
             // @ts-ignore
             newObject[key] = value.toISOString();
+            continue;
+        }
+        if (typeof value === "object") {
+            // @ts-ignore
+            newObject[key] = parseObjectToSerialize(value);
+            continue;
         }
     }
     return newObject;

@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { Post } from "server/database/models/post/types";
-import { parseObjectToSerialize } from "server/database/parseMongoObject";
+import { parseObjectToSerialize } from "server/database/utils/parseObjectToSerialize";
 import { setIsLoading } from "store/slices/ui/slice";
 import { addViewedPost, selectUserState } from "store/slices/user/slice";
 

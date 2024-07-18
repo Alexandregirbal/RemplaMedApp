@@ -3,7 +3,7 @@
 import type { MongoClient } from "mongodb";
 import type { Mongoose } from "mongoose";
 import { connect } from "mongoose";
-import { env } from "../../env.mjs";
+import { env } from "../../../env.mjs";
 
 declare global {
     var mongoose: {

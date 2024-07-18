@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { type FilterQuery } from "mongoose";
+import mongooseConnect from "server/database/config/mongoose";
 import { PostModel } from "server/database/models/post/model";
 import type { Post } from "server/database/models/post/types";
-import mongooseConnect from "server/database/mongoose";
-import { parseObjectToSerialize } from "server/database/parseMongoObject";
+import { parseObjectToSerialize } from "server/database/utils/parseObjectToSerialize";
 import { type MetaData } from "../types/metadata";
 
 const MIN_DATE = dayjs().subtract(3, "month");

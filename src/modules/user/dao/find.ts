@@ -1,6 +1,6 @@
+import mongooseConnect from "server/database/config/mongoose";
 import { UserModel } from "server/database/models/user/model";
 import type { User } from "server/database/models/user/types";
-import mongooseConnect from "server/database/mongoose";
 
 export const findOneUser = async (
     email: string | undefined

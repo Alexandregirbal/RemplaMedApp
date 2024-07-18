@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { type NextAuthOptions } from "next-auth";
-import mongooseConnect from "server/database/mongoose";
+import mongooseConnect from "server/database/config/mongoose";
 import { env } from "../../../env.mjs";
 import credentialsProvider from "./providers/credentials";
 import googleProvider from "./providers/google";

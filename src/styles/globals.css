@@ -24,9 +24,3 @@ pre {
 * {
     @apply scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-lg;
 }
-
-@import "react-datepicker/dist/react-datepicker.css";
-
-.react-datepicker-popper {
-    z-index: 11;
-}

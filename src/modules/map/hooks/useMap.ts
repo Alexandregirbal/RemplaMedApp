@@ -133,7 +133,7 @@ export const useMap = (params: {
                 filter: ["!", ["has", "point_count"]],
                 paint: {
                     "circle-color": fullConfig.theme?.colors?.cta,
-                    "circle-radius": 10,
+                    "circle-radius": 12,
                     "circle-stroke-width": 1,
                     "circle-stroke-color": "#fff",
                 },
@@ -224,7 +224,7 @@ export const useMap = (params: {
                 "move",
                 debounce(async () => {
                     const location = map.getCenter();
-                    const zoom = map.getZoom();
+                    const zoom = Number(map.getZoom().toFixed(2));
                     const locationData = {
                         longitude: location.lng.toFixed(4),
                         latitude: location.lat.toFixed(4),

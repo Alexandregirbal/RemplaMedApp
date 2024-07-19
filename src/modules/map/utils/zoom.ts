@@ -5,6 +5,6 @@ export const getNewZoomedValue = (params: {
 }): number => {
     const { zoom, min, max } = params;
     return Number(
-        Math.max(Math.min(zoom + Math.exp(zoom / min), max), 0).toFixed(2)
+        Math.max(Math.min(zoom + Math.exp(zoom / min), max), min).toFixed(2)
     );
 };

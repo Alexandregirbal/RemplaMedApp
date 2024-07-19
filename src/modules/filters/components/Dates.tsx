@@ -75,7 +75,6 @@ const DatesFilter = () => {
                             selected={date ? dayjs(date).toDate() : undefined}
                             minDate={min ? dayjs(min).toDate() : undefined}
                             onChange={handleDateChange}
-                            className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
                         />
                     </div>
                 </div>

@@ -1,9 +1,9 @@
 "use client";
 
+import { fr } from "date-fns/locale";
 import dayjs from "dayjs";
 import { Calendar as CalendarIcon } from "lucide-react";
-
-import { fr } from "date-fns/locale";
+import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
 import { Calendar } from "shadcn/components/ui/calendar";
 import {
@@ -12,6 +12,7 @@ import {
     PopoverTrigger,
 } from "shadcn/components/ui/popover";
 import { cn } from "shadcn/lib/utils";
+
 type DatePickerProps = {
     className?: string;
     onChange: (date?: Date) => void;
@@ -25,13 +26,18 @@ export function DatePicker({
     selected,
     minDate,
 }: DatePickerProps) {
+    const [calendarOpen, setCalendarOpen] = useState(false);
+    const onSelect = (date?: Date) => {
+        setCalendarOpen(false);
+        onChange(date);
+    };
     return (
-        <Popover>
+        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant={"outline"}
                     className={cn(
-                        " w-full justify-start text-left font-normal",
+                        "w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-left font-normal focus:border-cta focus:ring-cta",
                         !selected && "text-muted-foreground",
                         className
                     )}
@@ -48,7 +54,7 @@ export function DatePicker({
                 <Calendar
                     mode="single"
                     selected={selected}
-                    onSelect={onChange}
+                    onSelect={onSelect}
                     initialFocus
                     fromDate={minDate ? dayjs(minDate).toDate() : undefined}
                     locale={fr}

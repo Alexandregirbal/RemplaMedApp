@@ -1,4 +1,5 @@
 "use client";
+
 import dayjs from "dayjs";
 import { Spinner } from "flowbite-react";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
@@ -7,9 +8,9 @@ import { getPostIntentLabel } from "modules/post/services/postIntentLabels";
 import useDebounce from "modules/utils/hooks/useDebounce";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
-import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { PostIntent, isPostIntent } from "server/database/models/post/types";
+import { DatePicker } from "shadcn/components/ui/datePicker";
 import {
     resetNewPost,
     selectPostsState,
@@ -92,7 +93,7 @@ const CreatePost = () => {
         dispatch(setNewPost({ ...newPost, ...cityGeocode }));
     };
 
-    const handleFromChange = (date: Date | null) => {
+    const handleFromChange = (date?: Date | null) => {
         dispatch(
             setNewPost({
                 ...newPost,
@@ -103,7 +104,7 @@ const CreatePost = () => {
         );
     };
 
-    const handleToChange = (date: Date | null) => {
+    const handleToChange = (date?: Date | null) => {
         dispatch(
             setNewPost({
                 ...newPost,
@@ -217,31 +218,28 @@ Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour e
                 </div>
             </div>
             <div className="flex items-start gap-4">
-                <div className="mb-6">
+                <div className="mb-6 w-1/2">
                     <label htmlFor="from" className="mb-2 block text-lg">
                         A partir du
                     </label>
                     <DatePicker
-                        className="block w-32 rounded-lg border border-gray-300  p-1.5 text-center focus:border-cta focus:ring-cta"
                         selected={dayjs(newPost.availablityFrom).toDate()}
                         onChange={handleFromChange}
-                        dateFormat={"dd/MM/yyyy"}
                     />
                 </div>
-                <div className="mb-6">
+                <div className="mb-6 w-1/2">
                     <label htmlFor="to" className="mb-2 block text-lg">
                         {"Jusqu'au"}
                     </label>
 
                     <DatePicker
-                        className="block w-32 rounded-lg border border-gray-300  p-1.5 text-center focus:border-cta focus:ring-cta"
                         selected={
                             newPost.availablityTo
                                 ? dayjs(newPost.availablityTo).toDate()
-                                : null
+                                : undefined
                         }
                         onChange={handleToChange}
-                        dateFormat={"dd/MM/yyyy"}
+                        minDate={dayjs(newPost.availablityFrom).toDate()}
                     />
                 </div>
             </div>

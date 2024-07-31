@@ -1,5 +1,6 @@
-import FiltersIcon from "modules/ui/icons/filters";
+import { Filter } from "lucide-react";
 import { useState } from "react";
+import { Button } from "shadcn/components/ui/button";
 import FiltersModal from "./components/FiltersModal";
 import PostalCodeFinder from "./components/PostalCodeFinder";
 
@@ -13,14 +14,14 @@ const Filters = () => {
     };
     return (
         <>
-            <div className="flex h-16 items-center justify-around gap-2 border-t-2 border-gray-300 px-4 shadow-2xl">
-                <div
-                    className="flex gap-2 text-cta hover:cursor-pointer"
+            <div className="flex h-16 items-center justify-evenly border-t-2 border-gray-300 shadow-2xl">
+                <Button
+                    className="flex w-36 gap-2 bg-cta text-xl hover:cursor-pointer"
                     onClick={openFiltersModal}
                 >
-                    <FiltersIcon />
+                    <Filter />
                     Filtrer
-                </div>
+                </Button>
                 <PostalCodeFinder />
             </div>
             <FiltersModal

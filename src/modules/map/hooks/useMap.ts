@@ -119,7 +119,7 @@ export const useMap = (params: {
                         "DIN Offc Pro Medium",
                         "Arial Unicode MS Bold",
                     ],
-                    "text-size": 12,
+                    "text-size": 14,
                 },
                 paint: {
                     "text-color": fullConfig.theme?.colors?.background,
@@ -242,15 +242,17 @@ export const useMap = (params: {
         };
 
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));
-        mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
+        // mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
         const geolocateControl = new mapboxgl.GeolocateControl();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         geolocateControl.on("geolocate", (e: any) => {
             if (!e || !e.coords) return;
+            dispatch(setIsLoading(true));
             mapboxClient.flyTo({
                 center: [e.coords.longitude, e.coords.latitude],
                 zoom: 10,
             });
+            dispatch(setIsLoading(false));
         });
 
         mapboxClient.addControl(geolocateControl, "top-left");

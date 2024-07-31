@@ -54,9 +54,9 @@ const PostComponent = ({
 
     return (
         <div
-            className={`flex max-h-full w-full flex-col gap-2 rounded-lg border border-primary bg-background py-2 shadow-xl transition`}
+            className={`flex max-h-full w-full flex-col gap-2 rounded-lg border border-primary bg-background px-2 py-2 shadow-xl transition`}
         >
-            <div className=" border-b border-b-primary px-2 pb-2 text-center text-xl font-bold ">
+            <div className=" border-b border-b-primary pb-2 text-center text-xl font-bold ">
                 <div className={isMini ? "truncate" : ""}>
                     {getPostIntentLabel(
                         post.intent ?? PostIntent.replacementOffer
@@ -65,7 +65,7 @@ const PostComponent = ({
                 </div>
                 {post.city && <div>{post.city}</div>}
             </div>
-            <div className="px-2 text-sm">
+            <div className="text-sm">
                 {post.availablityFrom && (
                     <p>
                         A partir du{" "}
@@ -88,7 +88,7 @@ const PostComponent = ({
                     </p>
                 )}
             </div>
-            <div className="h-full w-full overflow-y-auto px-4  text-paragraph">
+            <div className="h-full w-full overflow-y-auto  text-paragraph">
                 <pre
                     className={
                         isMini
@@ -100,13 +100,13 @@ const PostComponent = ({
                 </pre>
             </div>
             {isPrivate && (
-                <div className="px-2 text-sm text-tertiary">
+                <div className="text-sm text-tertiary">
                     Les informations privées ont été masquées. Inscrivez-vous ou
                     connectez-vous pour y accéder.
                 </div>
             )}
             <div
-                className={`flex flex-row-reverse justify-between gap-1 px-2 ${
+                className={`flex flex-row-reverse justify-between gap-1 ${
                     isMini ? "text-xs" : "text-sm"
                 }`}
             >
@@ -115,6 +115,16 @@ const PostComponent = ({
                     <span className="text-tertiary">
                         {post.views} vue{post.views > 1 ? "s" : ""}
                     </span>
+                )}
+                {post.link && (
+                    <a
+                        href={post.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-cta"
+                    >
+                        Contacter
+                    </a>
                 )}
             </div>
         </div>

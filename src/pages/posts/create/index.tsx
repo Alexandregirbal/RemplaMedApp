@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostIntent, isPostIntent } from "server/database/models/post/types";
+import { Button } from "shadcn/components/ui/button";
 import { DatePicker } from "shadcn/components/ui/datePicker";
 import {
     resetNewPost,
@@ -127,10 +128,10 @@ const CreatePost = () => {
             <form
                 onSubmit={handleSubmitCreatePostForm}
                 onReset={handleResetCreatePostForm}
-                className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
+                className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden px-4 py-2 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
             >
                 <div>
-                    <label htmlFor="postIntent" className="mb-2 block text-lg ">
+                    <label htmlFor="postIntent" className=" block text-lg ">
                         Intention de post
                     </label>
                     <select
@@ -147,7 +148,7 @@ const CreatePost = () => {
                     </select>
                 </div>
                 <div className="flex grow flex-col">
-                    <label htmlFor="message" className="mb-2 block text-lg">
+                    <label htmlFor="message" className=" block text-lg">
                         Message
                     </label>
                     <textarea
@@ -162,7 +163,7 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                     />
                 </div>
                 <div>
-                    <label htmlFor="postalCode" className="mb-2 block text-lg">
+                    <label htmlFor="postalCode" className=" block text-lg">
                         Code postal
                     </label>
                     <div
@@ -219,9 +220,9 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                         )}
                     </div>
                 </div>
-                <div className="flex items-start gap-4">
-                    <div className="mb-6 w-1/2">
-                        <label htmlFor="from" className="mb-2 block text-lg">
+                <div className="mb-6 flex items-start gap-4">
+                    <div className=" w-1/2">
+                        <label htmlFor="from" className="block text-lg">
                             A partir du
                         </label>
                         <DatePicker
@@ -229,8 +230,8 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                             onChange={handleFromChange}
                         />
                     </div>
-                    <div className="mb-6 w-1/2">
-                        <label htmlFor="to" className="mb-2 block text-lg">
+                    <div className=" w-1/2">
+                        <label htmlFor="to" className="block text-lg">
                             {"Jusqu'au"}
                         </label>
 
@@ -246,19 +247,21 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                     </div>
                 </div>
                 <div className="flex justify-evenly gap-8 text-center text-white">
-                    <button
+                    <Button
                         type="reset"
-                        className="w-full rounded-lg bg-tertiary px-5 py-2.5 text-base hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                        variant={"destructive"}
+                        className="w-full text-base sm:w-auto"
                     >
                         Annuler
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         disabled={!isSubmitable}
                         type="submit"
-                        className="w-full rounded-lg bg-cta px-5 py-2.5 text-base  hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-gray-400 sm:w-auto"
+                        variant={"default"}
+                        className="w-full text-base sm:w-auto"
                     >
                         Suivant
-                    </button>
+                    </Button>
                 </div>
             </form>
         </>

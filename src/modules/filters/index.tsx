@@ -1,3 +1,5 @@
+"use client";
+
 import { Filter, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -35,22 +37,23 @@ const Filters = () => {
                 </Button>
                 <PostalCodeFinder />
                 <TooltipProvider>
-                    <Tooltip>
+                    <Tooltip delayDuration={300}>
                         <TooltipTrigger>
                             <Link
                                 href={session ? "/posts/create" : "/"}
                                 className={`flex items-center justify-center gap-2`}
                             >
                                 <Button
+                                    asChild
                                     size="icon"
                                     className={cn(
-                                        "focus: snap-none text-xl",
+                                        "hover:cursor-text",
                                         session
                                             ? "bg-cta"
                                             : "bg-gray-500 hover:cursor-default"
                                     )}
                                 >
-                                    <Plus />
+                                    <Plus className="h-10 w-10 hover:cursor-pointer" />
                                 </Button>
                             </Link>
                         </TooltipTrigger>
@@ -58,12 +61,12 @@ const Filters = () => {
                             {session ? (
                                 <span>Créer un post</span>
                             ) : (
-                                <Link
-                                    href={"/auth/signin"}
+                                <span
+                                    // href={"/auth/signin"}
                                     className="text-cta"
                                 >
                                     Connectez-vous pour créer un post
-                                </Link>
+                                </span>
                             )}
                         </TooltipContent>
                     </Tooltip>

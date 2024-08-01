@@ -122,143 +122,146 @@ const CreatePost = () => {
         newPost.city;
 
     return (
-        <form
-            onSubmit={handleSubmitCreatePostForm}
-            onReset={handleResetCreatePostForm}
-            className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
-        >
-            <div>
-                <label htmlFor="postIntent" className="mb-2 block text-lg ">
-                    Intention de post
-                </label>
-                <select
-                    name="intent"
-                    id="postIntent"
-                    className="block w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
-                    onChange={handlePostIntentChange}
-                >
-                    {Object.values(PostIntent).map((intent) => (
-                        <option key={intent} value={intent}>
-                            {getPostIntentLabel(intent)}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div className="flex grow flex-col">
-                <label htmlFor="message" className="mb-2 block text-lg">
-                    Message
-                </label>
-                <textarea
-                    id="message"
-                    ref={messageRef}
-                    value={newPost.message}
-                    placeholder={`Bonjour,
-Cabinet infirmier situé sur la Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 8 jours par mois à partir de Juin...`}
-                    onChange={handleMessageChange}
-                    className="text-s h-full w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor="postalCode" className="mb-2 block text-lg">
-                    Code postal
-                </label>
-                <div
-                    id="postalCode-container"
-                    className=" flex w-full flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
-                >
-                    <input
-                        type="number"
-                        id="postalCode"
-                        placeholder="34000"
-                        value={newPost.postalCode}
-                        onChange={handlePostalCodeChange}
-                        className={`block w-1/3 min-w-[8rem] rounded-lg border border-gray-300  p-1.5 ${
-                            isPostalCodeValid
-                                ? "focus:border-cta focus:ring-cta"
-                                : "border-red-500 ring-red-500 focus:border-red-500 focus:ring-red-500"
-                        }`}
+        <>
+            <h1 className="text-center text-xl">Créez votre post</h1>
+            <form
+                onSubmit={handleSubmitCreatePostForm}
+                onReset={handleResetCreatePostForm}
+                className="row md:px-30 flex h-full grow flex-col gap-2 overflow-x-hidden p-6 text-sm sm:px-20 lg:px-40 xl:px-52 2xl:px-60"
+            >
+                <div>
+                    <label htmlFor="postIntent" className="mb-2 block text-lg ">
+                        Intention de post
+                    </label>
+                    <select
+                        name="intent"
+                        id="postIntent"
+                        className="block w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
+                        onChange={handlePostIntentChange}
+                    >
+                        {Object.values(PostIntent).map((intent) => (
+                            <option key={intent} value={intent}>
+                                {getPostIntentLabel(intent)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex grow flex-col">
+                    <label htmlFor="message" className="mb-2 block text-lg">
+                        Message
+                    </label>
+                    <textarea
+                        id="message"
+                        ref={messageRef}
+                        value={newPost.message}
+                        placeholder={`Bonjour,
+Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 10 jours par mois à partir de Juin...`}
+                        onChange={handleMessageChange}
+                        className="text-s h-full w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
                         required
                     />
-                    {isPostalCodeLoading && (
-                        <>
-                            <Spinner
-                                aria-label={"Loading spinner"}
-                                color="gray"
-                                size="sm"
-                            />
-                            <div
-                                role="status"
-                                className="flex animate-pulse align-middle"
-                            >
-                                <div className="h-4 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                            </div>
-                        </>
-                    )}
-                    {citiesGeocodes.length !== 0 && (
-                        <select
-                            name="city"
-                            id="cities"
-                            className="block rounded-lg border border-gray-300 p-1.5 text-gray-900 focus:border-cta focus:ring-cta "
-                            value={newPost.city ?? ""}
-                            onChange={handleCityChange}
-                        >
-                            {citiesGeocodes.map((geocode) => (
-                                <option
-                                    key={geocode.city}
-                                    value={geocode.city}
-                                    className="text-primary"
+                </div>
+                <div>
+                    <label htmlFor="postalCode" className="mb-2 block text-lg">
+                        Code postal
+                    </label>
+                    <div
+                        id="postalCode-container"
+                        className=" flex w-full flex-row items-center gap-2 xl:gap-4 2xl:gap-6"
+                    >
+                        <input
+                            type="number"
+                            id="postalCode"
+                            placeholder="34000"
+                            value={newPost.postalCode}
+                            onChange={handlePostalCodeChange}
+                            className={`block w-1/3 min-w-[8rem] rounded-lg border border-gray-300  p-1.5 ${
+                                isPostalCodeValid
+                                    ? "focus:border-cta focus:ring-cta"
+                                    : "border-red-500 ring-red-500 focus:border-red-500 focus:ring-red-500"
+                            }`}
+                            required
+                        />
+                        {isPostalCodeLoading && (
+                            <>
+                                <Spinner
+                                    aria-label={"Loading spinner"}
+                                    color="gray"
+                                    size="sm"
+                                />
+                                <div
+                                    role="status"
+                                    className="flex animate-pulse align-middle"
                                 >
-                                    {geocode.city}
-                                </option>
-                            ))}
-                        </select>
-                        // <span>{cities.join(", ")}</span>
-                    )}
+                                    <div className="h-4 w-80 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                </div>
+                            </>
+                        )}
+                        {citiesGeocodes.length !== 0 && (
+                            <select
+                                name="city"
+                                id="cities"
+                                className="block rounded-lg border border-gray-300 p-1.5 text-gray-900 focus:border-cta focus:ring-cta "
+                                value={newPost.city ?? ""}
+                                onChange={handleCityChange}
+                            >
+                                {citiesGeocodes.map((geocode) => (
+                                    <option
+                                        key={geocode.city}
+                                        value={geocode.city}
+                                        className="text-primary"
+                                    >
+                                        {geocode.city}
+                                    </option>
+                                ))}
+                            </select>
+                            // <span>{cities.join(", ")}</span>
+                        )}
+                    </div>
                 </div>
-            </div>
-            <div className="flex items-start gap-4">
-                <div className="mb-6 w-1/2">
-                    <label htmlFor="from" className="mb-2 block text-lg">
-                        A partir du
-                    </label>
-                    <DatePicker
-                        selected={dayjs(newPost.availablityFrom).toDate()}
-                        onChange={handleFromChange}
-                    />
-                </div>
-                <div className="mb-6 w-1/2">
-                    <label htmlFor="to" className="mb-2 block text-lg">
-                        {"Jusqu'au"}
-                    </label>
+                <div className="flex items-start gap-4">
+                    <div className="mb-6 w-1/2">
+                        <label htmlFor="from" className="mb-2 block text-lg">
+                            A partir du
+                        </label>
+                        <DatePicker
+                            selected={dayjs(newPost.availablityFrom).toDate()}
+                            onChange={handleFromChange}
+                        />
+                    </div>
+                    <div className="mb-6 w-1/2">
+                        <label htmlFor="to" className="mb-2 block text-lg">
+                            {"Jusqu'au"}
+                        </label>
 
-                    <DatePicker
-                        selected={
-                            newPost.availablityTo
-                                ? dayjs(newPost.availablityTo).toDate()
-                                : undefined
-                        }
-                        onChange={handleToChange}
-                        minDate={dayjs(newPost.availablityFrom).toDate()}
-                    />
+                        <DatePicker
+                            selected={
+                                newPost.availablityTo
+                                    ? dayjs(newPost.availablityTo).toDate()
+                                    : undefined
+                            }
+                            onChange={handleToChange}
+                            minDate={dayjs(newPost.availablityFrom).toDate()}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="flex justify-evenly gap-8 text-center text-white">
-                <button
-                    type="reset"
-                    className="w-full rounded-lg bg-tertiary px-5 py-2.5 text-base hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
-                >
-                    Annuler
-                </button>
-                <button
-                    disabled={!isSubmitable}
-                    type="submit"
-                    className="w-full rounded-lg bg-cta px-5 py-2.5 text-base  hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-gray-400 sm:w-auto"
-                >
-                    Suivant
-                </button>
-            </div>
-        </form>
+                <div className="flex justify-evenly gap-8 text-center text-white">
+                    <button
+                        type="reset"
+                        className="w-full rounded-lg bg-tertiary px-5 py-2.5 text-base hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        disabled={!isSubmitable}
+                        type="submit"
+                        className="w-full rounded-lg bg-cta px-5 py-2.5 text-base  hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-gray-400 sm:w-auto"
+                    >
+                        Suivant
+                    </button>
+                </div>
+            </form>
+        </>
     );
 };
 

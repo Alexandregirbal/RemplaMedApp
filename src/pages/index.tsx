@@ -35,10 +35,7 @@ const Home: NextPage = () => {
     return (
         <>
             <Filters />
-            <div
-                id="posts"
-                className="flex-column relative flex h-[calc(100%-4rem)] w-full "
-            >
+            <div id="posts" className="flex-column relative flex w-full grow">
                 <div id="posts-map" className="w-full">
                     <MapComponent />
                 </div>

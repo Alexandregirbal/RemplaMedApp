@@ -21,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
     }, [dispatch]);
 
     return (
-        <>
+        <div className="flex h-screen flex-col">
             <Head>
                 <title key="title">RemplaMed</title>
                 <meta
@@ -33,12 +33,10 @@ const Layout = ({ children }: LayoutProps) => {
             </Head>
             <GoogleAnalytics gaId="AW-16518733052" />
             <Header />
-            <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
-                {children}
-            </main>
+            <main className="flex grow flex-col">{children}</main>
             {isLoading && <Loading size="xl" />}
             <Footer />
-        </>
+        </div>
     );
 };
 

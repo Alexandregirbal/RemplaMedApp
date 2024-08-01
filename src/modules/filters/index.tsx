@@ -1,10 +1,21 @@
-import { Filter } from "lucide-react";
+import { Filter, Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "shadcn/components/ui/tooltip";
+import { cn } from "shadcn/lib/utils";
 import FiltersModal from "./components/FiltersModal";
 import PostalCodeFinder from "./components/PostalCodeFinder";
 
 const Filters = () => {
+    const { data: session } = useSession();
+
     const [isFiltersModalOpened, setIsFiltersModalOpened] = useState(false);
     const openFiltersModal = () => {
         setIsFiltersModalOpened(true);
@@ -14,15 +25,49 @@ const Filters = () => {
     };
     return (
         <>
-            <div className="flex h-16 items-center justify-evenly border-t-2 border-gray-300 shadow-2xl">
+            <div className="flex items-center justify-evenly py-2">
                 <Button
-                    className="flex w-36 gap-2 bg-cta text-xl hover:cursor-pointer"
+                    className="flex gap-2 bg-cta hover:cursor-pointer"
                     onClick={openFiltersModal}
                 >
                     <Filter />
                     Filtrer
                 </Button>
                 <PostalCodeFinder />
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Link
+                                href={session ? "/posts/create" : "/"}
+                                className={`flex items-center justify-center gap-2`}
+                            >
+                                <Button
+                                    size="icon"
+                                    className={cn(
+                                        "focus: snap-none text-xl",
+                                        session
+                                            ? "bg-cta"
+                                            : "bg-gray-500 hover:cursor-default"
+                                    )}
+                                >
+                                    <Plus />
+                                </Button>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {session ? (
+                                <span>Créer un post</span>
+                            ) : (
+                                <Link
+                                    href={"/auth/signin"}
+                                    className="text-cta"
+                                >
+                                    Connectez-vous pour créer un post
+                                </Link>
+                            )}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
             <FiltersModal
                 isOpened={isFiltersModalOpened}

@@ -1,8 +1,6 @@
-import { Tooltip } from "flowbite-react";
 import Logged from "modules/auth/components/LoggedIcon";
 import Login from "modules/auth/components/LoginButton";
 import { getMetaData } from "modules/post/services/getMetadata";
-import Button from "modules/ui/button";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -25,7 +23,7 @@ const Header: NextPage = () => {
     }, [dispatch]);
 
     return (
-        <div className="flex h-36 flex-col p-2">
+        <header className="flex flex-col p-2">
             <nav id="navbar" className="flex justify-between ">
                 <div className="flex w-1/5 items-center gap-1 sm:gap-4">
                     <Link href={"/"}>
@@ -57,33 +55,11 @@ const Header: NextPage = () => {
                 </div>
             </nav>
             <div className="flex grow flex-col items-center justify-center gap-2">
-                <span className="flex justify-center  text-xl">
+                <span className="flex justify-center text-xl">
                     {"Réseau de remplacement infirmier"}
                 </span>
-                <Tooltip
-                    content={
-                        session
-                            ? "Commencez à créer un poste"
-                            : "Connectez vous pour créer un poste"
-                    }
-                >
-                    <Link
-                        href={session ? "/posts/create" : "/"}
-                        className={`flex items-center justify-center gap-2`}
-                    >
-                        <Button
-                            className={
-                                !session
-                                    ? " bg-gray-500 hover:cursor-default"
-                                    : ""
-                            }
-                        >
-                            {"Publier une annonce"}
-                        </Button>
-                    </Link>
-                </Tooltip>
             </div>
-        </div>
+        </header>
     );
 };
 

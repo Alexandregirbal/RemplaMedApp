@@ -24,7 +24,7 @@ const credentialsProvider = CredentialsProvider({
             return null;
         }
 
-        return user;
+        return { ...user, id: user._id.toString() };
     },
 });
 

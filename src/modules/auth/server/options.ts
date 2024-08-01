@@ -30,11 +30,9 @@ const authOptions: NextAuthOptions = {
                 case "signIn":
                 case "signUp":
                     if (user && "postsViewed" in user) {
-                        console.log(`~~~~~ Girbalog | jwt | user: `, user);
-
                         const postsViewed = new Set(user.postsViewed);
                         token.postsViewed = Array.from(postsViewed);
-                        token.sub = user._id.toString();
+                        token.sub = user.id;
                     }
                     return token;
 

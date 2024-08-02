@@ -3,10 +3,10 @@
 import axios from "axios";
 import {
     communeSchema,
+    geocodeDataSchema,
     type Commune,
     type GeocodeData,
     type GetCommunesParams,
-    geocodeDataSchema,
 } from "./types";
 
 const getCommunes = async (params: GetCommunesParams): Promise<Commune[]> => {
@@ -46,23 +46,29 @@ export const getGeocodeDataFromPostalCode = async (
     if (!result) {
         throw new Error("No result found");
     }
+
     const geocodeData = result.reduce<GeocodeData[]>((acc, commune) => {
-        if (
-            commune.codesPostaux &&
-            commune.codesPostaux[0] &&
-            commune.codesPostaux.includes(postalCode) &&
-            commune.centre &&
-            commune.centre.coordinates &&
-            commune.centre.coordinates[0] &&
-            commune.centre.coordinates[1]
-        ) {
-            acc.push({
-                city: commune.nom,
-                postalCode: commune.codesPostaux[0],
-                longitude: commune.centre.coordinates[0],
-                latitude: commune.centre.coordinates[1],
-            });
+        if (!commune.codesPostaux) {
+            return acc;
         }
+        const postalCodeResult: string | undefined = commune.codesPostaux.find(
+            (code) => code === postalCode
+        );
+
+        const city = commune.nom;
+        const [longitude, latitude] = commune?.centre?.coordinates ?? [];
+
+        if (!postalCodeResult || !city || !longitude || !latitude) {
+            return acc;
+        }
+
+        acc.push({
+            city,
+            postalCode: postalCodeResult,
+            longitude,
+            latitude,
+        });
+
         return acc;
     }, []);
 

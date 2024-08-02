@@ -1,23 +1,13 @@
 "use client";
 
-import { Filter, Plus } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Filter } from "lucide-react";
+import AddPostButton from "modules/post/components/AddPostButton";
 import { useState } from "react";
 import { Button } from "shadcn/components/ui/button";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "shadcn/components/ui/tooltip";
-import { cn } from "shadcn/lib/utils";
 import FiltersModal from "./components/FiltersModal";
 import PostalCodeFinder from "./components/PostalCodeFinder";
 
 const Filters = () => {
-    const { data: session } = useSession();
-
     const [isFiltersModalOpened, setIsFiltersModalOpened] = useState(false);
     const openFiltersModal = () => {
         setIsFiltersModalOpened(true);
@@ -36,41 +26,7 @@ const Filters = () => {
                     Filtrer
                 </Button>
                 <PostalCodeFinder />
-                <TooltipProvider>
-                    <Tooltip delayDuration={300}>
-                        <TooltipTrigger>
-                            <Link
-                                href={session ? "/posts/create" : "/"}
-                                className={`flex items-center justify-center gap-2`}
-                            >
-                                <Button
-                                    asChild
-                                    size="icon"
-                                    className={cn(
-                                        "hover:cursor-text",
-                                        session
-                                            ? "bg-cta"
-                                            : "bg-gray-500 hover:cursor-default"
-                                    )}
-                                >
-                                    <Plus className="h-10 w-10 hover:cursor-pointer" />
-                                </Button>
-                            </Link>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {session ? (
-                                <span>Créer un post</span>
-                            ) : (
-                                <span
-                                    // href={"/auth/signin"}
-                                    className="text-cta"
-                                >
-                                    Connectez-vous pour créer un post
-                                </span>
-                            )}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <AddPostButton />
             </div>
             <FiltersModal
                 isOpened={isFiltersModalOpened}

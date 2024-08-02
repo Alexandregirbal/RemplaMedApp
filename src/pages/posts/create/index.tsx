@@ -78,6 +78,7 @@ const CreatePost = () => {
                 setCitiesGeocodes(response);
                 dispatch(setNewPost({ ...newPost, ...response[0] }));
             })
+
             .catch(() => {
                 setIsPostalCodeValid(false);
             })

@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PostIntent, type Post } from "server/database/models/post/types";
 import { hidePrivateInformations } from "../services/hidePrivateInformations";
@@ -100,10 +101,17 @@ const PostComponent = ({
                 </pre>
             </div>
             {isPrivate && (
-                <div className="text-sm text-tertiary">
-                    Les informations privées ont été masquées. Inscrivez-vous ou
-                    connectez-vous pour y accéder.
-                </div>
+                <Link
+                    href={`/auth/signin?callbackUrl=${encodeURIComponent(
+                        window.location.href
+                    )}`}
+                    className="text-sm text-cta"
+                >
+                    <span>{"Les informations privées ont été masquées. "}</span>
+                    <span className="underline">
+                        Inscrivez-vous ou connectez-vous pour y accéder.
+                    </span>
+                </Link>
             )}
             <div
                 className={`flex flex-row-reverse justify-between gap-1 ${

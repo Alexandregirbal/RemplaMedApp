@@ -34,7 +34,7 @@ const handleGet = async ({
     const domainUrl = getDomainUrl();
     const { _id: userId, email: userEmail } = user;
     const { paymentUrl, paymentId } = await getPayment({
-        paymentIntentParams: {
+        createPaymentParams: {
             amount: 5.9,
             description: "RemplaMed: Publication d'un post",
             metadata: {

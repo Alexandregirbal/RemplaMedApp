@@ -1,5 +1,5 @@
 import { PaymentStatus } from "@mollie/api-client";
-import { getPaymentIntent } from "modules/payments/getPaymentIntent";
+import { getPayment } from "modules/payments/getPaymentIntent";
 import { findPostByPaymentId } from "modules/post/dao/find";
 import { setPublishedPost, updatePaymentStatus } from "modules/post/dao/update";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -22,7 +22,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const payment = await getPaymentIntent({ id: paymentId });
+    const payment = await getPayment({ id: paymentId });
 
     const { status } = payment;
     void updatePaymentStatus({ postId: post._id.toString(), status });

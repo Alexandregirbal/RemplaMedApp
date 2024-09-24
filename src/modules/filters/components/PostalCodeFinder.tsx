@@ -55,7 +55,7 @@ const PostalCodeFinder = () => {
 
     return (
         <input
-            className="h-full w-28 rounded-lg border border-gray-300 p-1.5 text-center focus:border-cta focus:ring-cta"
+            className="h-full w-32 rounded-lg border border-gray-300 p-1.5 text-center focus:border-cta focus:ring-cta"
             ref={postalCodeFinderInputRef}
             type="number"
             name="postalCode"

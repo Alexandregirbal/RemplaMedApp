@@ -164,7 +164,7 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                     />
                 </div>
                 <div>
-                    <label htmlFor="postalCode" className=" block text-lg">
+                    <label htmlFor="postalCode" className="block text-lg">
                         Code postal
                     </label>
                     <div

@@ -5,6 +5,7 @@ import authOptions from "./options";
 declare module "next-auth/jwt" {
     interface JWT {
         postsViewed: string[];
+        phoneNumber?: string;
     }
 }
 
@@ -21,12 +22,14 @@ declare module "next-auth" {
             _id: string;
             email: string;
             postsViewed: string[];
+            phoneNumber?: string;
         } & DefaultSession["user"];
     }
 
     interface User {
         id?: string;
         postsViewed: string[];
+        phoneNumber?: string;
     }
 }
 

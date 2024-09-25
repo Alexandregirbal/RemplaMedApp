@@ -13,6 +13,7 @@ import {
     setPostsViewed,
     setUserEmail,
     setUserId,
+    setUserPhoneNumber,
 } from "store/slices/user/slice";
 
 const postIdPrefix = "home_";
@@ -28,6 +29,7 @@ const Home: NextPage = () => {
             dispatch(setPostsViewed(session.user.postsViewed ?? []));
             dispatch(setUserId(session.user._id));
             dispatch(setUserEmail(session.user.email));
+            dispatch(setUserPhoneNumber(session.user.phoneNumber));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);

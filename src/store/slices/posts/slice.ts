@@ -20,6 +20,10 @@ const initialState: PostsState = {
     newPost: {
         intent: PostIntent.replacementOffer,
         message: "",
+        contact: {
+            useEmail: false,
+            usePhone: false,
+        },
         postalCode: "",
         city: "",
         latitude: 0,

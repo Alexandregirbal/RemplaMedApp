@@ -5,6 +5,7 @@ import type { UserState } from "./types";
 const initialState: UserState = {
     _id: null,
     email: null,
+    phoneNumber: undefined,
     postsViewed: [],
 };
 
@@ -24,6 +25,12 @@ export const userSlice = createSlice({
         setUserEmail(state, action: { payload: UserState["email"] }) {
             state.email = action.payload;
         },
+        setUserPhoneNumber(
+            state,
+            action: { payload: UserState["phoneNumber"] }
+        ) {
+            state.phoneNumber = action.payload;
+        },
         resetUser(state) {
             state._id = null;
             state.email = null;
@@ -38,6 +45,7 @@ export const {
     setUserId,
     setPostsViewed,
     setUserEmail,
+    setUserPhoneNumber,
 } = userSlice.actions;
 
 export const selectUserState = (state: AppState) => state.user;

@@ -32,6 +32,7 @@ const authOptions: NextAuthOptions = {
                     if (user && "postsViewed" in user) {
                         const postsViewed = new Set(user.postsViewed);
                         token.postsViewed = Array.from(postsViewed);
+                        token.phoneNumber = user.phoneNumber;
                         token.sub = user.id;
                     }
                     return token;

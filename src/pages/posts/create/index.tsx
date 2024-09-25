@@ -1,5 +1,6 @@
 "use client";
 
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import dayjs from "dayjs";
 import { Spinner } from "flowbite-react";
 import { getGeocodeDataFromPostalCode } from "modules/geocode";
@@ -11,15 +12,19 @@ import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PostIntent, isPostIntent } from "server/database/models/post/types";
 import { Button } from "shadcn/components/ui/button";
+import { Checkbox } from "shadcn/components/ui/checkbox";
 import { DatePicker } from "shadcn/components/ui/datePicker";
 import {
     resetNewPost,
     selectPostsState,
     setNewPost,
 } from "store/slices/posts/slice";
+import { selectUserState } from "store/slices/user/slice";
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
+    const user = useSelector(selectUserState);
+
     const dispatch = useDispatch();
     const debouncedPostalCode = useDebounce(newPost.postalCode, 350);
     const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -60,6 +65,30 @@ const CreatePost = () => {
         event: React.ChangeEvent<HTMLTextAreaElement>
     ) => {
         dispatch(setNewPost({ ...newPost, message: event.target.value }));
+    };
+
+    const handleUseEmailChange = (event: CheckedState) => {
+        dispatch(
+            setNewPost({
+                ...newPost,
+                contact: {
+                    ...newPost.contact,
+                    useEmail: Boolean(event.valueOf()),
+                },
+            })
+        );
+    };
+
+    const handleUsePhoneChange = (event: CheckedState) => {
+        dispatch(
+            setNewPost({
+                ...newPost,
+                contact: {
+                    ...newPost.contact,
+                    usePhone: Boolean(event.valueOf()),
+                },
+            })
+        );
     };
 
     const handlePostalCodeChange = (
@@ -163,6 +192,42 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                         required
                     />
                 </div>
+                {user.email && (
+                    <div>
+                        <div className="flex gap-2 leading-none">
+                            <Checkbox
+                                id="addEmail"
+                                className="data-[state=unchecked]:border-cta"
+                                value={Number(newPost.contact.useEmail)}
+                                onCheckedChange={handleUseEmailChange}
+                            />
+                            <label
+                                htmlFor="addEmail"
+                                className="text-sm  leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Ajouter mon adresse email à la fin du post
+                            </label>
+                        </div>
+                    </div>
+                )}
+                {user.phoneNumber && (
+                    <div>
+                        <div className="flex gap-2 leading-none">
+                            <Checkbox
+                                id="addPhone"
+                                className="data-[state=unchecked]:border-cta"
+                                value={Number(newPost.contact.usePhone)}
+                                onCheckedChange={handleUsePhoneChange}
+                            />
+                            <label
+                                htmlFor="addPhone"
+                                className="text-sm  leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Ajouter mon numéro de téléphone à la fin du post
+                            </label>
+                        </div>
+                    </div>
+                )}
                 <div>
                     <label htmlFor="postalCode" className="block text-lg">
                         Code postal

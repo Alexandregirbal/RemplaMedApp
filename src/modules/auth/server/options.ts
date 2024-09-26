@@ -25,17 +25,23 @@ const authOptions: NextAuthOptions = {
                             ])
                         );
                     }
-                    return token;
+                // return token; // Not needed thanks to switch statement
 
                 case "signIn":
                 case "signUp":
-                    if (user && "postsViewed" in user) {
-                        const postsViewed = new Set(user.postsViewed);
-                        token.postsViewed = Array.from(postsViewed);
-                        token.phoneNumber = user.phoneNumber;
-                        token.sub = user.id;
+                    if (user) {
+                        if (user.id) {
+                            token.sub = user.id;
+                        }
+
+                        if (user.postsViewed) {
+                            const postsViewed = new Set(user.postsViewed);
+                            token.postsViewed = Array.from(postsViewed);
+                        }
+                        if (user.phoneNumber) {
+                            token.phoneNumber = user.phoneNumber;
+                        }
                     }
-                    return token;
 
                 default:
                     return token;
@@ -47,6 +53,9 @@ const authOptions: NextAuthOptions = {
             }
             if (token.postsViewed) {
                 session.user.postsViewed = token.postsViewed;
+            }
+            if (token.phoneNumber) {
+                session.user.phoneNumber = token.phoneNumber;
             }
             return session;
         },

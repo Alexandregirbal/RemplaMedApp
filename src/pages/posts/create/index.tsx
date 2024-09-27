@@ -21,6 +21,10 @@ import {
 } from "store/slices/posts/slice";
 import { selectUserState } from "store/slices/user/slice";
 
+const EMAIL_REGEX = /([a-zA-Z0-9._-]+)(@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g;
+
+const PHONE_REGEX = /(\+33|0|0033)([1-9])(.*(?:[0-9]{2}.*){3})([0-9]{2})/g;
+
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
     const user = useSelector(selectUserState);
@@ -68,27 +72,38 @@ const CreatePost = () => {
     };
 
     const handleUseEmailChange = (event: CheckedState) => {
-        dispatch(
-            setNewPost({
-                ...newPost,
-                contact: {
-                    ...newPost.contact,
-                    useEmail: Boolean(event.valueOf()),
-                },
-            })
-        );
+        if (!user.email) return;
+
+        const useEmail = Boolean(event.valueOf());
+        const currentMessage = newPost.message;
+        if (useEmail) {
+            const isEmailInMessage = currentMessage.match(EMAIL_REGEX);
+            if (isEmailInMessage) return;
+
+            const newMessage = currentMessage.concat(`\nEmail: ${user.email}`);
+            dispatch(setNewPost({ ...newPost, message: newMessage }));
+        } else {
+            const newMessage = currentMessage.replace(/\nEmail: .*/g, "");
+            dispatch(setNewPost({ ...newPost, message: newMessage }));
+        }
     };
 
     const handleUsePhoneChange = (event: CheckedState) => {
-        dispatch(
-            setNewPost({
-                ...newPost,
-                contact: {
-                    ...newPost.contact,
-                    usePhone: Boolean(event.valueOf()),
-                },
-            })
-        );
+        if (!user.phoneNumber) return;
+        const usePhone = Boolean(event.valueOf());
+        const currentMessage = newPost.message;
+        if (usePhone) {
+            const isPhoneInMessage = currentMessage.match(PHONE_REGEX);
+            if (isPhoneInMessage) return;
+
+            const newMessage = currentMessage.concat(
+                `\nTéléphone: ${user.phoneNumber}`
+            );
+            dispatch(setNewPost({ ...newPost, message: newMessage }));
+        } else {
+            const newMessage = currentMessage.replace(/\nTéléphone: .*/g, "");
+            dispatch(setNewPost({ ...newPost, message: newMessage }));
+        }
     };
 
     const handlePostalCodeChange = (

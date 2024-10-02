@@ -7,6 +7,7 @@ import { getGeocodeDataFromPostalCode } from "modules/geocode";
 import type { GeocodeData } from "modules/geocode/types";
 import { getPostIntentLabel } from "modules/post/services/postIntentLabels";
 import useDebounce from "modules/utils/hooks/useDebounce";
+import { EMAIL_REGEX, PHONE_REGEX } from "modules/utils/regex";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,9 +22,7 @@ import {
 } from "store/slices/posts/slice";
 import { selectUserState } from "store/slices/user/slice";
 
-const EMAIL_REGEX = /([a-zA-Z0-9._-]+)(@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g;
-
-const PHONE_REGEX = /(\+33|0|0033)([1-9])(.*(?:[0-9]{2}.*){3})([0-9]{2})/g;
+// TODO: check qu'il y a un email ou un numéro de téléphone dans le message sinon on ne publie pas
 
 const CreatePost = () => {
     const { newPost } = useSelector(selectPostsState);
@@ -113,25 +112,6 @@ const CreatePost = () => {
         dispatch(setNewPost({ ...newPost, postalCode }));
     };
 
-    useEffect(() => {
-        if (!debouncedPostalCode || debouncedPostalCode.length !== 5) return;
-        setIsPostalCodeLoading(true);
-        getGeocodeDataFromPostalCode(debouncedPostalCode)
-            .then((response) => {
-                setIsPostalCodeValid(response.length > 0);
-                setCitiesGeocodes(response);
-                dispatch(setNewPost({ ...newPost, ...response[0] }));
-            })
-
-            .catch(() => {
-                setIsPostalCodeValid(false);
-            })
-            .finally(() => {
-                setIsPostalCodeLoading(false);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedPostalCode]);
-
     const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const cityGeocode = citiesGeocodes.find(
             (g) => event.target.value === g.city
@@ -159,13 +139,37 @@ const CreatePost = () => {
         );
     };
 
+    useEffect(() => {
+        if (!debouncedPostalCode || debouncedPostalCode.length !== 5) return;
+        setIsPostalCodeLoading(true);
+        getGeocodeDataFromPostalCode(debouncedPostalCode)
+            .then((response) => {
+                setIsPostalCodeValid(response.length > 0);
+                setCitiesGeocodes(response);
+                dispatch(setNewPost({ ...newPost, ...response[0] }));
+            })
+
+            .catch(() => {
+                setIsPostalCodeValid(false);
+            })
+            .finally(() => {
+                setIsPostalCodeLoading(false);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedPostalCode]);
+
+    const messageConainsContactInfo =
+        newPost.message.match(EMAIL_REGEX) ||
+        newPost.message.match(PHONE_REGEX);
+
     const isSubmitable =
         isPostalCodeValid &&
         !isPostalCodeLoading &&
         newPost.intent &&
         newPost.message &&
         newPost.postalCode &&
-        newPost.city;
+        newPost.city &&
+        messageConainsContactInfo;
 
     return (
         <>
@@ -203,10 +207,22 @@ const CreatePost = () => {
                         placeholder={`Bonjour,
 Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effectuer des remplacements réguliers, environ 10 jours par mois à partir de Juin...`}
                         onChange={handleMessageChange}
-                        className="text-s h-full w-full rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
+                        className={`text-s h-full w-full rounded-lg border border-gray-300  p-1.5 ${
+                            !newPost.message || messageConainsContactInfo
+                                ? "focus:border-cta focus:ring-cta"
+                                : "border-tertiary ring-tertiary focus:border-tertiary focus:ring-tertiary"
+                        }`}
                         required
                     />
+                    {newPost.message && !messageConainsContactInfo && (
+                        <p className="mt-1 px-2 text-xs text-tertiary">
+                            {
+                                "Votre post doit contenir des informations de contact (email ou téléphone)."
+                            }
+                        </p>
+                    )}
                 </div>
+
                 {user.email && (
                     <div>
                         <div className="flex gap-2 leading-none">
@@ -260,7 +276,7 @@ Cabinet infirmier situé sur Montpellier cherche un(e) infirmier(ère) pour effe
                             className={`block w-1/3 min-w-[8rem] rounded-lg border border-gray-300  p-1.5 ${
                                 isPostalCodeValid
                                     ? "focus:border-cta focus:ring-cta"
-                                    : "border-red-500 ring-red-500 focus:border-red-500 focus:ring-red-500"
+                                    : "border-tertiary ring-tertiary focus:border-tertiary focus:ring-tertiary"
                             }`}
                             required
                         />

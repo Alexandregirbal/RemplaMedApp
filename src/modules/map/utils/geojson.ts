@@ -1,8 +1,8 @@
 import type { Feature, FeatureCollection } from "geojson";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { PostWithAuthorName } from "modules/post/types/post";
+import type { Post } from "server/database/models/post/types";
 
-const postToGeoJson = (post: PostWithAuthorName): Feature | null => {
+const postToGeoJson = (post: Post): Feature | null => {
     if (!post.latitude || !post.longitude) return null;
     return {
         type: "Feature",
@@ -16,9 +16,7 @@ const postToGeoJson = (post: PostWithAuthorName): Feature | null => {
     };
 };
 
-export const postsToGeoJSON = (
-    posts: PostWithAuthorName[]
-): FeatureCollection => {
+export const postsToGeoJSON = (posts: Post[]): FeatureCollection => {
     return {
         type: "FeatureCollection",
         features: posts.reduce<Feature[]>((acc, post) => {

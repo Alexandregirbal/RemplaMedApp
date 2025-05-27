@@ -1,23 +1,22 @@
-import { PaymentStatus } from "@mollie/api-client";
 import axios from "axios";
 import PostComponent from "modules/post/components/PostComponent";
-import type { PostWithDatesStrings } from "modules/post/types/post";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import type { Post } from "server/database/models/post/types";
 import { setIsLoading } from "store/slices/ui/slice";
 
 const MyPostsPage = () => {
     const session = useSession();
     const dispatch = useDispatch();
-    const [posts, setPosts] = useState<PostWithDatesStrings[]>([]);
+    const [posts, setPosts] = useState<Post[]>([]);
 
     const fetchPosts = async () => {
         const response = await axios.get("/api/users/posts");
         if (response.status !== 200) return console.error(response);
 
-        const data = (await response.data) as PostWithDatesStrings[];
+        const data = (await response.data) as Post[];
         setPosts(data);
     };
 
@@ -26,20 +25,21 @@ const MyPostsPage = () => {
         void fetchPosts();
     }, [session]);
 
-    const handleTogglePostPublishedState = async (
-        post: PostWithDatesStrings
-    ) => {
-        if (post.paymentStatus !== PaymentStatus.paid) {
-            console.log("Post is not paid, cannot toggle published state.");
-            return;
-        }
-        console.log(post);
+    const handleTogglePostPublishedState = async (post: Post) => {
+        // if (post.paymentStatus !== PaymentStatus.paid) {
+        //     console.log("Post is not paid, cannot toggle published state.");
+        //     return;
+        // }
+        // console.log(post);
 
         dispatch(setIsLoading(true));
         const response = await axios.put(`/api/posts/togglePublished`, {
-            postId: post.id,
+            postId: post._id,
         });
-        if (response.status !== 200) return console.error(response);
+        if (response.status !== 200) {
+            dispatch(setIsLoading(false));
+            return console.error(response);
+        }
 
         await fetchPosts();
         dispatch(setIsLoading(false));
@@ -57,13 +57,13 @@ const MyPostsPage = () => {
             <h1 className="text-2xl">Mes annonces</h1>
             {posts.slice(0, 10).map((post) => (
                 <div
-                    key={post.id}
+                    key={post._id.toString()}
                     className="flex w-full justify-between gap-4"
                 >
                     <Link
-                        id={post.id}
-                        key={post.id}
-                        href={`/posts/${post.id}`}
+                        id={post._id.toString()}
+                        key={post._id.toString()}
+                        href={`/posts/${post._id.toString()}`}
                         className="w-1/2"
                     >
                         <PostComponent post={post} isMini />
@@ -73,10 +73,10 @@ const MyPostsPage = () => {
                             <label className="relative inline-flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    disabled={
-                                        post.paymentStatus !==
-                                        PaymentStatus.paid
-                                    }
+                                    // disabled={
+                                    //     post.paymentStatus !==
+                                    //     PaymentStatus.paid
+                                    // }
                                     checked={post.published}
                                     onChange={() =>
                                         void handleTogglePostPublishedState(
@@ -91,12 +91,9 @@ const MyPostsPage = () => {
                                 </span>
                             </label>
                         </li>
-
-                        <li>
-                            {post.paymentStatus === PaymentStatus.paid
-                                ? "Payé"
-                                : `Paiement: ${post.paymentStatus ?? "aucun"}`}
-                        </li>
+                        {/* <li className={getPaymentColor(post.paymentStatus)}>
+                            {getPaymentStatusString(post.paymentStatus)}
+                        </li> */}
                     </ul>
                 </div>
             ))}

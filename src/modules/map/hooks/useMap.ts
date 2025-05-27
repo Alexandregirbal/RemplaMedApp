@@ -9,7 +9,9 @@ import { parseQueryString } from "modules/utils/parseQueryString";
 import { useRouter } from "next/router";
 import { useEffect, useState, type RefObject } from "react";
 import { useDispatch } from "react-redux";
+import type { Post } from "server/database/models/post/types";
 import { setSelectedPosts } from "store/slices/posts/slice";
+import { setIsLoading } from "store/slices/ui/slice";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../../tailwind.config.cjs";
 import { getNewZoomedValue } from "../utils/zoom";
@@ -117,7 +119,7 @@ export const useMap = (params: {
                         "DIN Offc Pro Medium",
                         "Arial Unicode MS Bold",
                     ],
-                    "text-size": 12,
+                    "text-size": 14,
                 },
                 paint: {
                     "text-color": fullConfig.theme?.colors?.background,
@@ -131,7 +133,7 @@ export const useMap = (params: {
                 filter: ["!", ["has", "point_count"]],
                 paint: {
                     "circle-color": fullConfig.theme?.colors?.cta,
-                    "circle-radius": 8,
+                    "circle-radius": 12,
                     "circle-stroke-width": 1,
                     "circle-stroke-color": "#fff",
                 },
@@ -141,7 +143,8 @@ export const useMap = (params: {
                 if (!e || !e.features || e.features.length < 0) return;
                 const feature = e.features[0];
                 if (!feature) return;
-                const postId = feature.properties?.id as string;
+                const postId = (feature.properties as Post)?._id.toString();
+                dispatch(setIsLoading(true));
                 void router.push(`/posts/${postId}`);
             });
 
@@ -187,8 +190,8 @@ export const useMap = (params: {
                     0,
                     (error, features) => {
                         if (!error) {
-                            const postsIds = features.map(
-                                (feature) => feature.properties?.id as string
+                            const postsIds = features.map((feature) =>
+                                (feature.properties as Post)._id.toString()
                             );
                             dispatch(setSelectedPosts({ postsIds }));
                             return;
@@ -221,7 +224,7 @@ export const useMap = (params: {
                 "move",
                 debounce(async () => {
                     const location = map.getCenter();
-                    const zoom = map.getZoom();
+                    const zoom = Number(map.getZoom().toFixed(2));
                     const locationData = {
                         longitude: location.lng.toFixed(4),
                         latitude: location.lat.toFixed(4),
@@ -239,15 +242,17 @@ export const useMap = (params: {
         };
 
         mapboxClient.on("load", () => handleMapLoad(mapboxClient));
-        mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
+        // mapboxClient.addControl(new mapboxgl.NavigationControl(), "top-left");
         const geolocateControl = new mapboxgl.GeolocateControl();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         geolocateControl.on("geolocate", (e: any) => {
             if (!e || !e.coords) return;
+            dispatch(setIsLoading(true));
             mapboxClient.flyTo({
                 center: [e.coords.longitude, e.coords.latitude],
                 zoom: 10,
             });
+            dispatch(setIsLoading(false));
         });
 
         mapboxClient.addControl(geolocateControl, "top-left");

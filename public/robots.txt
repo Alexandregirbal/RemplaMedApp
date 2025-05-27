@@ -1,0 +1,9 @@
+# Block all crawlers for /accounts
+User-agent: *
+Disallow: /users
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+Sitemap: https://www.rempla-med.fr/sitemap.xml

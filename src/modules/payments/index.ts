@@ -1,15 +1,16 @@
-import { createPaymentIntent } from "./createPaymentIntent";
+import { createPayment } from "./createPaymentIntent";
+import type { CreatePayment } from "./types";
 
 export const getPayment = async ({
-    paymentIntentParams,
+    createPaymentParams,
 }: {
-    paymentIntentParams: Parameters<typeof createPaymentIntent>[0];
+    createPaymentParams: Parameters<CreatePayment>[0];
 }) => {
-    const paymentIntent = await createPaymentIntent(paymentIntentParams);
+    const payment = await createPayment(createPaymentParams);
 
-    const molliePaymentUrl = paymentIntent.getCheckoutUrl();
+    const molliePaymentUrl = payment._links.checkout?.href;
     if (!molliePaymentUrl) throw new Error("Payment url is not defined."); // Undefined for recurring payments
-    const paymentId = paymentIntent.id;
+    const paymentId = payment.id;
 
     return { paymentUrl: molliePaymentUrl, paymentId };
 };

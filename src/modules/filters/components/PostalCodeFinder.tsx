@@ -55,12 +55,12 @@ const PostalCodeFinder = () => {
 
     return (
         <input
+            className="h-full w-32 rounded-lg border border-gray-300 p-1.5 text-center focus:border-cta focus:ring-cta"
             ref={postalCodeFinderInputRef}
             type="number"
             name="postalCode"
             id="postalCodeFinder"
             placeholder="Code postal"
-            className="rounded-lg border border-gray-300  p-1.5 focus:border-cta focus:ring-cta"
             onChange={debounce(handlePostalCodeChange, 300)}
         />
     );

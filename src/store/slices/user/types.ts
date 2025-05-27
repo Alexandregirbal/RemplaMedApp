@@ -1,5 +1,6 @@
 export type UserState = {
-    id: string | null;
+    _id: string | null;
     email: string | null;
     postsViewed: string[];
+    phoneNumber?: string;
 };

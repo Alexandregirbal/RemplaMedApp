@@ -1,21 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { type NextAuthOptions } from "next-auth";
-import { prisma } from "server/db";
+import mongooseConnect from "server/database/config/mongoose";
 import { env } from "../../../env.mjs";
 import credentialsProvider from "./providers/credentials";
 import googleProvider from "./providers/google";
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks,
- * etc.
- *
- * @see https://next-auth.js.org/configuration/options
- **/
 const authOptions: NextAuthOptions = {
     providers: [credentialsProvider, googleProvider],
-    adapter: PrismaAdapter(prisma),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    adapter: MongoDBAdapter(mongooseConnect().then((res) => res.mongoClient)),
     callbacks: {
         jwt({ token, trigger, user, session }) {
             switch (trigger) {
@@ -24,31 +20,42 @@ const authOptions: NextAuthOptions = {
                     if ("newPostViewed" in session) {
                         token.postsViewed = Array.from(
                             new Set([
-                                ...token.postsViewed,
+                                ...(token.postsViewed ?? []),
                                 session.newPostViewed,
                             ])
                         );
                     }
-                    return token;
+                // return token; // Not needed thanks to switch statement
 
                 case "signIn":
                 case "signUp":
-                    if (user && "postsViewed" in user) {
-                        const postsViewed = new Set(user.postsViewed);
-                        token.postsViewed = Array.from(postsViewed);
+                    if (user) {
+                        if (user.id) {
+                            token.sub = user.id;
+                        }
+
+                        if (user.postsViewed) {
+                            const postsViewed = new Set(user.postsViewed);
+                            token.postsViewed = Array.from(postsViewed);
+                        }
+                        if (user.phoneNumber) {
+                            token.phoneNumber = user.phoneNumber;
+                        }
                     }
-                    return token;
 
                 default:
                     return token;
             }
         },
         session({ session, token }) {
-            if (token?.sub) {
-                session.user.id = token.sub;
+            if (token.sub) {
+                session.user._id = token.sub;
             }
             if (token.postsViewed) {
                 session.user.postsViewed = token.postsViewed;
+            }
+            if (token.phoneNumber) {
+                session.user.phoneNumber = token.phoneNumber;
             }
             return session;
         },

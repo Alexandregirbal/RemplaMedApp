@@ -24,7 +24,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
             data: result.error,
         });
     }
-    await Promise.all([res.revalidate(`/posts/${parsedBody.data.postId}`)]);
+    await res.revalidate(`/posts/${parsedBody.data.postId}`);
     res.status(200).json({ message: "success" });
 };
 

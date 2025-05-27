@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Loading from "modules/ui/loading";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -20,19 +21,22 @@ const Layout = ({ children }: LayoutProps) => {
     }, [dispatch]);
 
     return (
-        <>
+        <div className="flex h-screen flex-col">
             <Head>
-                <title>RemplaMed</title>
-                <meta name="description" content="Find a replacement" />
+                <title key="title">RemplaMed</title>
+                <meta
+                    name="description"
+                    key="description"
+                    content="Remplacement infirmiers facile autour de chez vous."
+                />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <GoogleAnalytics gaId="AW-16518733052" />
             <Header />
-            <main className="h-[calc(100%-10.5rem)] overflow-y-auto">
-                {children}
-            </main>
+            <main className="flex grow flex-col">{children}</main>
             {isLoading && <Loading size="xl" />}
             <Footer />
-        </>
+        </div>
     );
 };
 

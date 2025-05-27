@@ -1,14 +1,15 @@
+import { sendEmail } from "modules/email/send";
 import { createOneUser } from "modules/user/dao/create";
+import { findOneUser } from "modules/user/dao/find";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { UserDescriptionSchema } from "../../../../prisma/generated/schemas";
-import { findOneUser } from "modules/user/dao/find";
 
 const addPostViewedPutBodySchema = z.object({
     email: z.string().email(),
     name: z.string().min(2),
     password: z.string().min(6),
-    description: UserDescriptionSchema,
+    description: z.string(),
+    phoneNumber: z.string().min(10).optional(),
 });
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -38,6 +39,14 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
             data: "User not created",
         });
     }
+
+    sendEmail({
+        email: "alexandre@rempla-med.fr",
+        subject: "New RemplaMed user",
+        text: `New user: ${user.name ?? "unknown name"} (${
+            user.email ?? "unknown email"
+        })`,
+    });
 
     res.status(200).json({ message: "success" });
 };

@@ -38,18 +38,6 @@ export const filtersSlice = createSlice({
         setIntent(state, action: { payload: FiltersState["intent"] }) {
             state.intent = action.payload;
         },
-        isCreatedAtFilterSet(state) {
-            state.createdAt.value !== 0;
-        },
-        isDatesFilterSet(state) {
-            state.dates.from !== null && state.dates.to !== null;
-        },
-        isNotViewedFilterSet(state) {
-            !!state.notViewed;
-        },
-        isIntentFilterSet(state) {
-            !!state.intent;
-        },
         // Add extraReducers for server init only
     },
 });
@@ -60,10 +48,6 @@ export const {
     setCreatedAt,
     setNotViewed,
     setIntent,
-    isCreatedAtFilterSet,
-    isDatesFilterSet,
-    isNotViewedFilterSet,
-    isIntentFilterSet,
 } = filtersSlice.actions;
 
 export const selectFiltersState = (state: AppState) => state.filters;

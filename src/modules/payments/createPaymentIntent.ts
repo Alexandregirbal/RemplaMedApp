@@ -1,5 +1,5 @@
 import { getMollieClient } from "./config";
-import { type CreatePaymentIntent, Currency } from "./types";
+import { Currency, type CreatePayment } from "./types";
 
 const getWebhookUrl = (url: string) => {
     if (url.includes("localhost")) {
@@ -8,15 +8,17 @@ const getWebhookUrl = (url: string) => {
     return url;
 };
 
-export const createPaymentIntent: CreatePaymentIntent = async ({
+export const createPayment: CreatePayment = async ({
     amount,
     description,
     webhookUrl,
     redirectUrl,
     metadata,
+    cancelUrl,
     currency = Currency.EUR,
 }) => {
-    const paymentIntent = await getMollieClient().payments.create({
+    const mollieClient = getMollieClient();
+    const payment = await mollieClient.payments.create({
         amount: {
             value: amount.toFixed(2),
             currency,
@@ -25,6 +27,8 @@ export const createPaymentIntent: CreatePaymentIntent = async ({
         webhookUrl: getWebhookUrl(webhookUrl),
         redirectUrl,
         metadata,
+        cancelUrl,
     });
-    return paymentIntent;
+
+    return payment;
 };

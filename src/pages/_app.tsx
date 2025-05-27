@@ -1,10 +1,11 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
-import Layout from "../layout";
-import "styles/globals.css";
-import { wrapper } from "store";
 import { Provider } from "react-redux";
+import { wrapper } from "store";
+import "styles/globals.css";
+import Layout from "../layout";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
@@ -17,6 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             <Provider store={store}>
                 <Layout>
                     <Component {...props} />
+                    <Analytics />
                 </Layout>
             </Provider>
         </SessionProvider>

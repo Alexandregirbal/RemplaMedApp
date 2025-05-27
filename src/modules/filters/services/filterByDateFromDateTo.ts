@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
-import type { PostWithAuthorName } from "modules/post/types/post";
+import type { Post } from "server/database/models/post/types";
 import type { FiltersState } from "store/slices/filters/types";
 
 export const filterByDateFromDateTo = (params: {
-    posts: PostWithAuthorName[];
+    posts: Post[];
     datesFilter: FiltersState["dates"];
 }) => {
     const { posts, datesFilter } = params;

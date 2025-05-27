@@ -1,82 +1,71 @@
-import type { Post, Prisma } from "@prisma/client";
-import { prisma } from "server/db";
-import { postToPostWithDatesStrings } from "../services/postWithDatesStrings";
-import { type MetaData } from "../types/metadata";
-import type { PostWithDatesStrings, PostWithAuthorName } from "../types/post";
 import dayjs from "dayjs";
+import { type FilterQuery } from "mongoose";
+import mongooseConnect from "server/database/config/mongoose";
+import { PostModel } from "server/database/models/post/model";
+import type { Post } from "server/database/models/post/types";
+import { parseObjectToSerialize } from "server/database/utils/parseObjectToSerialize";
+import { type MetaData } from "../types/metadata";
 
 const MIN_DATE = dayjs().subtract(3, "month");
 
 export const findOnePost = async (
     id: string | undefined
-): Promise<PostWithAuthorName | null> => {
+): Promise<Post | null> => {
     if (!id) {
         return null;
     }
 
-    const post = await prisma.post.findFirst({
-        where: { id, published: true },
-        include: {
-            author: {
-                select: {
-                    name: true,
-                },
-            },
-        },
-    });
+    await mongooseConnect();
 
-    if (!post) {
-        return null;
-    }
-
-    return postToPostWithDatesStrings(post);
+    const post = await PostModel.findOne({ _id: id, published: true }).lean();
+    return post;
 };
 
-export const findManyPosts = async (
-    params: Omit<Prisma.PostFindManyArgs, "orderBy">
-): Promise<Array<PostWithAuthorName>> => {
-    const posts = await prisma.post.findMany({
-        ...params,
-        include: {
-            author: {
-                select: {
-                    name: true,
-                },
-            },
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
-        where: {
+export const findManyPosts = async (params: FilterQuery<Post>) => {
+    await mongooseConnect();
+
+    const posts = await PostModel.find(
+        {
             published: true,
             createdAt: {
-                gte: MIN_DATE.toDate(),
+                $gte: MIN_DATE.toDate(),
             },
-            ...params.where,
+            ...params,
         },
-    });
-    return posts.map((post) => postToPostWithDatesStrings(post));
+        undefined,
+        {
+            sort: {
+                createdAt: -1,
+            },
+        }
+    ).lean();
+    return posts.map(parseObjectToSerialize);
 };
 
-export const findPostsIds = async (): Promise<Array<Pick<Post, "id">>> => {
-    const postsIds = await prisma.post.findMany({
-        where: { published: true },
-        select: { id: true },
-    });
-    return postsIds;
+export const findPostsIds = async () => {
+    await mongooseConnect();
+
+    const posts = await PostModel.find(
+        {
+            published: true,
+        },
+        { _id: true, createdAt: true },
+        { sort: { createdAt: -1 } }
+    ).lean();
+    return posts;
 };
 
 export const getMetaData = async (): Promise<MetaData> => {
-    const totalOverallPosts = await prisma.post.count({
-        where: { published: true },
+    await mongooseConnect();
+
+    const totalOverallPosts = await PostModel.countDocuments({
+        published: true,
     });
 
-    const totalRecentPosts = await prisma.post.count({
-        where: {
-            createdAt: {
-                gte: MIN_DATE.toDate(),
-            },
-            published: true,
+    const totalRecentPosts = await PostModel.countDocuments({
+        published: true,
+        createdAt: {
+            $gte: MIN_DATE.toDate(),
         },
     });
 
@@ -85,19 +74,34 @@ export const getMetaData = async (): Promise<MetaData> => {
 
 export const findUserPosts = async (
     userId: string | undefined
-): Promise<PostWithDatesStrings[]> => {
+): Promise<Post[]> => {
     if (!userId) {
         return [];
     }
+    await mongooseConnect();
 
-    const posts = await prisma.post.findMany({
-        where: {
+    const posts = await PostModel.find(
+        {
             authorId: userId,
         },
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
+        undefined,
+        {
+            sort: { createdAt: -1 },
+        }
+    ).lean();
 
-    return posts.map((post) => postToPostWithDatesStrings(post));
+    return posts;
+};
+
+export const findPostByPaymentId = async (
+    paymentId: string | undefined
+): Promise<Post | null> => {
+    if (!paymentId) {
+        return null;
+    }
+
+    await mongooseConnect();
+
+    const post = await PostModel.findOne({ paymentId }).lean();
+    return post;
 };

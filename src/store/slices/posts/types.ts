@@ -1,20 +1,27 @@
 import { type MetaData } from "modules/post/types/metadata";
-import { type PostWithAuthorName } from "modules/post/types/post";
+import type { Post } from "server/database/models/post/types";
+
+type NewPost = Pick<
+    Post,
+    | "intent"
+    | "message"
+    | "postalCode"
+    | "city"
+    | "latitude"
+    | "longitude"
+    | "availablityFrom"
+    | "availablityTo"
+> & {
+    contact: {
+        useEmail: boolean;
+        usePhone: boolean;
+    };
+};
 
 export type PostsState = {
-    data: PostWithAuthorName[];
+    data: Post[];
     metadata: MetaData;
-    selectedPosts: Array<PostWithAuthorName>;
-    filteredPosts: Array<PostWithAuthorName>;
-    newPost: Pick<
-        PostWithAuthorName,
-        | "intent"
-        | "message"
-        | "postalCode"
-        | "city"
-        | "latitude"
-        | "longitude"
-        | "availablityFrom"
-        | "availablityTo"
-    >;
+    selectedPosts: Array<Post>;
+    filteredPosts: Array<Post>;
+    newPost: NewPost;
 };

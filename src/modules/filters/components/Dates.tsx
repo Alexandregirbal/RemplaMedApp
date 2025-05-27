@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
+import { DatePicker } from "shadcn/components/ui/datePicker";
 import { selectFiltersState } from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
 import { selectPostsState } from "store/slices/posts/slice";
@@ -21,7 +21,7 @@ const DatesFilter = () => {
             posts: data,
             datesFilter: newDatesFilter,
         });
-        const filteredPostsIds = newPosts.map((post) => post.id);
+        const filteredPostsIds = newPosts.map((post) => post._id);
         upsertFilter({
             name: "dates",
             value: newDatesFilter,
@@ -29,7 +29,7 @@ const DatesFilter = () => {
         return filteredPostsIds;
     };
 
-    const handleDateFromChange = (date: Date | null) => {
+    const handleDateFromChange = (date?: Date | null) => {
         const newDates = {
             from: date ? dayjs(date).format("YYYY-MM-DD") : null,
             to,
@@ -37,7 +37,7 @@ const DatesFilter = () => {
         handleDateFilterChange(newDates);
     };
 
-    const handleDateToChange = (date: Date | null) => {
+    const handleDateToChange = (date?: Date | null) => {
         const newDates = {
             from,
             to: date ? dayjs(date).format("YYYY-MM-DD") : null,
@@ -70,13 +70,11 @@ const DatesFilter = () => {
                     className="flex cursor-pointer items-center gap-2"
                 >
                     <label className="w-1/2 whitespace-normal">{label}</label>
-                    <div className="w-1/2">
+                    <div className="w-1/2" onClick={(e) => e.stopPropagation()}>
                         <DatePicker
-                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-center focus:border-cta focus:ring-cta"
-                            selected={date ? dayjs(date).toDate() : null}
-                            minDate={min ? dayjs(min).toDate() : null}
+                            selected={date ? dayjs(date).toDate() : undefined}
+                            minDate={min ? dayjs(min).toDate() : undefined}
                             onChange={handleDateChange}
-                            dateFormat={"dd/MM/yyyy"}
                         />
                     </div>
                 </div>

@@ -1,15 +1,16 @@
 version: "3.8"
 services:
-    postgres:
-        image: postgres
-        container_name: remplamed_postgres
+    mongodb:
+        image: mongo:7.0
+        container_name: remplamed_mongodb
         restart: always
-        env_file:
-            - .env
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=rootpassword
         ports:
-            - "5432:5432"
+            - "27018:27017"
         volumes:
-            - postgres_data:/var/lib/postgresql/data
+            - mongodb_data:/data/db
 
 volumes:
-    postgres_data:
+    mongodb_data:

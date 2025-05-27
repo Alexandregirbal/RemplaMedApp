@@ -1,24 +1,28 @@
-import { prisma } from "server/db";
-import { type z } from "zod";
-import { type UserDescriptionSchema } from "../../../../prisma/generated/schemas";
+import mongooseConnect from "server/database/config/mongoose";
+import { UserModel } from "server/database/models/user/model";
 import { hashPassword } from "../services/password";
 
 export const createOneUser = async (params: {
     email: string;
     password: string;
     name: string;
-    description: z.infer<typeof UserDescriptionSchema>;
+    description: string;
+    phoneNumber?: string;
 }) => {
-    const { email, password, name, description } = params;
-    const hashedPassword = await hashPassword(password);
-    const user = await prisma.user.create({
-        data: {
+    try {
+        await mongooseConnect();
+        const { email, password, name, description, phoneNumber } = params;
+        const hashedPassword = await hashPassword(password);
+        const user = await UserModel.create({
             email: email.toLowerCase(),
             password: hashedPassword,
             name,
             description,
-        },
-    });
+            phoneNumber,
+        });
 
-    return user;
+        return user;
+    } catch (error) {
+        return null;
+    }
 };

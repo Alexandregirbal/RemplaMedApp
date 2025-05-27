@@ -5,9 +5,8 @@ import { z } from "zod";
  * This way you can ensure the app isn't built with invalid env vars.
  */
 const server = z.object({
-    POSTGRES_DATABASE: z.string(),
-    POSTGRES_PRISMA_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    MONGODB_URL: z.string().url(),
     NEXTAUTH_SECRET:
         process.env.NODE_ENV === "production"
             ? z.string().min(1)
@@ -25,6 +24,8 @@ const server = z.object({
     MOLLIE_API_KEY: z.string(),
     VERCEL_BRANCH_URL: z.string(),
     VERCEL_ENV: z.enum(["production", "preview", "development"]),
+    EMAIL_USER: z.string().email(),
+    EMAIL_PASSWORD: z.string(),
 });
 
 /**
@@ -43,8 +44,7 @@ const client = z.object({
  */
 const processEnv = {
     NODE_ENV: process.env.NODE_ENV,
-    POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
-    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
+    MONGODB_URL: process.env.MONGODB_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -52,6 +52,8 @@ const processEnv = {
     MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
     VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
     VERCEL_ENV: process.env.VERCEL_ENV,
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
 };
 
 // Don't touch the part below

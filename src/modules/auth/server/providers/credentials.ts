@@ -15,17 +15,16 @@ const credentialsProvider = CredentialsProvider({
             return null;
         }
         const user = await findOneUser(credentials.email);
-        if (user) {
-            const isPasswordValid = await validatePassword({
-                password: credentials.password,
-                hashedPassword: user.password ?? "no_password",
-            });
-            if (!isPasswordValid) {
-                return null;
-            }
-            return user;
+        if (!user) return null;
+        const isPasswordValid = await validatePassword({
+            password: credentials.password,
+            hashedPassword: user.password ?? "no_password",
+        });
+        if (!isPasswordValid) {
+            return null;
         }
-        return null;
+
+        return { ...user, id: user._id.toString() };
     },
 });
 

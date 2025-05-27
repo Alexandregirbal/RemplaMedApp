@@ -1,58 +1,93 @@
 import { PaymentStatus } from "@mollie/api-client";
-import { prisma } from "server/db";
+import { PostModel } from "server/database/models/post/model";
 
-export const incrementPostViews = async (postId: string) => {
-    return await prisma.post.update({
-        where: {
-            id: postId,
+export const incrementPostViews = (postId: string) => {
+    return PostModel.updateOne(
+        {
+            _id: postId,
         },
-        data: {
-            views: {
-                increment: 1,
+        {
+            $inc: {
+                views: 1,
             },
-        },
-    });
+        }
+    );
 };
 
 export const setPublishedPost = async (postId: string) => {
-    return await prisma.post.update({
-        where: {
-            id: postId,
+    return await PostModel.updateOne(
+        {
+            _id: postId,
         },
-        data: {
+        {
             published: true,
-        },
-    });
+        }
+    );
 };
 
 export const togglePublished = async (postId: string) => {
-    const post = await prisma.post.findUnique({
-        where: {
-            id: postId,
-        },
-    });
+    const post = await PostModel.findById(postId);
     if (!post) {
         return {
             success: false,
             error: "Post not found",
         };
     }
-    if (post.paymentStatus !== PaymentStatus.paid) {
-        return {
-            success: false,
-            error: "Post is not paid, cannot update the published status",
-        };
-    }
-    const newPost = await prisma.post.update({
-        where: {
-            id: postId,
+
+    // if (post.paymentStatus !== PaymentStatus.paid) {
+    //     return {
+    //         success: false,
+    //         error: "Post is not paid, cannot update the published status",
+    //     };
+    // }
+
+    const updatedPost = await PostModel.updateOne(
+        {
+            _id: postId,
         },
-        data: {
-            published: !post.published,
-        },
-    });
+        {
+            $set: {
+                published: !post.published,
+            },
+        }
+    );
     return {
         success: true,
-        data: newPost,
+        data: updatedPost,
     };
+};
+
+export const updatePaymentStatus = async ({
+    postId,
+    status,
+}: {
+    postId: string;
+    status: PaymentStatus;
+}) => {
+    return await PostModel.updateOne(
+        {
+            _id: postId,
+        },
+        {
+            paymentStatus: status,
+        }
+    );
+};
+
+export const openPostPayment = async ({
+    paymentId,
+    postId,
+}: {
+    postId: string;
+    paymentId: string;
+}) => {
+    return await PostModel.updateOne(
+        {
+            _id: postId,
+        },
+        {
+            paymentStatus: PaymentStatus.open,
+            paymentId,
+        }
+    );
 };

@@ -1,15 +1,15 @@
-import { PostIntent } from "@prisma/client";
+import { PostIntent } from "server/database/models/post/types";
 
 export const getPostIntentLabel = (postIntent: PostIntent): string => {
     switch (postIntent) {
         case PostIntent.replacementOffer:
-            return "Cherche remplaçant(e)";
+            return "Remplacement infirmier libéral";
         case PostIntent.replacementSearch:
-            return "Cherche remplacement";
+            return "Remplaçant infirmier libéral";
         case PostIntent.partnership:
-            return "Cherche collaboration";
+            return "Collaboration cabinet infirmier libéral";
         case PostIntent.transaction:
-            return "Cession de cabinet";
+            return "Cession de cabinet infirmier libéral";
         case PostIntent.other:
             return "Autre demande";
         default:

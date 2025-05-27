@@ -1,5 +1,9 @@
-import FiltersIcon from "modules/ui/icons/filters";
+"use client";
+
+import { Filter } from "lucide-react";
+import AddPostButton from "modules/post/components/AddPostButton";
 import { useState } from "react";
+import { Button } from "shadcn/components/ui/button";
 import FiltersModal from "./components/FiltersModal";
 import PostalCodeFinder from "./components/PostalCodeFinder";
 
@@ -13,9 +17,16 @@ const Filters = () => {
     };
     return (
         <>
-            <div className="flex h-16 items-center justify-around gap-2 border-t-2 border-gray-300 px-4 shadow-2xl">
-                <FiltersIcon onClick={openFiltersModal} />
+            <div className="flex items-center justify-evenly py-2">
+                <Button
+                    className="flex gap-2 bg-cta hover:cursor-pointer"
+                    onClick={openFiltersModal}
+                >
+                    <Filter />
+                    Filtrer
+                </Button>
                 <PostalCodeFinder />
+                <AddPostButton />
             </div>
             <FiltersModal
                 isOpened={isFiltersModalOpened}

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { PostIntent } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
 import { sortByDate, sortByDistance } from "modules/filters/services/sortBy";
 import type { Coordinates } from "modules/filters/types/distance";
-import type { PostWithAuthorName } from "modules/post/types/post";
 import { HYDRATE } from "next-redux-wrapper";
+import type { Post } from "server/database/models/post/types";
+import { PostIntent } from "server/database/models/post/types";
 import { type AppState } from "store";
 import type { PostsState } from "./types";
 
@@ -20,6 +20,10 @@ const initialState: PostsState = {
     newPost: {
         intent: PostIntent.replacementOffer,
         message: "",
+        contact: {
+            useEmail: false,
+            usePhone: false,
+        },
         postalCode: "",
         city: "",
         latitude: 0,
@@ -46,10 +50,7 @@ export const postsSlice = createSlice({
                 };
             }
         ) {
-            const sortByDistanceFromCurrentLocation = (
-                a: PostWithAuthorName,
-                b: PostWithAuthorName
-            ) => {
+            const sortByDistanceFromCurrentLocation = (a: Post, b: Post) => {
                 if (
                     !action.payload.currentPosition ||
                     (!a.latitude && a.latitude !== 0) ||
@@ -92,7 +93,7 @@ export const postsSlice = createSlice({
         setSelectedPosts(state, action: { payload: { postsIds: string[] } }) {
             state.selectedPosts = [
                 ...state.data.filter((post) =>
-                    action.payload.postsIds.includes(post.id)
+                    action.payload.postsIds.includes(post._id.toString())
                 ),
             ];
         },

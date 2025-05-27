@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-    isCreatedAtFilterSet,
-    isDatesFilterSet,
-    isIntentFilterSet,
-    isNotViewedFilterSet,
     resetFiltersSlice,
     selectFiltersState,
     setCreatedAt,
@@ -13,6 +9,12 @@ import {
     setNotViewed,
 } from "store/slices/filters/slice";
 import type { FiltersState } from "store/slices/filters/types";
+import {
+    isCreatedAtFilterSet,
+    isDatesFilterSet,
+    isIntentFilterSet,
+    isNotViewedFilterSet,
+} from "store/slices/filters/utils";
 import { selectPostsState, setFilteredPosts } from "store/slices/posts/slice";
 import { selectUserState } from "store/slices/user/slice";
 import { filterByCreatedAt } from "../services/filterByCreatedAt";
@@ -77,14 +79,17 @@ export const useFilters = () => {
             "notViewed",
             "intent",
         ]) {
-            if (isCreatedAtFilterSet() || iteratingFilterName === "createdAt") {
+            if (
+                isCreatedAtFilterSet(createdAt) ||
+                iteratingFilterName === "createdAt"
+            ) {
                 const filterValue = (
                     filter.name === "createdAt" ? filter.value : createdAt
                 ) as FiltersState["createdAt"];
                 postsData = filterByCreatedAt(postsData, filterValue.value);
             }
 
-            if (isDatesFilterSet() || iteratingFilterName === "dates") {
+            if (isDatesFilterSet(dates) || iteratingFilterName === "dates") {
                 const filterValue = (
                     filter.name === "dates" ? filter.value : dates
                 ) as FiltersState["dates"];
@@ -94,18 +99,21 @@ export const useFilters = () => {
                 });
             }
 
-            if (isNotViewedFilterSet() || iteratingFilterName === "notViewed") {
+            if (
+                isNotViewedFilterSet(notViewed) ||
+                iteratingFilterName === "notViewed"
+            ) {
                 const filterValue = (
                     filter.name === "notViewed" ? filter.value : notViewed
                 ) as FiltersState["notViewed"];
                 if (filterValue) {
                     postsData = postsData.filter(
-                        (post) => !postsViewed.includes(post.id)
+                        (post) => !postsViewed.includes(post._id.toString())
                     );
                 }
             }
 
-            if (isIntentFilterSet() || iteratingFilterName === "intent") {
+            if (isIntentFilterSet(intent) || iteratingFilterName === "intent") {
                 const filterValue = (
                     filter.name === "intent" ? filter.value : intent
                 ) as FiltersState["intent"];
@@ -123,9 +131,6 @@ export const useFilters = () => {
         return postsData.length;
     };
 
-    /**
-     * Resets the filters on the **filters store** to an empty array
-     */
     const resetFilters = (): void => {
         dispatch(resetFiltersSlice());
     };

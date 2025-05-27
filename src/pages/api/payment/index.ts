@@ -1,9 +1,8 @@
-import { PaymentStatus } from "@mollie/api-client";
 import { getServerAuthSession } from "modules/auth/server";
 import { getPayment } from "modules/payments";
+import { openPostPayment } from "modules/post/dao/update";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { type Session } from "next-auth";
-import { prisma } from "server/db";
 import { getDomainUrl } from "server/domain";
 import { isMobile } from "server/isMobile";
 
@@ -33,9 +32,9 @@ const handleGet = async ({
     }
 
     const domainUrl = getDomainUrl();
-    const { id: userId, email: userEmail } = user;
+    const { _id: userId, email: userEmail } = user;
     const { paymentUrl, paymentId } = await getPayment({
-        paymentIntentParams: {
+        createPaymentParams: {
             amount: 5.9,
             description: "RemplaMed: Publication d'un post",
             metadata: {
@@ -46,19 +45,12 @@ const handleGet = async ({
                 origin: isMobile(req) ? "mobile" : "desktop",
             },
             redirectUrl: `${domainUrl}/users/myPosts`,
+            cancelUrl: `${domainUrl}`,
             webhookUrl: `${domainUrl}/api/payment/webhook`,
         },
     });
 
-    await prisma.post.update({
-        data: {
-            paymentId,
-            paymentStatus: PaymentStatus.open,
-        },
-        where: {
-            id: postId,
-        },
-    });
+    await openPostPayment({ postId, paymentId });
     return res.status(200).json({ paymentUrl });
 };
 

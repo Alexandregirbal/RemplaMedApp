@@ -23,6 +23,7 @@ const config = {
     images: {
         domains: ["lh3.googleusercontent.com"],
     },
+
     // enable cors for mapbox
     async headers() {
         return [
@@ -36,6 +37,12 @@ const config = {
                 ],
             },
         ];
+    },
+
+    // Use MongoDB in the server
+    experimental: {
+        esmExternals: "loose",
+        serverComponentsExternalPackages: ["mongoose"],
     },
 };
 export default config;

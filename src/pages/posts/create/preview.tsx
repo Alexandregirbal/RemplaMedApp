@@ -22,20 +22,21 @@ const Preview = () => {
             dispatch(setIsLoading(true));
             const result = await axios.post("/api/posts/create", newPost);
             if (result.status !== 200) {
-                alert("Une erreur est survenue (P1)");
+                alert("Une erreur est survenue (E1)");
             }
-            const postId = result.data.postId as string;
 
-            const paymentUrlResponse = await axios.get(
-                `/api/payment?product=post&postId=${postId}`
-            );
-            const paymentUrl = paymentUrlResponse.data.paymentUrl as string;
-            if (!paymentUrl) {
-                alert("Une erreur est survenue (P2)");
-            }
+            // const postId = result.data.postId as string;
+            // const paymentUrlResponse = await axios.get(
+            //     `/api/payment?product=post&postId=${postId}`
+            // );
+            // const paymentUrl = paymentUrlResponse.data.paymentUrl as string;
+            // if (!paymentUrl) {
+            //     alert("Une erreur est survenue (E2)");
+            // }
 
             dispatch(setIsLoading(false));
-            void router.push(paymentUrl);
+            void router.push(`/users/myPosts`);
+            // void router.push(paymentUrl);
         };
         void asyncFunction();
     };
@@ -53,7 +54,6 @@ const Preview = () => {
                 <PostComponent
                     post={{
                         ...newPost,
-                        author: { name: author.name ?? "vous" },
                     }}
                 />
             </div>
@@ -63,15 +63,15 @@ const Preview = () => {
             <div className="flex justify-evenly gap-8 text-base text-white">
                 <button
                     onClick={handlePreviousClick}
-                    className="w-full rounded-lg bg-tertiary px-5 py-2.5  hover:bg-tertiary focus:outline-none focus:ring-4 focus:ring-red-300 sm:w-auto"
+                    className="w-full rounded-lg bg-secondary px-5 py-2.5  hover:bg-primary focus:outline-none sm:w-auto"
                 >
-                    Retour
+                    Modifier
                 </button>
                 <button
                     onClick={handleNextClick}
                     className="w-full rounded-lg bg-cta px-5 py-2.5 text-center  hover:bg-primary focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
                 >
-                    Payer et publier
+                    Publier
                 </button>
             </div>
         </div>

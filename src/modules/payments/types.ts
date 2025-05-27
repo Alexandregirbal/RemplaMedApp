@@ -13,13 +13,12 @@ export type PaymentMetadata = {
     origin: "desktop" | "mobile";
 };
 
-export type CreatePaymentIntent = (params: {
+export type CreatePayment = (params: {
     amount: number;
     description: string;
     webhookUrl: string;
     redirectUrl: string;
     metadata: PaymentMetadata;
+    cancelUrl: string;
     currency?: Currency;
 }) => Promise<Payment>;
-
-export type GetPaymentIntent = (params: { id: string }) => Promise<Payment>;

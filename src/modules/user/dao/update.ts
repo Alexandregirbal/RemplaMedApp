@@ -1,33 +1,41 @@
-import { prisma } from "server/db";
+import mongooseConnect from "server/database/config/mongoose";
+import { UserModel } from "server/database/models/user/model";
+import type { UserDescription } from "server/database/models/user/types";
 
 export const addPostViewed = async (params: {
     postId: string;
     userId: string;
 }) => {
     const { postId, userId } = params;
-    return await prisma.user.update({
-        where: {
-            id: userId,
+    await mongooseConnect();
+    return await UserModel.updateOne(
+        {
+            _id: userId,
         },
-        data: {
-            postsViewed: {
-                push: postId,
+        {
+            $push: {
+                postsViewed: postId,
             },
-        },
-    });
+        }
+    );
 };
 
 export const updateProfile = async (params: {
     userId: string;
-    name: string;
+    name?: string;
+    phoneNumber?: string;
+    description?: UserDescription;
 }) => {
-    const { userId, name } = params;
-    return await prisma.user.update({
-        where: {
-            id: userId,
+    const { userId } = params;
+    await mongooseConnect();
+    return await UserModel.updateOne(
+        {
+            _id: userId,
         },
-        data: {
-            name: name,
-        },
-    });
+        {
+            $set: {
+                ...params,
+            },
+        }
+    );
 };

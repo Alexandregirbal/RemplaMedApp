@@ -1,6 +1,5 @@
 {
     "recommendations": [
-        "Prisma.prisma",
         "bradlc.vscode-tailwindcss",
         "csstools.postcss",
         "esbenp.prettier-vscode"

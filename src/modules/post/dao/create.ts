@@ -1,10 +1,11 @@
-import type { Prisma } from "@prisma/client";
-import { prisma } from "server/db";
+import mongooseConnect from "server/database/config/mongoose";
+import { PostModel } from "server/database/models/post/model";
+import type { PostData } from "server/database/models/post/types";
 
-export const createOnePost = async (post: Prisma.PostUncheckedCreateInput) => {
-    const newPost = await prisma.post.create({
-        data: post,
-    });
+export const createOnePost = async (post: PostData) => {
+    await mongooseConnect();
+
+    const newPost = await PostModel.create(post);
 
     return newPost;
 };

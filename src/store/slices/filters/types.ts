@@ -1,4 +1,4 @@
-import type { PostIntent } from "@prisma/client";
+import type { PostIntent } from "server/database/models/post/types";
 
 export type FiltersState = {
     dates: {
